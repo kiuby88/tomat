@@ -15,7 +15,7 @@ test-output/
 .classpath
 .settings/
 .metadata/
-
+*.impl
 .idea/
 *.iml
 
