@@ -1,4 +1,4 @@
-package org.tomat.toscaParsers;
+package org.tomat.tosca.parsers;
 
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
@@ -6,7 +6,7 @@ import org.tomat.agnostic.AgnosticApplicationComponent;
 
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.Element;
-import org.tomat.org.tomat.exceptions.TopologyTemplateFormatException;
+import org.tomat.exceptions.TopologyTemplateFormatException;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 //TODO check the clean code to specifi <variableName>List (e.g.).
 //Esta clase contendrá un metodo para parsear el fichero que contiene la topología
-public class ToscaServiceTemplateParser {
+public class ServiceTemplateParser {
 
     final static int NUMBER_OF_SERVICE_TEMPLATE_ALLOWED=1;
     final static int NUMBER_OF_TOPOLOGY_TEMPLATE_ALLOWED=1;
@@ -25,10 +25,11 @@ public class ToscaServiceTemplateParser {
     final static String TOPOLOGY_TEMPLATE="TopologyTemplate";
     final static String NODE_TEMPLATE="NodeTemplate";
 
-    LinkedList<AgnosticApplicationComponent> agnosticApplicationComponentList;
+    LinkedList<AgnosticApplicationComponent> agnosticApplicationComponents;
+    LinkedList<NodeTemplateParser> nodeTemplatesParsers;
 
-    public ToscaServiceTemplateParser(){
-        agnosticApplicationComponentList=new LinkedList<AgnosticApplicationComponent>();
+    public ServiceTemplateParser(){
+        agnosticApplicationComponents=new LinkedList<AgnosticApplicationComponent>();
     }
 
     private Document buildDocument(String serviceTopologyFile) throws JDOMException, IOException {
@@ -79,23 +80,23 @@ public class ToscaServiceTemplateParser {
         return serviceTemplatesList.get(0);
     }
 
-    private void generateAgnosticApplicationComponentList(List<Element> nodeTemplates){
-        //TODO generr todos los
-    }
-
-
-
-    private void parserNodeTemplates(Document jdomDoc) throws TopologyTemplateFormatException {
-        Element root = jdomDoc.getRootElement();
-        List<Element> serviceTemplateElementList = root.getChildren(SERVICE_TEMPLATE);
-        if(serviceTemplateElementList.size()!=NUMBER_OF_SERVICE_TEMPLATE_ALLOWED){
-            throw new TopologyTemplateFormatException("Unexpected number of service template in the");
+    private void generateAgnosticApplicationComponentList(List<Element> nodeTemplateDomElements){
+        //TODO
+        AgnosticApplicationComponent agnosticComponent;
+            nodeTemplateParser=nodeTemplateParserProvider.createNodeTemplate(nodeTemplate);
+            agnosticComponent=nodeTemplateParser
+            this.agnosticApplicationComponentList
         }
-//        serviceTemplateElementList.get(0)
-
-
-
     }
+
+    private void buildNodeTemplateParsers(List<Element> nodeTemplateDomElements){
+        NodeTemplateParserProvider nodeTemplateParserProvider= new NodeTemplateParserProvider();
+        for(Element nodeTemplateElement: nodeTemplateDomElements) {
+            nodeTemplatesParsers.add(nodeTemplateParserProvider.createNodeTemplateParser(nodeTemplateElement));
+        }
+    }
+    private void generateDependencesMap
+
 
 
 

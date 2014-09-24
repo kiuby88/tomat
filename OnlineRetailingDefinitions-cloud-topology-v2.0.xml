@@ -8,8 +8,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://docs.oasis-open.org/tosca/ns/2011/12 TOSCA-v1.0-cs02.xsd">
 
-
-
 	<Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
 		location="Definitions/TOSCA-v1.0-BaseTypes-Definitions.xml" 
 		namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" />
@@ -50,7 +48,7 @@
 		<!-- _________*Web Servers* ______________-->
 			<!-- ___________ JBoss Pay Web Server -->
 			<NodeTemplate id="JBossPayWebServer" name="JBoss Pay Web Server"
-				type="ns2:JBossWebServer">
+				type="JBossWebServer">
 				<Properties>
 					<ns2:JBossWebServerProperties>
 						<httpdport>80</httpdport>
@@ -59,16 +57,16 @@
 				</Properties>
 				<Capabilities>
 					<Capability id="JBossPayWebServer_webapps" name="webapps"
-						type="ns2:JBossWebApplicationContainerCapability" />
+						type="JBossWebApplicationContainerCapability" />
 					<Capability id="JBossPayWebServer_clients" name="clients"
-						type="ns1:HTTPEndpointCapability" />
+						type="HTTPEndpointCapability" />
 				</Capabilities>
 			</NodeTemplate>
 		<!-- ______FIN_____ JBoss Pay Web Server ______________-->
 		
 		<!-- ___________ JBoss Main Web Server -->
 			<NodeTemplate id="JBossMainWebServer" name="JBoss Main Web Server"
-				type="ns2:JBossWebServer">
+				type="JBossWebServer">
 				<Properties>
 					<ns2:JBossWebServerProperties>
 						<httpdport>80</httpdport>
@@ -77,9 +75,9 @@
 				</Properties>
 				<Capabilities>
 					<Capability id="JBossMainWebServer_webapps" name="webapps"
-						type="ns2:JBossWebApplicationContainerCapability" />
+						type="JBossWebApplicationContainerCapability" />
 					<Capability id="JBossMainWebServer_clients" name="clients"
-						type="ns1:HTTPEndpointCapability" />
+						type="HTTPEndpointCapability" />
 				</Capabilities>
 			</NodeTemplate>
 		<!-- ______FIN_____ JBoss Main Web Server ______________-->
@@ -87,7 +85,7 @@
 		
 		<!-- ___________ JBoss StockDB Web Server -->
 			<NodeTemplate id="JBossStockDBWebServer" name="JBoss StockDB Web Server"
-				type="ns2:JBossWebServer">
+				type="JBossWebServer">
 				<Properties>
 					<ns2:JBossWebServerProperties>
 						<httpdport>80</httpdport>
@@ -96,16 +94,16 @@
 				</Properties>
 				<Capabilities>
 					<Capability id="JBossStockDBWebServer_webapps" name="webapps"
-						type="ns2:JBossWebApplicationContainerCapability" />
+						type="JBossWebApplicationContainerCapability" />
 					<Capability id="JBossStockDBWebServer_clients" name="clients"
-						type="ns1:HTTPEndpointCapability" />
+						type="HTTPEndpointCapability" />
 				</Capabilities>
 			</NodeTemplate>
 		<!-- ______FIN_____ JBoss StockDB Web Server ______________-->
 		
 		<!-- ___________ JBoss UserDB Web Server -->
 			<NodeTemplate id="JBossUserDBWebServer" name="JBoss UserDB Web Server"
-				type="ns2:JBossWebServer">
+				type="JBossWebServer">
 				<Properties>
 					<ns2:JBossWebServerProperties>
 						<httpdport>80</httpdport>
@@ -114,9 +112,9 @@
 				</Properties>
 				<Capabilities>
 					<Capability id="JBossUserDBWebServer_webapps" name="webapps"
-						type="ns2:JBossWebApplicationContainerCapability" />
+						type="JBossWebApplicationContainerCapability" />
 					<Capability id="JBossUserDBWebServer_clients" name="clients"
-						type="ns1:HTTPEndpointCapability" />
+						type="HTTPEndpointCapability" />
 				</Capabilities>
 			</NodeTemplate>
 		<!-- ______FIN_____ JBoss UserDB Web Server ______________-->
@@ -128,7 +126,7 @@
 	<!-- _________*Web Application* ______________-->		
 		<!-- ___________ Pay Web Server Application______________-->
 			<NodeTemplate id="PayWebApp" name="Pay Web App"
-				type="ns3:PayWebApplication">
+				type="PayWebApplication">
 				<Properties>
 					<ns3:PayWebApplicationProperties>
 						<location>hpcloud-compute:az-1.region-a.geo-1</location>
@@ -136,20 +134,20 @@
 				</Properties>
 				<Requirements>
 					<Requirement id="PayWebApp_UserDatabase" name="UserDatabase"
-						type="ns1:HTTPEndpointRequirement" />
+						type="HTTPEndpointRequirement" />
 					<Requirement id="PayWebApp_container" name="container"
-						type="ns2:JBossWebApplicationContainerRequirement" />
+						type="JBossWebApplicationContainerRequirement" />
 				</Requirements>
 				<Capabilities>
 					<Capability id="PaywebServices" name="clients"
-						type="ns1:HTTPEndpointCapability" />
+						type="HTTPEndpointCapability" />
 				</Capabilities>	
 			</NodeTemplate>
 		<!-- ______FIN_____ Pay Web Server Application______________-->
 		  
 		<!-- ___________ Main Web  Application______________-->
 			<NodeTemplate id="MainWebApp" name="Main Web App"
-				type="ns3:MainWebApplication">
+				type="MainWebApplication">
 				<Properties>
 					<ns3:MainWebApplicationProperties>
 						<location>hpcloud-compute:az-1.region-a.geo-1</location>
@@ -157,20 +155,20 @@
 				</Properties>
 				<Requirements>
 					<Requirement id="MainWebApp_PayWebServices" name="PayWebService"
-						type="ns1:HTTPEndpointRequirement" />
+						type="HTTPEndpointRequirement" />
 					<Requirement id="MainWebApp_container" name="container"
-						type="ns2:JBossWebApplicationContainerRequirement" />
+						type="JBossWebApplicationContainerRequirement" />
 					<Requirement id="MainWebApp_UserDatabase" name="UserDatabase"
-						type="ns2:MySQLDatabaseEndpointRequirement" />
+						type="MySQLDatabaseEndpointRequirement" />
 					<Requirement id="MainWebApp_StockDatabase" name="StockDatabase"
-						type="ns2:MySQLDatabaseEndpointRequirement" />
+						type="MySQLDatabaseEndpointRequirement" />
 				</Requirements>	
 			</NodeTemplate>
 		<!-- ______FIN_____ Main Web Application______________-->
 
 		<!-- ___________ User DB Web App Server Application______________-->
 			<NodeTemplate id="UserDBWebApp" name="User Web App"
-				type="ns3:UserDBWebApplication">
+				type="UserDBWebApplication">
 				<Properties>
 					<ns3:UserDBWebApplicationProperties>
 						<location>aws-ec2:us-west-2</location>
@@ -178,20 +176,20 @@
 				</Properties>
 				<Requirements>
 					<Requirement id="UserWebApp_UserDatabase" name="UserDatabase"
-						type="ns1:MySQLDatabaseEndpointRequirement" />
+						type="MySQLDatabaseEndpointRequirement" />
 					<Requirement id="UserDBWebApp_container" name="container"
-						type="ns2:JBossWebApplicationContainerRequirement" />
+						type="JBossWebApplicationContainerRequirement" />
 				</Requirements>
 				<Capabilities>
 					<Capability id="UserDBWebAppServices" name="clients"
-						type="ns1:HTTPEndpointCapability" />
+						type="HTTPEndpointCapability" />
 				</Capabilities>	
 			</NodeTemplate>
 		<!-- ______FIN_____ User DB Web App Server Application______________-->
 
 		<!-- ___________ Stock DB Web App Server Application______________-->
 			<NodeTemplate id="StockDBWebApp" name="Stock Web App"
-				type="ns3:StockDBWebApplication">
+				type="StockDBWebApplication">
 				<Properties>
 					<ns3:StockDBWebApplicationProperties>
 						<location>aws-ec2:us-west-2</location>
@@ -199,13 +197,13 @@
 				</Properties>
 				<Requirements>
 					<Requirement id="StockWebApp_StockDatabase" name="StockDatabase"
-						type="ns1:MySQLDatabaseEndpointRequirement" />
+						type="MySQLDatabaseEndpointRequirement" />
 					<Requirement id="StockDBWebApp_container" name="container"
-						type="ns2:JBossWebApplicationContainerRequirement" />
+						type="JBossWebApplicationContainerRequirement" />
 				</Requirements>
 				<Capabilities>
 					<Capability id="StockDBWebAppServices" name="clients"
-						type="ns1:HTTPEndpointCapability" />
+						type="HTTPEndpointCapability" />
 				</Capabilities>	
 			</NodeTemplate>
 		<!-- ______FIN_____ User DB Web App Server Application______________-->
@@ -222,7 +220,7 @@
 	
 		<!-- ___________ Pay HostedOn Web Server Container-->	
 			<RelationshipTemplate id="Pay_HostedOn_WebServer"
-				name="pay hosted on web server" type="ns3:PayWebAppHostedOnWebServer">
+				name="pay hosted on web server" type="PayWebAppHostedOnWebServer">
 				<SourceElement ref="PayWebApp_container" />
 				<TargetElement ref="JBossPayWebServer_webapps" />
 			</RelationshipTemplate>
@@ -230,7 +228,7 @@
 
 		<!-- ___________ Main HostedOn Web Server Container-->	
 			<RelationshipTemplate id="Main_HostedOn_WebServer"
-				name="main hosted on web server" type="ns3:MainWebAppHostedOnWebServer">
+				name="main hosted on web server" type="MainWebAppHostedOnWebServer">
 				<SourceElement ref="MainWebApp_container" />
 				<TargetElement ref="JBossMainWebServer_webapps" />
 			</RelationshipTemplate>
@@ -238,7 +236,7 @@
 		
 		<!-- ___________ Main ConnectTo Pay Application-->	
 			<RelationshipTemplate id="Main_ConnectTo_PayApp"
-				name="main hosted on web server" type="ns3:MainConnectToPayWebApplication">
+				name="main hosted on web server" type="MainConnectToPayWebApplication">
 				<SourceElement ref="MainWebApp_PayWebServices" />
 				<TargetElement ref="PaywebServices" />
 			</RelationshipTemplate>
@@ -246,7 +244,7 @@
 		
 		<!-- ___________ User DB Web App HostedOn Web Server Container-->	
 			<RelationshipTemplate id="UserDBWebApp_HostedOn_WebServer"
-				name="user db web app hosted on web server" type="ns3:UserDBWebAppHostedOnWebServer">
+				name="user db web app hosted on web server" type="UserDBWebAppHostedOnWebServer">
 				<SourceElement ref="UserDBWebApp_container" />
 				<TargetElement ref="JBossUserWebServer_webapps" />
 			</RelationshipTemplate>
@@ -254,7 +252,7 @@
 		
 		<!-- ___________ Stock DB Web App HostedOn Web Server Container-->	
 			<RelationshipTemplate id="StockDBWebApp_HostedOn_WebServer"
-				name="Stock db web app hosted on web server" type="ns3:StockDBWebAppHostedOnWebServer">
+				name="Stock db web app hosted on web server" type="StockDBWebAppHostedOnWebServer">
 				<SourceElement ref="StockDBWebApp_container" />
 				<TargetElement ref="JBossStockWebServer_webapps" />
 			</RelationshipTemplate>
@@ -265,7 +263,7 @@
 	<!-- _________* DataBases* ______________-->
 	
 		<!-- ___________ Stock MySQL _____________________-->		
-			<NodeTemplate id="StockMySql" name="StockMySQL" type="ns2:MySQL">
+			<NodeTemplate id="StockMySql" name="StockMySQL" type="MySQL">
 				<Properties>
 					<ns2:MySQLProperties>
 						<RootPassword>password</RootPassword>
@@ -274,13 +272,13 @@
 				</Properties>
 				<Capabilities>
 					<Capability id="StockMySql_databases" name="databases"
-						type="ns2:MySQLDatabaseContainerCapability" />
+						type="MySQLDatabaseContainerCapability" />
 				</Capabilities>
 			</NodeTemplate>
 		<!-- ______FIN_____ Stock MySQL ______________-->
 		
 		<!-- ___________ User MySQL _____________________-->		
-			<NodeTemplate id="UserMySql" name="UserMySQL" type="ns2:MySQL">
+			<NodeTemplate id="UserMySql" name="UserMySQL" type="MySQL">
 				<Properties>
 					<ns2:MySQLProperties>
 						<RootPassword>password</RootPassword>
@@ -289,14 +287,14 @@
 				</Properties>
 				<Capabilities>
 					<Capability id="UserMySql_databases" name="databases"
-						type="ns2:MySQLDatabaseContainerCapability" />
+						type="MySQLDatabaseContainerCapability" />
 				</Capabilities>
 			</NodeTemplate>
 		<!-- ______FIN_____ User MySQL ______________-->
 		
 		
 		<!-- ___________ Stock DataBase _____________________-->		
-			<NodeTemplate id="StockDB" name="Stock DB" type="ns3:StockDB">
+			<NodeTemplate id="StockDB" name="Stock DB" type="StockDB">
 				<Properties>
 					<ns3:StockDbProperties>
 						<DBName>stockdb</DBName>
@@ -308,17 +306,17 @@
 				</Properties>
 				<Requirements>
 					<Requirement id="StockDB_container" name="container"
-						type="ns2:MySQLDatabaseContainerRequirement" />
+						type="MySQLDatabaseContainerRequirement" />
 				</Requirements>
 				<Capabilities>
 					<Capability id="StockDB_clients" name="clients"
-						type="ns2:MySQLDatabaseEndpointCapability" />
+						type="MySQLDatabaseEndpointCapability" />
 				</Capabilities>
 			</NodeTemplate>		
 		<!-- ______FIN_____ Stock Database ______________-->
 
 		<!-- ___________ User DataBase _____________________-->		
-			<NodeTemplate id="UserDB" name="User DB" type="ns3:UserDB">
+			<NodeTemplate id="UserDB" name="User DB" type="UserDB">
 				<Properties>
 					<ns3:UserDbProperties>
 						<DBName>userdb</DBName>
@@ -330,11 +328,11 @@
 				</Properties>
 				<Requirements>
 					<Requirement id="UserDB_container" name="container"
-						type="ns2:MySQLDatabaseContainerRequirement" />
+						type="MySQLDatabaseContainerRequirement" />
 				</Requirements>
 				<Capabilities>
 					<Capability id="UserDB_clients" name="clients"
-						type="ns2:MySQLDatabaseEndpointCapability" />
+						type="MySQLDatabaseEndpointCapability" />
 				</Capabilities>
 			</NodeTemplate>		
 		<!-- ______FIN_____ User Database ______________-->			
@@ -344,14 +342,14 @@
 
 		<!-- ___________ StockDB HostedOn StockMySQL-->	
 			<RelationshipTemplate id="StockDB_HostedOn_StockMySQL"
-				name="stock database hosted on stock mysql" type="ns3:StockDBHostedOnMySQL">
+				name="stock database hosted on stock mysql" type="StockDBHostedOnMySQL">
 				<SourceElement ref="StockDB_container" />
 				<TargetElement ref="StockMySQL_databases" />
 			</RelationshipTemplate>
 		<!-- ______FIN_____ StockDB HostedOn StockMySQL ______________-->
 		<!-- ___________ UserDB HostedOn StockMySQL-->	
 			<RelationshipTemplate id="UserDB_HostedOn_UserMySQL"
-				name="user database hosted on user mysql" type="ns3:UserDBHostedOnMySQL">
+				name="user database hosted on user mysql" type="UserDBHostedOnMySQL">
 				<SourceElement ref="UserDB_container" />
 				<TargetElement ref="UserMySQL_databases" />
 			</RelationshipTemplate>
@@ -362,7 +360,7 @@
 	<!-- _________* REST wrapped WebApps connect To DataBases* ______________-->	
 		<!-- ___________ StockWebApp Connect To StockDB _____________-->	
 			<RelationshipTemplate id="StockDBWebApp_ConectTo_StockDB"
-				name="stock db webapp connect to stock db" type="ns3:StockDBWebAppConectToStockDB">
+				name="stock db webapp connect to stock db" type="StockDBWebAppConectToStockDB">
 				<SourceElement ref="StockWebApp_StockDatabase" />
 				<TargetElement ref="StockDB_clients" />
 			</RelationshipTemplate>
@@ -370,7 +368,7 @@
 		
 		<!-- ___________ UserWebApp Connect To UserDB _____________-->	
 			<RelationshipTemplate id="UserDBWebApp_ConectTo_UserDB"
-				name="user db webapp connect to user db" type="ns3:UserDBWebAppConectToUserDB">
+				name="user db webapp connect to user db" type="UserDBWebAppConectToUserDB">
 				<SourceElement ref="UserWebApp_UserDatabase" />
 				<TargetElement ref="UserDB_clients" />
 			</RelationshipTemplate>
@@ -380,7 +378,7 @@
 	<!-- _________* connection betwenn applications and databases* ______________-->
 		<!-- ___________ MainWebApp connectTo UserDB _______________-->	
 			<RelationshipTemplate id="MainWebApp_ConnectTo_UserDB"
-				name="main web app connect to userdb" type="ns3:MainWebAppConnectToUserDB">
+				name="main web app connect to userdb" type="MainWebAppConnectToUserDB">
 				<SourceElement ref="MainWebApp_UserDatabase" />
 				<TargetElement ref="UserDBWebAppServices" />
 			</RelationshipTemplate>
@@ -388,7 +386,7 @@
 		
 		<!-- ___________ MainWebApp connectTo StockDB _______________-->	
 			<RelationshipTemplate id="MainWebApp_ConnectTo_StockDB"
-				name="main web app connect to stockdb" type="ns3:MainWebAppConnectToStockDB">
+				name="main web app connect to stockdb" type="MainWebAppConnectToStockDB">
 				<SourceElement ref="MainWebApp_StockDatabase" />
 				<TargetElement ref="StockDBWebAppServices" />
 			</RelationshipTemplate>
@@ -396,7 +394,7 @@
 
 		<!-- ___________ PayWebApp connectTo UserDB web app_______________-->	
 			<RelationshipTemplate id="PayWebApp_ConnectTo_UserDB"
-				name="pay web app connect to user db web app" type="ns3:PayWebAppConnectToUserDB">
+				name="pay web app connect to user db web app" type="PayWebAppConnectToUserDB">
 				<SourceElement ref="PayWebApp_UserDatabase" />
 				<TargetElement ref="UserDBWebAppServices" />
 			</RelationshipTemplate>

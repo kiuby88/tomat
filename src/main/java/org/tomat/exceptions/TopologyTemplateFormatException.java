@@ -1,4 +1,4 @@
-package org.tomat.org.tomat.exceptions;
+package org.tomat.exceptions;
 
 /**
  * Created by MariaC on 23/09/2014.
