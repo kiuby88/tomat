@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definitions id="OnlineRetailingDefinitions" name="OnlineRetailing Definitions"
+    targetNamespace="http://www.example.com/tosca/ServiceTemplates/OnlineRetailing"
+    xmlns="http://docs.oasis-open.org/tosca/ns/2011/12"
+	xmlns:ns1="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes"
+	xmlns:ns2="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaSpecificTypes"
+	xmlns:ns3="http://www.example.com/tosca/Types/OnlineRetailing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://docs.oasis-open.org/tosca/ns/2011/12 TOSCA-v1.0-cs02.xsd">
+
+	<Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+		location="Definitions/TOSCA-v1.0-BaseTypes-Definitions.xml" 
+		namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" />
+	<Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+		location="Definitions/TOSCA-v2.0-SpecificTypes-Definitions.xml"
+		namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaSpecificTypes" />
+	<Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+		location="Definitions/OnlineRetailingTypes-Definitions-v3.0.xml" 
+		namespace="http://www.example.com/tosca/Types/Moodle" />
+	<Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+		location="Definitions/OnlineRetailing-opentosca-implementations.xml" 
+		namespace="http://tempuri.org" />
+
+	<Import importType="http://www.w3.org/2001/XMLSchema" 
+		location="types/TOSCA-v1.0-BaseTypes.xsd"
+		namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" />
+	<Import importType="http://www.w3.org/2001/XMLSchema" 
+		location="types/TOSCA-v2.0-SpecificTypes.xsd"
+		namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaSpecificTypes" />
+	<Import importType="http://www.w3.org/2001/XMLSchema" 
+		location="types/OnlineRetailing.xsd"
+		namespace="http://www.example.com/tosca/Types/OnlineRetailing" />
+
+	<Import namespace="http://ec2linux.aws.ia.opentosca.org"
+		importType="http://schemas.xmlsoap.org/wsdl/" 
+		location="Imports/EC2LinuxIAService.wsdl" />
+	<Import namespace="http://ec2vm.aws.ia.opentosca.org"
+		importType="http://schemas.xmlsoap.org/wsdl/" 
+		location="Imports/EC2VMIAService.wsdl" />
+	<Import namespace="http:///www.opentosca.org/examples/Moodle/BuildPlan"
+		importType="http://schemas.xmlsoap.org/wsdl/" 
+		location="Imports/MoodleBuildPlanArtifacts.wsdl" />
+
+	<ServiceTemplate id="AppOnlineRetailing" name="OnlineRetailing Template">
+
+		<TopologyTemplate>
+		
+		<!-- _________*Web Servers* ______________-->
+			<!-- ___________ JBoss Pay Web Server -->
+			<NodeTemplate id="JBossPayWebServer" name="JBoss Pay Web Server"
+				type="JBossWebServer">
+				<Properties>
+					<ns2:JBossWebServerProperties>
+						<httpdport>80</httpdport>
+						<location>hpcloud-compute:az-1.region-a.geo-1</location>
+					</ns2:JBossWebServerProperties>
+				</Properties>
+                <Location locationId="AWS"/>
+				<Capabilities>
+					<Capability id="JBossPayWebServer_webapps" name="webapps"
+						type="JBossWebApplicationContainerCapability" />
+					<Capability id="JBossPayWebServer_clients" name="clients"
+						type="HTTPEndpointCapability" />
+				</Capabilities>
+			</NodeTemplate>
+		<!-- ______FIN_____ JBoss Pay Web Server ______________-->
+		
+		<!-- ___________ JBoss Main Web Server -->
+			<NodeTemplate id="JBossMainWebServer" name="JBoss Main Web Server"
+				type="JBossWebServer">
+				<Properties>
+					<ns2:JBossWebServerProperties>
+						<httpdport>80</httpdport>
+						<location>hpcloud-compute:az-1.region-a.geo-1</location>
+					</ns2:JBossWebServerProperties>
+				</Properties>
+				<Capabilities>
+					<Capability id="JBossMainWebServer_webapps" name="webapps"
+						type="JBossWebApplicationContainerCapability" />
+					<Capability id="JBossMainWebServer_clients" name="clients"
+						type="HTTPEndpointCapability" />
+				</Capabilities>
+			</NodeTemplate>
+		<!-- ______FIN_____ JBoss Main Web Server ______________-->
+		
+		
+		<!-- ___________ JBoss StockDB Web Server -->
+			<NodeTemplate id="JBossStockDBWebServer" name="JBoss StockDB Web Server"
+				type="JBossWebServer">
+				<Properties>
+					<ns2:JBossWebServerProperties>
+						<httpdport>80</httpdport>
+						<location>aws-ec2:us-west-2</location>
+					</ns2:JBossWebServerProperties>
+				</Properties>
+				<Capabilities>
+					<Capability id="JBossStockDBWebServer_webapps" name="webapps"
+						type="JBossWebApplicationContainerCapability" />
+					<Capability id="JBossStockDBWebServer_clients" name="clients"
+						type="HTTPEndpointCapability" />
+				</Capabilities>
+			</NodeTemplate>
+		<!-- ______FIN_____ JBoss StockDB Web Server ______________-->
+		
+		<!-- ___________ JBoss UserDB Web Server -->
+			<NodeTemplate id="JBossUserDBWebServer" name="JBoss UserDB Web Server"
+				type="JBossWebServer">
+				<Properties>
+					<ns2:JBossWebServerProperties>
+						<httpdport>80</httpdport>
+						<location>aws-ec2:us-west-2</location>
+					</ns2:JBossWebServerProperties>
+				</Properties>
+				<Capabilities>
+					<Capability id="JBossUserDBWebServer_webapps" name="webapps"
+						type="JBossWebApplicationContainerCapability" />
+					<Capability id="JBossUserDBWebServer_clients" name="clients"
+						type="HTTPEndpointCapability" />
+				</Capabilities>
+			</NodeTemplate>
+		<!-- ______FIN_____ JBoss UserDB Web Server ______________-->
+		
+		
+	<!-- _________*FIN*___* Web Servers*  ______________-->
+		
+		
+	<!-- _________*Web Application* ______________-->		
+		<!-- ___________ Pay Web Server Application______________-->
+			<NodeTemplate id="PayWebApp" name="Pay Web App"
+				type="PayWebApplication">
+				<Properties>
+					<ns3:PayWebApplicationProperties>
+						<location>hpcloud-compute:az-1.region-a.geo-1</location>
+					</ns3:PayWebApplicationProperties>
+				</Properties>
+				<Requirements>
+					<Requirement id="PayWebApp_UserDatabase" name="UserDatabase"
+						type="HTTPEndpointRequirement" />
+					<Requirement id="PayWebApp_container" name="container"
+						type="JBossWebApplicationContainerRequirement" />
+				</Requirements>
+				<Capabilities>
+					<Capability id="PaywebServices" name="clients"
+						type="HTTPEndpointCapability" />
+				</Capabilities>	
+			</NodeTemplate>
+		<!-- ______FIN_____ Pay Web Server Application______________-->
+		  
+		<!-- ___________ Main Web  Application______________-->
+			<NodeTemplate id="MainWebApp" name="Main Web App"
+				type="MainWebApplication">
+				<Properties>
+					<ns3:MainWebApplicationProperties>
+						<location>hpcloud-compute:az-1.region-a.geo-1</location>
+					</ns3:MainWebApplicationProperties>
+				</Properties>
+				<Requirements>
+					<Requirement id="MainWebApp_PayWebServices" name="PayWebService"
+						type="HTTPEndpointRequirement" />
+					<Requirement id="MainWebApp_container" name="container"
+						type="JBossWebApplicationContainerRequirement" />
+					<Requirement id="MainWebApp_UserDatabase" name="UserDatabase"
+						type="MySQLDatabaseEndpointRequirement" />
+					<Requirement id="MainWebApp_StockDatabase" name="StockDatabase"
+						type="MySQLDatabaseEndpointRequirement" />
+				</Requirements>	
+			</NodeTemplate>
+		<!-- ______FIN_____ Main Web Application______________-->
+
+		<!-- ___________ User DB Web App Server Application______________-->
+			<NodeTemplate id="UserDBWebApp" name="User Web App"
+				type="UserDBWebApplication">
+				<Properties>
+					<ns3:UserDBWebApplicationProperties>
+						<location>aws-ec2:us-west-2</location>
+					</ns3:UserDBWebApplicationProperties>
+				</Properties>
+				<Requirements>
+					<Requirement id="UserWebApp_UserDatabase" name="UserDatabase"
+						type="MySQLDatabaseEndpointRequirement" />
+					<Requirement id="UserDBWebApp_container" name="container"
+						type="JBossWebApplicationContainerRequirement" />
+				</Requirements>
+				<Capabilities>
+					<Capability id="UserDBWebAppServices" name="clients"
+						type="HTTPEndpointCapability" />
+				</Capabilities>	
+			</NodeTemplate>
+		<!-- ______FIN_____ User DB Web App Server Application______________-->
+
+		<!-- ___________ Stock DB Web App Server Application______________-->
+			<NodeTemplate id="StockDBWebApp" name="Stock Web App"
+				type="StockDBWebApplication">
+				<Properties>
+					<ns3:StockDBWebApplicationProperties>
+						<location>aws-ec2:us-west-2</location>
+					</ns3:StockDBWebApplicationProperties>
+				</Properties>
+				<Requirements>
+					<Requirement id="StockWebApp_StockDatabase" name="StockDatabase"
+						type="MySQLDatabaseEndpointRequirement" />
+					<Requirement id="StockDBWebApp_container" name="container"
+						type="JBossWebApplicationContainerRequirement" />
+				</Requirements>
+				<Capabilities>
+					<Capability id="StockDBWebAppServices" name="clients"
+						type="HTTPEndpointCapability" />
+				</Capabilities>	
+			</NodeTemplate>
+		<!-- ______FIN_____ User DB Web App Server Application______________-->
+
+		
+	<!-- _________*FIN*___* Web Applications*  ______________-->
+
+
+	
+	
+	
+	<!-- _________* Relation between servers and applications* ______________-->
+
+	
+		<!-- ___________ Pay HostedOn Web Server Container-->	
+			<RelationshipTemplate id="Pay_HostedOn_WebServer"
+				name="pay hosted on web server" type="PayWebAppHostedOnWebServer">
+				<SourceElement ref="PayWebApp_container" />
+				<TargetElement ref="JBossPayWebServer_webapps" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ Pay HostedOn Web Server Container______________-->
+
+		<!-- ___________ Main HostedOn Web Server Container-->	
+			<RelationshipTemplate id="Main_HostedOn_WebServer"
+				name="main hosted on web server" type="MainWebAppHostedOnWebServer">
+				<SourceElement ref="MainWebApp_container" />
+				<TargetElement ref="JBossMainWebServer_webapps" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ Pay HostedOn Web Server Container______________-->
+		
+		<!-- ___________ Main ConnectTo Pay Application-->	
+			<RelationshipTemplate id="Main_ConnectTo_PayApp"
+				name="main hosted on web server" type="MainConnectToPayWebApplication">
+				<SourceElement ref="MainWebApp_PayWebServices" />
+				<TargetElement ref="PaywebServices" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ Main ConnectTo Pay Application ______________-->
+		
+		<!-- ___________ User DB Web App HostedOn Web Server Container-->	
+			<RelationshipTemplate id="UserDBWebApp_HostedOn_WebServer"
+				name="user db web app hosted on web server" type="UserDBWebAppHostedOnWebServer">
+				<SourceElement ref="UserDBWebApp_container" />
+				<TargetElement ref="JBossUserWebServer_webapps" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ User DB Web App HostedOn Web Server Container______________-->
+		
+		<!-- ___________ Stock DB Web App HostedOn Web Server Container-->	
+			<RelationshipTemplate id="StockDBWebApp_HostedOn_WebServer"
+				name="Stock db web app hosted on web server" type="StockDBWebAppHostedOnWebServer">
+				<SourceElement ref="StockDBWebApp_container" />
+				<TargetElement ref="JBossStockWebServer_webapps" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ Stock DB Web App HostedOn Web Server Container______________-->
+	
+	<!-- _________*FIN*___* Relation between servers and applications*  ______________-->
+		
+	<!-- _________* DataBases* ______________-->
+	
+		<!-- ___________ Stock MySQL _____________________-->		
+			<NodeTemplate id="StockMySql" name="StockMySQL" type="MySQL">
+				<Properties>
+					<ns2:MySQLProperties>
+						<RootPassword>password</RootPassword>
+						<location>aws-ec2:us-west-2</location>
+					</ns2:MySQLProperties>
+				</Properties>
+				<Capabilities>
+					<Capability id="StockMySql_databases" name="databases"
+						type="MySQLDatabaseContainerCapability" />
+				</Capabilities>
+			</NodeTemplate>
+		<!-- ______FIN_____ Stock MySQL ______________-->
+		
+		<!-- ___________ User MySQL _____________________-->		
+			<NodeTemplate id="UserMySql" name="UserMySQL" type="MySQL">
+				<Properties>
+					<ns2:MySQLProperties>
+						<RootPassword>password</RootPassword>
+						<location>aws-ec2:us-west-2</location>
+					</ns2:MySQLProperties>
+				</Properties>
+				<Capabilities>
+					<Capability id="UserMySql_databases" name="databases"
+						type="MySQLDatabaseContainerCapability" />
+				</Capabilities>
+			</NodeTemplate>
+		<!-- ______FIN_____ User MySQL ______________-->
+		
+		
+		<!-- ___________ Stock DataBase _____________________-->		
+			<NodeTemplate id="StockDB" name="Stock DB" type="StockDB">
+				<Properties>
+					<ns3:StockDbProperties>
+						<DBName>stockdb</DBName>
+						<DBUser>stockadmin</DBUser>
+						<DBPassword>stockadmin</DBPassword>
+						<mySqlPort>3306</mySqlPort>
+						<location>aws-ec2:us-west-2</location>
+					</ns3:StockDbProperties>
+				</Properties>
+				<Requirements>
+					<Requirement id="StockDB_container" name="container"
+						type="MySQLDatabaseContainerRequirement" />
+				</Requirements>
+				<Capabilities>
+					<Capability id="StockDB_clients" name="clients"
+						type="MySQLDatabaseEndpointCapability" />
+				</Capabilities>
+			</NodeTemplate>		
+		<!-- ______FIN_____ Stock Database ______________-->
+
+		<!-- ___________ User DataBase _____________________-->		
+			<NodeTemplate id="UserDB" name="User DB" type="UserDB">
+				<Properties>
+					<ns3:UserDbProperties>
+						<DBName>userdb</DBName>
+						<DBUser>useradmin</DBUser>
+						<DBPassword>useradmin</DBPassword>
+						<mySqlPort>3306</mySqlPort>
+						<location>aws-ec2:us-west-2</location>
+					</ns3:UserDbProperties>
+				</Properties>
+				<Requirements>
+					<Requirement id="UserDB_container" name="container"
+						type="MySQLDatabaseContainerRequirement" />
+				</Requirements>
+				<Capabilities>
+					<Capability id="UserDB_clients" name="clients"
+						type="MySQLDatabaseEndpointCapability" />
+				</Capabilities>
+			</NodeTemplate>		
+		<!-- ______FIN_____ User Database ______________-->			
+	<!-- _________*FIN*___* Data Bases *  ______________-->		
+	
+	<!-- _________* DataBases HostedOn MySQL Relations* ______________-->
+
+		<!-- ___________ StockDB HostedOn StockMySQL-->	
+			<RelationshipTemplate id="StockDB_HostedOn_StockMySQL"
+				name="stock database hosted on stock mysql" type="StockDBHostedOnMySQL">
+				<SourceElement ref="StockDB_container" />
+				<TargetElement ref="StockMySQL_databases" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ StockDB HostedOn StockMySQL ______________-->
+		<!-- ___________ UserDB HostedOn StockMySQL-->	
+			<RelationshipTemplate id="UserDB_HostedOn_UserMySQL"
+				name="user database hosted on user mysql" type="UserDBHostedOnMySQL">
+				<SourceElement ref="UserDB_container" />
+				<TargetElement ref="UserMySQL_databases" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ UserDB HostedOn StockMySQL ______________-->	
+	<!-- _________*FIN*___* DataBases HostedOn MySQL Relations *  ______________-->
+	
+	
+	<!-- _________* REST wrapped WebApps connect To DataBases* ______________-->	
+		<!-- ___________ StockWebApp Connect To StockDB _____________-->	
+			<RelationshipTemplate id="StockDBWebApp_ConectTo_StockDB"
+				name="stock db webapp connect to stock db" type="StockDBWebAppConectToStockDB">
+				<SourceElement ref="StockWebApp_StockDatabase" />
+				<TargetElement ref="StockDB_clients" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ StockWebApp Connect To StockDB ______________-->
+		
+		<!-- ___________ UserWebApp Connect To UserDB _____________-->	
+			<RelationshipTemplate id="UserDBWebApp_ConectTo_UserDB"
+				name="user db webapp connect to user db" type="UserDBWebAppConectToUserDB">
+				<SourceElement ref="UserWebApp_UserDatabase" />
+				<TargetElement ref="UserDB_clients" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ StockWebApp Connect To StockDB ______________-->	
+	<!-- _________*FIN*___* REST wrapped WebApps connect To DataBases *  ______________-->
+	
+	<!-- _________* connection betwenn applications and databases* ______________-->
+		<!-- ___________ MainWebApp connectTo UserDB _______________-->	
+			<RelationshipTemplate id="MainWebApp_ConnectTo_UserDB"
+				name="main web app connect to userdb" type="MainWebAppConnectToUserDB">
+				<SourceElement ref="MainWebApp_UserDatabase" />
+				<TargetElement ref="UserDBWebAppServices" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ MainWebApp connectTo UserDB ______________-->
+		
+		<!-- ___________ MainWebApp connectTo StockDB _______________-->	
+			<RelationshipTemplate id="MainWebApp_ConnectTo_StockDB"
+				name="main web app connect to stockdb" type="MainWebAppConnectToStockDB">
+				<SourceElement ref="MainWebApp_StockDatabase" />
+				<TargetElement ref="StockDBWebAppServices" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ MainWebApp connectTo StockDB ______________-->		
+
+		<!-- ___________ PayWebApp connectTo UserDB web app_______________-->	
+			<RelationshipTemplate id="PayWebApp_ConnectTo_UserDB"
+				name="pay web app connect to user db web app" type="PayWebAppConnectToUserDB">
+				<SourceElement ref="PayWebApp_UserDatabase" />
+				<TargetElement ref="UserDBWebAppServices" />
+			</RelationshipTemplate>
+		<!-- ______FIN_____ PayWebApp connectTo UserDB web app ______________-->	
+	<!-- _________*FIN*___* connection betwenn applications and databases *  ______________-->		
+		
+		
+		</TopologyTemplate>
+
+		
+	</ServiceTemplate>
+</Definitions>
