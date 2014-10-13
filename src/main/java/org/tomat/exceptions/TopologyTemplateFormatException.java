@@ -5,10 +5,11 @@ package org.tomat.exceptions;
  */
 public class TopologyTemplateFormatException extends Exception {
 
-    public TopologyTemplateFormatException(){
+    public TopologyTemplateFormatException() {
         super();
     }
-    public TopologyTemplateFormatException(String msg){
+
+    public TopologyTemplateFormatException(String msg) {
         super(msg);
     }
 }

@@ -47,7 +47,7 @@
 
 			<!-- ___________ JBoss Pay Web Server -->
 			<NodeTemplate id="JBossPayWebServer" name="JBoss Pay Web Server"
-				type="JBossWebServer">
+				type="JBossWebServerUnSupported">
 				<Properties>
 					<ns2:JBossWebServerProperties>
 						<httpdport>80</httpdport>
@@ -64,8 +64,8 @@
 		<!-- ______FIN_____ JBoss Pay Web Server ______________-->
                 <RelationshipTemplate id="PayWebApp_ConnectTo_UserDB"
                                       name="pay web app connect to user db web app" type="PayWebAppConnectToUserDB">
-                    <SourceElement ref="JBossPayWebServer" />
-                    <TargetElement ref="JBossPayWebServer" />
+                    <SourceElement ref="JBossPayWebServer_any_requirement" />
+                    <TargetElement ref="JBossPayWebServer_webapps" />
                 </RelationshipTemplate>
 		</TopologyTemplate>
 

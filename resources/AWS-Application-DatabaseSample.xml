@@ -45,28 +45,100 @@
 
 		<TopologyTemplate>
 
-			<!-- ___________ JBoss Pay Web Server -->
-			<NodeTemplate id="JBossPayWebServer" name="JBoss Pay Web Server"
-				type="JBossWebServer">
-				<Properties>
-					<ns2:JBossWebServerProperties>
-						<httpdport>80</httpdport>
-					</ns2:JBossWebServerProperties>
-				</Properties>
+			<!-- JBoss Main Web Server -->
+            <NodeTemplate id="JBossMainWebServer" name="JBoss Main Web Server"
+                          type="JBossWebServer">
+                <Properties>
+                    <ns2:JBossWebServerProperties>
+                        <httpdport>80</httpdport>
+                    </ns2:JBossWebServerProperties>
+                </Properties>
                 <Location locationId="AWS"/>
-				<Capabilities>
-					<Capability id="JBossPayWebServer_webapps" name="webapps"
-						type="JBossWebApplicationContainerCapability" />
-					<Capability id="JBossPayWebServer_clients" name="clients"
-						type="HTTPEndpointCapability" />
-				</Capabilities>
-			</NodeTemplate>
-		<!-- ______FIN_____ JBoss Pay Web Server ______________-->
-                <RelationshipTemplate id="PayWebApp_ConnectTo_UserDB"
-                                      name="pay web app connect to user db web app" type="PayWebAppConnectToUserDB">
-                    <SourceElement ref="JBossPayWebServer" />
-                    <TargetElement ref="JBossPayWebServer" />
-                </RelationshipTemplate>
+                <Capabilities>
+                    <Capability id="JBossMainWebServer_webapps" name="webapps"
+                                type="JBossWebApplicationContainerCapability" />
+                    <Capability id="JBossMainWebServer_clients" name="clients"
+                                type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+		    <!-- __END__ JBoss MAin Web Server -->
+
+            <!-- Main Web Application -->
+            <NodeTemplate id="MainWebApp" name="Main Web App"
+                          type="WebApplication">
+                <Requirements>
+                    <Requirement id="MainWebApp_MainDatabase" name="MainDatabase"
+                                 type="MainWebAppConnectToMainWebApp" />
+                    <Requirement id="MainWebApp_container" name="container"
+                                 type="JBossWebApplicationContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="MainwebServices" name="clients"
+                                type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Main Web Application -->
+
+            <!-- Main DBMS -->
+            <NodeTemplate id="MainMySql" name="MainMySQL" type="MySQL">
+                <Properties>
+                    <ns2:MySQLProperties>
+                        <RootPassword>admin</RootPassword>
+                    </ns2:MySQLProperties>
+                </Properties>
+                <Capabilities>
+                    <Capability id="MainMySql_databases" name="databases"
+                                type="MySQLDatabaseContainerCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Main DBMS -->
+
+            <!-- Main DataBase -->
+            <NodeTemplate id="MainDB" name="Main DB" type="MySQLDB">
+                <Properties>
+                    <ns3:StockDbProperties>
+                        <DBName>stockdb</DBName>
+                        <DBUser>stockadmin</DBUser>
+                        <DBPassword>stockadmin</DBPassword>
+                        <DBPort>3306</DBPort>
+                    </ns3:StockDbProperties>
+                </Properties>
+                <Requirements>
+                    <Requirement id="MainDB_container" name="container"
+                                 type="MySQLDatabaseContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="MainDB_clients" name="clients"
+                                type="MySQLDatabaseEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Main DBMS -->
+
+            <!-- RelationShip_Templates -->
+
+            <!-- MainWebApp DeployOn JBossWebServer-->
+            <RelationshipTemplate id="Main_HostedOn_WebServer"
+                                  name="main hosted on web server" type="MainWebAppHostedOnWebServer">
+                <SourceElement ref="MainWebApp_container" />
+                <TargetElement ref="JBossMainWebServer_webapps" />
+            </RelationshipTemplate>
+            <!-- __END__ UserDB HostedOn StockMySQL-->
+
+            <!--  MainDB HostedOn MainMySQL-->
+            <RelationshipTemplate id="MainDB_HostedOn_MainMySQL"
+                                  name="main database hosted on main mysql" type="MainDBHostedOnMySQL">
+                <SourceElement ref="MainDB_container" />
+                <TargetElement ref="MainMySql_databases" />
+            </RelationshipTemplate>
+            <!-- __END__ MainDB HostedOn StockMySQL ______________-->
+
+            <!--  MainWebApp_Connect_TO_Database-->
+            <RelationshipTemplate id="MainWebApp_ConectTo_MainDB"
+                                  name="Main webapp connect to main db" type="MainWebAppConnectToMainWebApp">
+                <SourceElement ref="MainWebApp_MainDatabase" />
+                <TargetElement ref="MainDB_clients" />
+            </RelationshipTemplate>
+            <!-- __END__MainWebApp_Connect_TO_Database-->
 		</TopologyTemplate>
 
 

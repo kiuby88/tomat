@@ -13,12 +13,9 @@ public class MySQLNodeTemplateParser extends NodeTemplateParser {
 
     //Define the properties Of the Element
 
-    private final static String[] HTTP_PROPERTY={"http", "httpd", "httpdport"};
-    private final static String[] HTTPS_PROPERTY={"https", "httpsd", "httpsdport"};
+    private final static String[] ROOT_PASSWORD={"RootPassword", "PassWordRoot"};
 
-
-    private String httpPort=null;
-    private String httpsPort=null;
+    private String rootPassword=null;
 
     public MySQLNodeTemplateParser(TNodeTemplate nodeTemplateSource){
         super(nodeTemplateSource);
@@ -26,26 +23,21 @@ public class MySQLNodeTemplateParser extends NodeTemplateParser {
     }
 
     private void parsingProperties(){
-        Map<String, String > propertiesMap= DefinitionUtils.getProperties(this.getNodeTemplate());
-        initHttpPort(propertiesMap);
-        initHttpsPort(propertiesMap);
+        Map<String, String > propertiesMap= getNodeTemplateProperties();
+        initRootPassWord(propertiesMap);
     }
 
-    private void initHttpPort(Map<String, String > propertiesMap){
-        httpPort=NodeTemplateParser.findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTP_PROPERTY));
-    }
-
-    private void initHttpsPort(Map<String, String > propertiesMap){
-        httpsPort=NodeTemplateParser.findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTPS_PROPERTY));
+    private void initRootPassWord(Map<String, String > propertiesMap){
+        rootPassword=NodeTemplateParserUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(ROOT_PASSWORD));
     }
 
     // <editor-fold desc="Getters and Setters">
-    public String getHttpsPort() {
-        return httpsPort;
+    public String getRootPassword() {
+        return rootPassword;
     }
 
-    public String getHttpPort() {
-        return httpPort;
+    public void setRootPassword(String rootPassWord){
+        this.rootPassword=rootPassWord;
     }
     // </editor-fold>
 

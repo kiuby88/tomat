@@ -9,66 +9,71 @@ import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.tosca.parsers.DefinitionParser;
-import org.tomat.tosca.parsers.JBossNodeTemplateParser;
-import org.tomat.tosca.parsers.NodeTemplateParser;
-import org.tomat.tosca.parsers.NodeTemplateParserProvider;
+import org.tomat.tosca.parsers.ToscaSupportedTypeProvider;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by Jose on 06/10/14.
  */
 public class AppDatbaseParsingTest {
 
-
-
-    List<TNodeTemplate> nodeTemplateListAWSSample;
-    //List<TRelationshipTemplate> relationshipTemplateListMalFormedTopology;
-    TNodeTemplate nodeTemplateAWS;
+    List<TNodeTemplate> nodeTemplateListAWSDbSample;
     DefinitionParser definitionParser;
-    String AWSFileMalFormedRelation = "resources/AWS-Location-Sample-MalFormedRelation.xml";
-    String AWSFile = "resources/AWS-Location-Sample.xml";
-    String AWSUnsupportedType = "resources/AWS-Location-Sample-Unsupported-Type.xml";
-    String jBossPayWebServerId = "JBossPayWebServer".toLowerCase();
+    String AWSApplicationDatabaseFile = "resources/AWS-Application-DatabaseSample.xml";
 
     public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(ProviderTest.class);
+        Result result = JUnitCore.runClasses(AppDatbaseParsingTest.class);
     }
 
     @Before
     public void setUp() throws TopologyTemplateFormatException {
-        nodeTemplateListAWSSample = DefinitionUtils.getNodeTemplates(new File(AWSFile));
+        nodeTemplateListAWSDbSample = DefinitionUtils.getNodeTemplates(new File(AWSApplicationDatabaseFile));
         definitionParser = new DefinitionParser();
     }
 
     @Test
     public void nodeTemplateAWSSampleNumber() {
-        assertEquals(nodeTemplateListAWSSample.size(), 1);
+        int numberOfNodeTemplates = 4;
+        assertEquals(nodeTemplateListAWSDbSample.size(), numberOfNodeTemplates);
     }
 
     @Test
-    public void nodeTemplateProviderJBossServer() throws NodeTemplateTypeNotSupportedException {
-        NodeTemplateParser nodeTemplateParser = NodeTemplateParserProvider
-                .createNodeTemplateParser(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
-        assertEquals((nodeTemplateParser instanceof JBossNodeTemplateParser), true);
+    public void checkTypesTest() {
+        assertEquals(DefinitionUtils.getTypeName(nodeTemplateListAWSDbSample.get(0)).toLowerCase(),
+                ToscaSupportedTypeProvider.JBOSS_WEB_SERVER.toLowerCase());
+        assertEquals(DefinitionUtils.getTypeName(nodeTemplateListAWSDbSample.get(1)).toLowerCase(),
+                ToscaSupportedTypeProvider.WEB_APPLICATION.toLowerCase());
+        assertEquals(DefinitionUtils.getTypeName(nodeTemplateListAWSDbSample.get(2)).toLowerCase(),
+                ToscaSupportedTypeProvider.MySQL_DBMS.toLowerCase());
     }
 
     @Test
-    public void nodeTemplateProviderJBossServerProperties() throws NodeTemplateTypeNotSupportedException {
-        JBossNodeTemplateParser jBossNodeTemplateParser = (JBossNodeTemplateParser) NodeTemplateParserProvider
-                .createNodeTemplateParser(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
-        assertEquals(jBossNodeTemplateParser.getHttpPort(), "80");
-        assertNull(jBossNodeTemplateParser.getHttpsPort());
-    }
-
-    @Test(expected = NodeTemplateTypeNotSupportedException.class)
-    public void unsupportedNodeTemplateType()
+    public void checkRelations()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
-        definitionParser.parsingApplicationTopology(AWSUnsupportedType);
-    }
+        definitionParser.parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnosticsElements();
+        Map<String, List<String>> relationMaps = definitionParser.getAgnosticApplicationsComponentRelations();
 
+        int numberOfRelationShipKeys = 2;
+        assertEquals(relationMaps.size(), numberOfRelationShipKeys);
+        //TODO refactor the next lines using independient methods
+        //first
+        assertEquals(relationMaps.containsKey("MainWebApp".toLowerCase()), true);
+        assertEquals(relationMaps.get("MainWebApp".toLowerCase())
+                .contains("JBossMainWebServer".toLowerCase()), true);
+
+        //second
+        assertEquals(relationMaps.containsKey("MainDB".toLowerCase()), true);
+        assertEquals(relationMaps.get("MainDB".toLowerCase())
+                .contains("MainMySql".toLowerCase()), true);
+
+        //third
+        assertEquals(relationMaps.containsKey("MainWebApp".toLowerCase()), true);
+        assertEquals(relationMaps.get("MainWebApp".toLowerCase())
+                .contains("MainDB".toLowerCase()), true);
+    }
 }
