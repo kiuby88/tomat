@@ -17,8 +17,6 @@ public class MySQLDataBaseNodeTemplaterParser extends NodeTemplateParser {
     private final static String[] DB_PASSWORD={"DB_PASSWORD", "databasePassword", "database_password", "db_password"};
     private final static String[] DB_PORT={"DB_PORT", "databasePort", "database_port", "db_port"};
 
-
-
     private String dbName=null;
     private String dbUser=null;
     private String dbPAssword=null;

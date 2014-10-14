@@ -28,7 +28,6 @@ public class DefinitionParser {
     private List<TNodeTemplate> nodeTemplatesOfTopology = null;
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
 
-
     public DefinitionParser() {
 
     }

@@ -29,8 +29,6 @@ public class NodeTemplateParser {
     public NodeTemplateParser() {
     }
 
-    ;
-
     public NodeTemplateParser(TNodeTemplate nodeTemplate) {
         sourceNodeTemplate = nodeTemplate;
         initGenericValues();
