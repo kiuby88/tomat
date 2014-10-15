@@ -17,7 +17,7 @@ public class AgnosticElementProvider {
      * @return
      * @throws NodeTemplateTypeNotSupportedException
      */
-    public static AgnosticElement createNodeTemplateParser(TNodeTemplate nodeTemplate)
+    public static AgnosticElement createAgnosticElement(TNodeTemplate nodeTemplate)
             throws NodeTemplateTypeNotSupportedException {
         AgnosticElement agnosticElement;
         String nodeTemplateType = getTypeName(nodeTemplate).toLowerCase();

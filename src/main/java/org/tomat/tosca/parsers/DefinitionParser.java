@@ -60,7 +60,7 @@ public class DefinitionParser {
         generatedAgnosticElements = new LinkedList<AgnosticElement>();
         for (TNodeTemplate nodeTemplate : nodeTemplatesOfTopology) {
             generatedAgnosticElements
-                    .add(AgnosticElementProvider.createNodeTemplateParser(nodeTemplate));
+                    .add(AgnosticElementProvider.createAgnosticElement(nodeTemplate));
         }
     }
 

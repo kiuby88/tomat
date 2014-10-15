@@ -11,10 +11,6 @@ public class main {
 
     public static void main(String[] args) throws JDOMException, IOException, TopologyTemplateFormatException {
 
-//        List<TNodeTemplate> l= DefinitionUtils.getNodeTemplates(new File("resources/AWS-Location-Sample.xml"));
-//        TNodeTemplate nodeTemplateAWS=l.get(0);
-//        NodeTemplateParser nodeTemplateParser= NodeTemplateParserProvider.createNodeTemplateParser(nodeTemplateAWS);
-
 
     }
 

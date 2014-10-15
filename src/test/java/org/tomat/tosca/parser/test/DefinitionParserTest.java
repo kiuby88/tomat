@@ -64,6 +64,6 @@ public class DefinitionParserTest {
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnosticsElements();
         List<AgnosticElement> agnosticComponents = definitionParser.getAgnosticApplicationComponents();
-        assertEquals(agnosticComponents.size(), 0);
+        assertEquals(agnosticComponents.size(), 2);
     }
 }

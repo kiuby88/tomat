@@ -49,14 +49,14 @@ public class ProviderTest {
     @Test
     public void nodeTemplateProviderJBossServer() throws NodeTemplateTypeNotSupportedException {
         AgnosticElement nodeTemplateParser = AgnosticElementProvider
-                .createNodeTemplateParser(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
+                .createAgnosticElement(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
         assertEquals((nodeTemplateParser instanceof JBossAgnosticElement), true);
     }
 
     @Test
     public void nodeTemplateProviderJBossServerProperties() throws NodeTemplateTypeNotSupportedException {
         JBossAgnosticElement jBossNodeTemplateParser = (JBossAgnosticElement) AgnosticElementProvider
-                .createNodeTemplateParser(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
+                .createAgnosticElement(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
         assertEquals(jBossNodeTemplateParser.getHttpPort(), "80");
         assertNull(jBossNodeTemplateParser.getHttpsPort());
     }
