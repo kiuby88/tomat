@@ -1,4 +1,4 @@
-package org.tomat.tosca.parsers;
+package org.tomat.agnostic.elements;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 
@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class MySQLDataBaseNodeTemplaterParser extends NodeTemplateParser {
+public class MySQLDataBaseAgnosticElement extends AgnosticElement {
 
     //Define the properties Of the Element
 
@@ -22,7 +22,7 @@ public class MySQLDataBaseNodeTemplaterParser extends NodeTemplateParser {
     private String dbPAssword=null;
     private String dbPort=null;
 
-    public MySQLDataBaseNodeTemplaterParser(TNodeTemplate nodeTemplateSource){
+    public MySQLDataBaseAgnosticElement(TNodeTemplate nodeTemplateSource){
         super(nodeTemplateSource);
         parsingProperties();
     }
@@ -36,19 +36,19 @@ public class MySQLDataBaseNodeTemplaterParser extends NodeTemplateParser {
     }
 
     private void initDbName(Map<String, String > propertiesMap){
-        setDbName(NodeTemplateParserUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_NAME)));
+        setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_NAME)));
     }
 
     private void initDbUser(Map<String, String > propertiesMap){
-        setDbName(NodeTemplateParserUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_USER)));
+        setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_USER)));
     }
 
     private void initDbPassword(Map<String, String > propertiesMap){
-        setDbName(NodeTemplateParserUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PASSWORD)));
+        setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PASSWORD)));
     }
 
     private void initDbPort(Map<String, String > propertiesMap){
-        setDbName(NodeTemplateParserUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PORT)));
+        setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PORT)));
     }
 
     // <editor-fold desc="Getters and Setters">

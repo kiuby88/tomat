@@ -5,7 +5,8 @@ import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.TRelationshipTemplate;
 import org.opentosca.model.tosca.TRequirement;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
-import org.tomat.agnostic.AgnosticApplicationComponent;
+import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.elements.AgnosticElementProvider;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
 
@@ -22,9 +23,10 @@ import java.util.Map;
 //Esta clase contendrá un metodo para parsear el fichero que contiene la topología
 public class DefinitionParser {
 
-    private List<AgnosticApplicationComponent> agnosticApplicationComponents = null;
+    //Esta es la que hay que eliminar
+    //private List<AgnosticApplicationComponent> agnosticApplicationComponents = null;
     private Map<String, List<String>> agnosticApplicationsComponentRelations = null;
-    private List<NodeTemplateParser> generatedNodeTemplateParsers = null;
+    private List<AgnosticElement> generatedAgnosticElements = null;
     private List<TNodeTemplate> nodeTemplatesOfTopology = null;
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
 
@@ -42,22 +44,8 @@ public class DefinitionParser {
 
         nodeTemplatesOfTopology = DefinitionUtils.getNodeTemplates(definitionFilePath);
         relationshipTemplatesOfTopology = DefinitionUtils.getRelationshipTemplates(definitionFilePath);
-        generatedNodeTemplateParsers = getNodeTemplateParsers(nodeTemplatesOfTopology);
-
-        //buildAgnosticApplicationComponentList(nodeTemplateParsers);
-        //buildAgnosticApplicationsComponentRelations(relationshipTemplates, nodeTemplateParsers);
+        //generatedAgnosticElements = getNodeTemplateParsers(nodeTemplatesOfTopology);
         return this;
-    }
-
-
-    public List<NodeTemplateParser> getNodeTemplateParsers(List<TNodeTemplate> nodeTemplates)
-            throws NodeTemplateTypeNotSupportedException {
-        LinkedList<NodeTemplateParser> nodeTemplateParserList = new LinkedList<NodeTemplateParser>();
-        for (TNodeTemplate nodeTemplate : nodeTemplates) {
-            nodeTemplateParserList
-                    .add(NodeTemplateParserProvider.createNodeTemplateParser(nodeTemplate));
-        }
-        return nodeTemplateParserList;
     }
 
     public DefinitionParser buildAgnosticsElements()
@@ -69,18 +57,19 @@ public class DefinitionParser {
 
     private void buildAgnosticApplicationComponentList()
             throws NodeTemplateTypeNotSupportedException {
-        agnosticApplicationComponents = new LinkedList<AgnosticApplicationComponent>();
-        for (NodeTemplateParser nodeTemplateParser : generatedNodeTemplateParsers) {
-            //agnosticApplicationComponents.add(nodeTemplateParser.getAgnosticApplicationComponent());
+        generatedAgnosticElements = new LinkedList<AgnosticElement>();
+        for (TNodeTemplate nodeTemplate : nodeTemplatesOfTopology) {
+            generatedAgnosticElements
+                    .add(AgnosticElementProvider.createNodeTemplateParser(nodeTemplate));
         }
     }
 
     private void buildAgnosticApplicationsComponentRelations()
             throws TopologyTemplateFormatException {
         MatchingDictionary capabilityIdsNodeTempateIsDictionary =
-                createCapabilityIdsNodeTemplateIsDictionary(generatedNodeTemplateParsers);
+                createCapabilityIdsNodeTemplateIdsDictionary(generatedAgnosticElements);
         MatchingDictionary requirementIdsNodeTempateIsDictionary =
-                createRequirementIdsNodeTemplateIsDictionary(generatedNodeTemplateParsers);
+                createRequirementIdsNodeTemplateIdsDictionary(generatedAgnosticElements);
 
         agnosticApplicationsComponentRelations = new HashMap<String, List<String>>();
         for (TRelationshipTemplate relationshipTemplate : relationshipTemplatesOfTopology) {
@@ -91,17 +80,17 @@ public class DefinitionParser {
         }
     }
 
-    private MatchingDictionary createCapabilityIdsNodeTemplateIsDictionary(List<NodeTemplateParser> nodeTemplateParsers) {
+    private MatchingDictionary createCapabilityIdsNodeTemplateIdsDictionary(List<AgnosticElement> agnosticElements) {
         MatchingDictionary dictionary = new MatchingDictionary();
-        for (NodeTemplateParser nodeTemplateParser : nodeTemplateParsers)
-            dictionary.addDictionaryEntrys(nodeTemplateParser.getCapabilitiesIds(), nodeTemplateParser.getId());
+        for (AgnosticElement agnosticElement : agnosticElements)
+            dictionary.addDictionaryEntrys(agnosticElement.getCapabilitiesIds(), agnosticElement.getId());
         return dictionary;
     }
 
-    private MatchingDictionary createRequirementIdsNodeTemplateIsDictionary(List<NodeTemplateParser> nodeTemplateParsers) {
+    private MatchingDictionary createRequirementIdsNodeTemplateIdsDictionary(List<AgnosticElement> agnosticElements) {
         MatchingDictionary dictionary = new MatchingDictionary();
-        for (NodeTemplateParser nodeTemplateParser : nodeTemplateParsers)
-            dictionary.addDictionaryEntrys(nodeTemplateParser.getRequirementsIds(), nodeTemplateParser.getId());
+        for (AgnosticElement agnosticElement : agnosticElements)
+            dictionary.addDictionaryEntrys(agnosticElement.getRequirementsIds(), agnosticElement.getId());
         return dictionary;
     }
 
@@ -134,8 +123,8 @@ public class DefinitionParser {
     }
 
     //<editor-fold desc="Getters and Setters">
-    public List<AgnosticApplicationComponent> getAgnosticApplicationComponents() {
-        return agnosticApplicationComponents;
+    public List<AgnosticElement> getAgnosticApplicationComponents() {
+        return generatedAgnosticElements;
     }
 
     public Map<String, List<String>> getAgnosticApplicationsComponentRelations() {

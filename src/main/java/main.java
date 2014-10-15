@@ -1,14 +1,7 @@
 import org.jdom2.JDOMException;
-import org.opentosca.model.tosca.TNodeTemplate;
-import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.tosca.parsers.DefinitionParser;
-import org.tomat.tosca.parsers.NodeTemplateParser;
-import org.tomat.tosca.parsers.NodeTemplateParserProvider;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by MariaC on 23/09/2014.

@@ -1,15 +1,15 @@
-package org.tomat.tosca.parsers;
+package org.tomat.agnostic.elements;
 
 
-import org.jdom2.Element;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
+import org.tomat.tosca.parsers.ToscaSupportedTypeProvider;
 
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class NodeTemplateParserProvider {
+public class AgnosticElementProvider {
 
     /**
      * Fabric method.
@@ -17,26 +17,26 @@ public class NodeTemplateParserProvider {
      * @return
      * @throws NodeTemplateTypeNotSupportedException
      */
-    public static NodeTemplateParser createNodeTemplateParser(TNodeTemplate nodeTemplate)
+    public static AgnosticElement createNodeTemplateParser(TNodeTemplate nodeTemplate)
             throws NodeTemplateTypeNotSupportedException {
-        NodeTemplateParser nodeTemplateParser;
+        AgnosticElement agnosticElement;
         String nodeTemplateType = getTypeName(nodeTemplate).toLowerCase();
 
         if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.JBOSS_WEB_SERVER))
-            nodeTemplateParser = new JBossNodeTemplateParser(nodeTemplate);
+            agnosticElement = new JBossAgnosticElement(nodeTemplate);
 
         else if(nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.WEB_APPLICATION))
-            nodeTemplateParser=new NodeTemplateParser(nodeTemplate);
+            agnosticElement=new AgnosticElement(nodeTemplate);
 
         else if(nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.MySQL_DBMS))
-            nodeTemplateParser=new MySQLNodeTemplateParser(nodeTemplate);
+            agnosticElement=new MySQLAgnosticElement(nodeTemplate);
 
         else if(nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.MySQL_DB))
-            nodeTemplateParser=new MySQLDataBaseNodeTemplaterParser(nodeTemplate);
+            agnosticElement=new MySQLDataBaseAgnosticElement(nodeTemplate);
 
         else
             throw new NodeTemplateTypeNotSupportedException("Type: " + nodeTemplateType + " not supported yet.");
-        return nodeTemplateParser;
+        return agnosticElement;
     }
 
     private static String getTypeName(TNodeTemplate nodeTemplate) {

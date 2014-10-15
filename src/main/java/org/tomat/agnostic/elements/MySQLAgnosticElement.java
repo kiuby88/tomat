@@ -1,7 +1,6 @@
-package org.tomat.tosca.parsers;
+package org.tomat.agnostic.elements;
 
 import org.opentosca.model.tosca.TNodeTemplate;
-import org.opentosca.model.tosca.utils.DefinitionUtils;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -9,7 +8,7 @@ import java.util.Map;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class MySQLNodeTemplateParser extends NodeTemplateParser {
+public class MySQLAgnosticElement extends AgnosticElement {
 
     //Define the properties Of the Element
 
@@ -17,7 +16,7 @@ public class MySQLNodeTemplateParser extends NodeTemplateParser {
 
     private String rootPassword=null;
 
-    public MySQLNodeTemplateParser(TNodeTemplate nodeTemplateSource){
+    public MySQLAgnosticElement(TNodeTemplate nodeTemplateSource){
         super(nodeTemplateSource);
         parsingProperties();
     }
@@ -28,7 +27,7 @@ public class MySQLNodeTemplateParser extends NodeTemplateParser {
     }
 
     private void initRootPassWord(Map<String, String > propertiesMap){
-        rootPassword=NodeTemplateParserUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(ROOT_PASSWORD));
+        rootPassword= AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(ROOT_PASSWORD));
     }
 
     // <editor-fold desc="Getters and Setters">

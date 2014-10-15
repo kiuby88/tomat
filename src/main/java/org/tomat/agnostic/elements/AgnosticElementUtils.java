@@ -1,4 +1,4 @@
-package org.tomat.tosca.parsers;
+package org.tomat.agnostic.elements;
 
 import java.util.Collection;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by Jose on 09/10/14.
  */
-public class NodeTemplateParserUtils {
+public class AgnosticElementUtils {
 
     public static String findValueMapUsingCollection(Map<String, String> map, Collection<String> keysCollection) {
         String result = null;

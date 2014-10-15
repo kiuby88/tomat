@@ -4,9 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
-import org.tomat.agnostic.AgnosticApplicationComponent;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
+import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.tosca.parsers.DefinitionParser;
 
 import java.util.List;
@@ -63,7 +63,7 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnosticsElements();
-        List<AgnosticApplicationComponent> agnosticComponents = definitionParser.getAgnosticApplicationComponents();
+        List<AgnosticElement> agnosticComponents = definitionParser.getAgnosticApplicationComponents();
         assertEquals(agnosticComponents.size(), 0);
     }
 }

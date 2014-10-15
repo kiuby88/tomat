@@ -8,14 +8,13 @@ import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
+import org.tomat.agnostic.elements.AgnosticElementProvider;
 import org.tomat.tosca.parsers.DefinitionParser;
-import org.tomat.tosca.parsers.JBossNodeTemplateParser;
-import org.tomat.tosca.parsers.NodeTemplateParser;
-import org.tomat.tosca.parsers.NodeTemplateParserProvider;
+import org.tomat.agnostic.elements.JBossAgnosticElement;
+import org.tomat.agnostic.elements.AgnosticElement;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -49,14 +48,14 @@ public class ProviderTest {
 
     @Test
     public void nodeTemplateProviderJBossServer() throws NodeTemplateTypeNotSupportedException {
-        NodeTemplateParser nodeTemplateParser = NodeTemplateParserProvider
+        AgnosticElement nodeTemplateParser = AgnosticElementProvider
                 .createNodeTemplateParser(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
-        assertEquals((nodeTemplateParser instanceof JBossNodeTemplateParser), true);
+        assertEquals((nodeTemplateParser instanceof JBossAgnosticElement), true);
     }
 
     @Test
     public void nodeTemplateProviderJBossServerProperties() throws NodeTemplateTypeNotSupportedException {
-        JBossNodeTemplateParser jBossNodeTemplateParser = (JBossNodeTemplateParser) NodeTemplateParserProvider
+        JBossAgnosticElement jBossNodeTemplateParser = (JBossAgnosticElement) AgnosticElementProvider
                 .createNodeTemplateParser(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
         assertEquals(jBossNodeTemplateParser.getHttpPort(), "80");
         assertNull(jBossNodeTemplateParser.getHttpsPort());
@@ -65,7 +64,8 @@ public class ProviderTest {
     @Test(expected = NodeTemplateTypeNotSupportedException.class)
     public void unsupportedNodeTemplateType()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
-        definitionParser.parsingApplicationTopology(AWSUnsupportedType);
+        definitionParser.parsingApplicationTopology(AWSUnsupportedType).buildAgnosticsElements();
+
     }
 
 
