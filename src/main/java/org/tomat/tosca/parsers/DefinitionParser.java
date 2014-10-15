@@ -25,7 +25,7 @@ public class DefinitionParser {
 
     //Esta es la que hay que eliminar
     //private List<AgnosticApplicationComponent> agnosticApplicationComponents = null;
-    private Map<String, List<String>> agnosticApplicationsComponentRelations = null;
+    private Map<AgnosticElement, List<AgnosticElement>> agnosticApplicationsComponentRelations = null;
     private List<AgnosticElement> generatedAgnosticElements = null;
     private List<TNodeTemplate> nodeTemplatesOfTopology = null;
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
@@ -71,7 +71,7 @@ public class DefinitionParser {
         MatchingDictionary requirementIdsNodeTempateIsDictionary =
                 createRequirementIdsNodeTemplateIdsDictionary(generatedAgnosticElements);
 
-        agnosticApplicationsComponentRelations = new HashMap<String, List<String>>();
+        agnosticApplicationsComponentRelations = new HashMap<AgnosticElement, List<AgnosticElement>>();
         for (TRelationshipTemplate relationshipTemplate : relationshipTemplatesOfTopology) {
             addRelationTemplateToAgnosticApplicationComponentRelation(
                     relationshipTemplate,
@@ -83,14 +83,14 @@ public class DefinitionParser {
     private MatchingDictionary createCapabilityIdsNodeTemplateIdsDictionary(List<AgnosticElement> agnosticElements) {
         MatchingDictionary dictionary = new MatchingDictionary();
         for (AgnosticElement agnosticElement : agnosticElements)
-            dictionary.addDictionaryEntrys(agnosticElement.getCapabilitiesIds(), agnosticElement.getId());
+            dictionary.addDictionaryEntrys(agnosticElement.getCapabilitiesIds(), agnosticElement);
         return dictionary;
     }
 
     private MatchingDictionary createRequirementIdsNodeTemplateIdsDictionary(List<AgnosticElement> agnosticElements) {
         MatchingDictionary dictionary = new MatchingDictionary();
         for (AgnosticElement agnosticElement : agnosticElements)
-            dictionary.addDictionaryEntrys(agnosticElement.getRequirementsIds(), agnosticElement.getId());
+            dictionary.addDictionaryEntrys(agnosticElement.getRequirementsIds(), agnosticElement);
         return dictionary;
     }
 
@@ -106,20 +106,20 @@ public class DefinitionParser {
             throw new TopologyTemplateFormatException("Inconsistent relation " + relationshipTemplate.getId()
                     + " source or target do not defined correctly");
         else {
-            String nodeTemplateSourceId = requirementsIdsNodeTemplateIdsDictionary.get(source.getId()).toLowerCase();
-            String nodeTemplateTargetId = capabilitiesIdsNodeTemplateIdsDictionary.get(target.getId()).toLowerCase();
+            AgnosticElement nodeTemplateSourceId = requirementsIdsNodeTemplateIdsDictionary.get(source.getId());
+            AgnosticElement nodeTemplateTargetId = capabilitiesIdsNodeTemplateIdsDictionary.get(target.getId());
             addRelationAgnosticApplicationComponentRelation(nodeTemplateSourceId, nodeTemplateTargetId);
         }
     }
 
-    private void addRelationAgnosticApplicationComponentRelation(String source, String target) {
-        List<String> targetValues;
+    private void addRelationAgnosticApplicationComponentRelation(AgnosticElement source, AgnosticElement target) {
+        List<AgnosticElement> targetValues;
         if (agnosticApplicationsComponentRelations.containsKey(source))
             targetValues = agnosticApplicationsComponentRelations.get(source);
         else
-            targetValues = new LinkedList<String>();
-        targetValues.add(target.toLowerCase());
-        agnosticApplicationsComponentRelations.put(source.toLowerCase(), targetValues);
+            targetValues = new LinkedList<AgnosticElement>();
+        targetValues.add(target);
+        agnosticApplicationsComponentRelations.put(source, targetValues);
     }
 
     //<editor-fold desc="Getters and Setters">
@@ -127,27 +127,20 @@ public class DefinitionParser {
         return generatedAgnosticElements;
     }
 
-    public Map<String, List<String>> getAgnosticApplicationsComponentRelations() {
+    public Map<AgnosticElement, List<AgnosticElement>> getAgnosticApplicationsComponentRelations() {
         return agnosticApplicationsComponentRelations;
     }
     //</editor-fold>
 
     private class MatchingDictionary {
 
-        Map<String, String> dictionary;
+        Map<String, AgnosticElement> dictionary;
 
         public MatchingDictionary() {
-            dictionary = new HashMap<String, String>();
+            dictionary = new HashMap<String, AgnosticElement>();
         }
 
-        /**
-         * Add the key list using the same value.
-         * If keys or values are null, any element will be added.
-         *
-         * @param keys
-         * @param value
-         */
-        public void addDictionaryEntrys(List<String> keys, String value) {
+        public void addDictionaryEntrys(List<String> keys, AgnosticElement value) {
             if ((keys != null) && (value != null))
                 for (String key : keys)
                     dictionary.put(key, value);
@@ -157,7 +150,7 @@ public class DefinitionParser {
             return dictionary.containsKey(key);
         }
 
-        public String get(String key) {
+        public AgnosticElement get(String key) {
             if (containsKey(key))
                 return dictionary.get(key);
             else

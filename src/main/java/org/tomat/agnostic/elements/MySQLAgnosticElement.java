@@ -12,22 +12,22 @@ public class MySQLAgnosticElement extends AgnosticElement {
 
     //Define the properties Of the Element
 
-    private final static String[] ROOT_PASSWORD={"RootPassword", "PassWordRoot"};
+    private final static String[] ROOT_PASSWORD = {"RootPassword", "PassWordRoot"};
 
-    private String rootPassword=null;
+    private String rootPassword = null;
 
-    public MySQLAgnosticElement(TNodeTemplate nodeTemplateSource){
+    public MySQLAgnosticElement(TNodeTemplate nodeTemplateSource) {
         super(nodeTemplateSource);
         parsingProperties();
     }
 
-    private void parsingProperties(){
-        Map<String, String > propertiesMap= getNodeTemplateProperties();
+    private void parsingProperties() {
+        Map<String, String> propertiesMap = getNodeTemplateProperties();
         initRootPassWord(propertiesMap);
     }
 
-    private void initRootPassWord(Map<String, String > propertiesMap){
-        rootPassword= AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(ROOT_PASSWORD));
+    private void initRootPassWord(Map<String, String> propertiesMap) {
+        rootPassword = AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(ROOT_PASSWORD));
     }
 
     // <editor-fold desc="Getters and Setters">
@@ -35,17 +35,10 @@ public class MySQLAgnosticElement extends AgnosticElement {
         return rootPassword;
     }
 
-    public void setRootPassword(String rootPassWord){
-        this.rootPassword=rootPassWord;
+    public void setRootPassword(String rootPassWord) {
+        this.rootPassword = rootPassWord;
     }
     // </editor-fold>
-
-
-
-
-
-
-
 
 
 }

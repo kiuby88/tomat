@@ -25,4 +25,12 @@ public class AgnosticElementUtils {
         }
         return result;
     }
+
+    public static AgnosticElement findAgnosticElementById(Collection<AgnosticElement> agnosticElements, String id) {
+        AgnosticElement result = null;
+        for (AgnosticElement agnosticElement : agnosticElements)
+            if (agnosticElement.getId().equalsIgnoreCase(id))
+                result = agnosticElement;
+        return result;
+    }
 }

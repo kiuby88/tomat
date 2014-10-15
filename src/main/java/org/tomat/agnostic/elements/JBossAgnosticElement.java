@@ -12,30 +12,30 @@ public class JBossAgnosticElement extends AgnosticElement {
 
     //Define the properties Of the Element
 
-    private final static String[] HTTP_PROPERTY={"http", "httpd", "httpdport"};
-    private final static String[] HTTPS_PROPERTY={"https", "httpsd", "httpsdport"};
+    private final static String[] HTTP_PROPERTY = {"http", "httpd", "httpdport"};
+    private final static String[] HTTPS_PROPERTY = {"https", "httpsd", "httpsdport"};
 
 
-    private String httpPort=null;
-    private String httpsPort=null;
+    private String httpPort = null;
+    private String httpsPort = null;
 
-    public JBossAgnosticElement(TNodeTemplate nodeTemplateSource){
+    public JBossAgnosticElement(TNodeTemplate nodeTemplateSource) {
         super(nodeTemplateSource);
         parsingProperties();
     }
 
-    private void parsingProperties(){
-        Map<String, String > propertiesMap= getNodeTemplateProperties();
+    private void parsingProperties() {
+        Map<String, String> propertiesMap = getNodeTemplateProperties();
         initHttpPort(propertiesMap);
         initHttpsPort(propertiesMap);
     }
 
-    private void initHttpPort(Map<String, String > propertiesMap){
-        httpPort= AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTP_PROPERTY));
+    private void initHttpPort(Map<String, String> propertiesMap) {
+        httpPort = AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTP_PROPERTY));
     }
 
-    private void initHttpsPort(Map<String, String > propertiesMap){
-        httpsPort= AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTPS_PROPERTY));
+    private void initHttpsPort(Map<String, String> propertiesMap) {
+        httpsPort = AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTPS_PROPERTY));
     }
 
     // <editor-fold desc="Getters and Setters">
@@ -43,24 +43,18 @@ public class JBossAgnosticElement extends AgnosticElement {
         return httpsPort;
     }
 
-    public void setHttpPort(String port){
-        httpPort=port;
+    public void setHttpPort(String port) {
+        httpPort = port;
     }
-    public void setHttpsPort(String port){
-        httpsPort=port;
+
+    public void setHttpsPort(String port) {
+        httpsPort = port;
     }
 
     public String getHttpPort() {
         return httpPort;
     }
     // </editor-fold>
-
-
-
-
-
-
-
 
 
 }

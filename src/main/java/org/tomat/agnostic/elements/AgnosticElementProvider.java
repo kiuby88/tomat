@@ -13,6 +13,7 @@ public class AgnosticElementProvider {
 
     /**
      * Fabric method.
+     *
      * @param nodeTemplate
      * @return
      * @throws NodeTemplateTypeNotSupportedException
@@ -25,14 +26,14 @@ public class AgnosticElementProvider {
         if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.JBOSS_WEB_SERVER))
             agnosticElement = new JBossAgnosticElement(nodeTemplate);
 
-        else if(nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.WEB_APPLICATION))
-            agnosticElement=new AgnosticElement(nodeTemplate);
+        else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.WEB_APPLICATION))
+            agnosticElement = new AgnosticElement(nodeTemplate);
 
-        else if(nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.MySQL_DBMS))
-            agnosticElement=new MySQLAgnosticElement(nodeTemplate);
+        else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.MySQL_DBMS))
+            agnosticElement = new MySQLAgnosticElement(nodeTemplate);
 
-        else if(nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.MySQL_DB))
-            agnosticElement=new MySQLDataBaseAgnosticElement(nodeTemplate);
+        else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.MySQL_DB))
+            agnosticElement = new MySQLDataBaseAgnosticElement(nodeTemplate);
 
         else
             throw new NodeTemplateTypeNotSupportedException("Type: " + nodeTemplateType + " not supported yet.");

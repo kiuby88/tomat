@@ -7,6 +7,7 @@ import org.tomat.agnostic.elements.AgnosticElement;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -16,32 +17,28 @@ public class AgnosticGraph {
 
     DirectedGraph<AgnosticElement, DefaultEdge> agnosticGraph;
 
-    public AgnosticGraph(List<AgnosticElement> agnosticElements, Map<String, List<String>> relations) {
-
+    public AgnosticGraph(List<AgnosticElement> agnosticElements, Map<AgnosticElement, List<AgnosticElement>> relations) {
         agnosticGraph =
                 new DefaultDirectedGraph<AgnosticElement, DefaultEdge>(DefaultEdge.class);
-        initVertex(agnosticElements, relations);
+        initVertex(agnosticElements);
+        initEdges(relations);
 
     }
 
-    private void initVertex(List<AgnosticElement> agnosticElements, Map<String, List<String>> relations) {
+    private void initVertex(List<AgnosticElement> agnosticElements) {
         for (AgnosticElement agnosticElement : agnosticElements)
             addVertex(agnosticElement);
     }
 
-    private void initEdges(List<AgnosticElement> agnosticElements, Map<String , List<String>> relations){
-        //es necesario encontrar las relationes entre componentes
-
-
+    private void initEdges(Map<AgnosticElement, List<AgnosticElement>> relations) {
+        Set<AgnosticElement> agnosticElementKeySet = relations.keySet();
+        for (AgnosticElement sourceAgnosticElement : agnosticElementKeySet)
+            for (AgnosticElement targetAgnosticElement : relations.get(sourceAgnosticElement))
+                agnosticGraph.addEdge(sourceAgnosticElement, targetAgnosticElement);
     }
 
     public void addVertex(AgnosticElement agnosticElement) {
         agnosticGraph.addVertex(agnosticElement);
     }
-
-
-
-
-
 
 }

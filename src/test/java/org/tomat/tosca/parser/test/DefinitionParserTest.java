@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import org.tomat.agnostic.elements.AgnosticElementUtils;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.agnostic.elements.AgnosticElement;
@@ -11,6 +12,7 @@ import org.tomat.tosca.parsers.DefinitionParser;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -50,11 +52,15 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnosticsElements();
-        Map<String, List<String>> agnosticRelations = definitionParser.getAgnosticApplicationsComponentRelations();
+        Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = definitionParser.getAgnosticApplicationsComponentRelations();
         assertEquals(agnosticRelations.size(),1);
-        assertEquals(agnosticRelations.containsKey(mainWebAppId),true);
-        assertEquals(agnosticRelations.get(mainWebAppId).size(),1);
-        assertEquals(agnosticRelations.get(mainWebAppId).get(0), jBossMainWebServerId);
+        Set<AgnosticElement> keySet=agnosticRelations.keySet();
+
+        AgnosticElement agnosticElementMainWebApp=AgnosticElementUtils.findAgnosticElementById(keySet,mainWebAppId);
+        assertNotNull(agnosticElementMainWebApp);
+        assertEquals(agnosticRelations.containsKey(agnosticElementMainWebApp),true);
+        assertEquals(agnosticRelations.get(agnosticElementMainWebApp).size(),1);
+        assertEquals(agnosticRelations.get(agnosticElementMainWebApp).get(0).getId().toLowerCase(), jBossMainWebServerId);
     }
 
     @Test

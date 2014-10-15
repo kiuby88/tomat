@@ -27,6 +27,10 @@ public class AgnosticElement {
     public AgnosticElement() {
     }
 
+    public AgnosticElement(String id) {
+        this.id = id;
+    }
+
     public AgnosticElement(TNodeTemplate nodeTemplate) {
         sourceNodeTemplate = nodeTemplate;
         initGenericValues();
@@ -122,5 +126,13 @@ public class AgnosticElement {
     }
     //</editor-fold>
 
-
+    @Override
+    public boolean equals(Object o) {
+        boolean result = false;
+        if (o instanceof AgnosticElement) {
+            AgnosticElement that = (AgnosticElement) o;
+            result = this.getId().equalsIgnoreCase(that.getId());
+        }
+        return result;
+    }
 }

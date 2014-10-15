@@ -12,42 +12,42 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
 
     //Define the properties Of the Element
 
-    private final static String[] DB_NAME={"DBName", "databaseName","database_name","db_ame"};
-    private final static String[] DB_USER={"DB_USER", "databaseUser", "database_user", "db_user"};
-    private final static String[] DB_PASSWORD={"DB_PASSWORD", "databasePassword", "database_password", "db_password"};
-    private final static String[] DB_PORT={"DB_PORT", "databasePort", "database_port", "db_port"};
+    private final static String[] DB_NAME = {"DBName", "databaseName", "database_name", "db_ame"};
+    private final static String[] DB_USER = {"DB_USER", "databaseUser", "database_user", "db_user"};
+    private final static String[] DB_PASSWORD = {"DB_PASSWORD", "databasePassword", "database_password", "db_password"};
+    private final static String[] DB_PORT = {"DB_PORT", "databasePort", "database_port", "db_port"};
 
-    private String dbName=null;
-    private String dbUser=null;
-    private String dbPAssword=null;
-    private String dbPort=null;
+    private String dbName = null;
+    private String dbUser = null;
+    private String dbPAssword = null;
+    private String dbPort = null;
 
-    public MySQLDataBaseAgnosticElement(TNodeTemplate nodeTemplateSource){
+    public MySQLDataBaseAgnosticElement(TNodeTemplate nodeTemplateSource) {
         super(nodeTemplateSource);
         parsingProperties();
     }
 
-    private void parsingProperties(){
-        Map<String, String> propertiesMap= getNodeTemplateProperties();
+    private void parsingProperties() {
+        Map<String, String> propertiesMap = getNodeTemplateProperties();
         initDbName(propertiesMap);
         initDbUser(propertiesMap);
         initDbPassword(propertiesMap);
         initDbPort(propertiesMap);
     }
 
-    private void initDbName(Map<String, String > propertiesMap){
+    private void initDbName(Map<String, String> propertiesMap) {
         setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_NAME)));
     }
 
-    private void initDbUser(Map<String, String > propertiesMap){
+    private void initDbUser(Map<String, String> propertiesMap) {
         setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_USER)));
     }
 
-    private void initDbPassword(Map<String, String > propertiesMap){
+    private void initDbPassword(Map<String, String> propertiesMap) {
         setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PASSWORD)));
     }
 
-    private void initDbPort(Map<String, String > propertiesMap){
+    private void initDbPort(Map<String, String> propertiesMap) {
         setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PORT)));
     }
 
