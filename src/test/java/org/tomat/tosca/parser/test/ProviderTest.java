@@ -65,8 +65,5 @@ public class ProviderTest {
     public void unsupportedNodeTemplateType()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
         definitionParser.parsingApplicationTopology(AWSUnsupportedType).buildAgnosticsElements();
-
     }
-
-
 }
