@@ -20,7 +20,7 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
 
     private String dbName = null;
     private String dbUser = null;
-    private String dbPAssword = null;
+    private String dbPassword = null;
     private String dbPort = null;
 
     public MySQLDataBaseAgnosticElement(TNodeTemplate nodeTemplateSource) {
@@ -37,7 +37,8 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
     }
 
     private void initDbName(Map<String, String> propertiesMap) {
-        setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_NAME)));
+        setDbName(AgnosticElementUtils
+                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_NAME)));
     }
 
     private void initDbUser(Map<String, String> propertiesMap) {
@@ -72,12 +73,12 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
         this.dbUser = dbUser;
     }
 
-    public String getDbPAssword() {
-        return dbPAssword;
+    public String getDbPassword() {
+        return dbPassword;
     }
 
-    public void setDbPAssword(String dbPAssword) {
-        this.dbPAssword = dbPAssword;
+    public void setDbPassword(String dbPassword) {
+        this.dbPassword = dbPassword;
     }
 
     public String getDbPort() {

@@ -36,9 +36,9 @@ public class AppDatabaseGraphGenerationTest {
             NodeTemplateTypeNotSupportedException {
         definitionParser = new DefinitionParser();
         definitionParser
-                .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnosticsElements();
-        agnosticGraph = new AgnosticGraph(definitionParser.getAgnosticApplicationComponents(),
-                definitionParser.getAgnosticApplicationsComponentRelations());
+                .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
+        agnosticGraph = new AgnosticGraph(definitionParser.getAgnosticElements(),
+                definitionParser.getAgnosticRelations());
         agnosticElementVertex = agnosticGraph.getVertexSet();
     }
 

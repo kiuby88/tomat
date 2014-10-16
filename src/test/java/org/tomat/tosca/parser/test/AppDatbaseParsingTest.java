@@ -44,9 +44,9 @@ public class AppDatbaseParsingTest {
         definitionParser = new DefinitionParser();
         definitionParser
                 .parsingApplicationTopology(AWSApplicationDatabaseFile)
-                .buildAgnosticsElements();
+                .buildAgnostics();
         relationMaps =
-                definitionParser.getAgnosticApplicationsComponentRelations();
+                definitionParser.getAgnosticRelations();
     }
 
     @Test

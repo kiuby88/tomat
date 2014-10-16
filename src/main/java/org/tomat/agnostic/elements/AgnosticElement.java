@@ -60,6 +60,7 @@ public class AgnosticElement {
                 || (nodeTemplate.getLocation().getLocationId().equals("")));
     }
 
+    //TODO could be interesting delete this element of the agnostic Elements
     private void initCapabilitiesIds() {
         List<TCapability> capabilitiesOfSourceNodeTemplate = null;
         if ((sourceNodeTemplate != null) &&

@@ -8,7 +8,8 @@ import java.util.Map;
  */
 public class AgnosticElementUtils {
 
-    public static String findValueMapUsingCollection(Map<String, String> map, Collection<String> keysCollection) {
+    public static String findValueMapUsingCollection(Map<String, String> map,
+                                                     Collection<String> keysCollection) {
         String result = null;
         String key = aKeyContainedInMap(map, keysCollection);
         if (key != null) {
@@ -17,7 +18,8 @@ public class AgnosticElementUtils {
         return result;
     }
 
-    private static String aKeyContainedInMap(Map<String, String> map, Collection<String> keysCollection) {
+    private static String aKeyContainedInMap(Map<String, String> map,
+                                             Collection<String> keysCollection) {
         String result = null;
         for (String key : keysCollection) {
             if (map.containsKey(key))
@@ -26,7 +28,8 @@ public class AgnosticElementUtils {
         return result;
     }
 
-    public static AgnosticElement findAgnosticElementById(Collection<AgnosticElement> agnosticElements, String id) {
+    public static AgnosticElement findAgnosticElementById(Collection<AgnosticElement> agnosticElements,
+                                                          String id) {
         AgnosticElement result = null;
         for (AgnosticElement agnosticElement : agnosticElements)
             if (agnosticElement.getId().equalsIgnoreCase(id))

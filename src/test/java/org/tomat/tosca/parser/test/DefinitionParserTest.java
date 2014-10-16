@@ -45,7 +45,7 @@ public class DefinitionParserTest {
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException{
         definitionParser
                 .parsingApplicationTopology(AWSFileMalFormedRelation)
-                .buildAgnosticsElements();
+                .buildAgnostics();
     }
 
     @Test
@@ -53,9 +53,9 @@ public class DefinitionParserTest {
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
-                .buildAgnosticsElements();
+                .buildAgnostics();
         Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = definitionParser
-                .getAgnosticApplicationsComponentRelations();
+                .getAgnosticRelations();
         assertEquals(agnosticRelations.size(),1);
         Set<AgnosticElement> keySet=agnosticRelations.keySet();
 
@@ -73,17 +73,17 @@ public class DefinitionParserTest {
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
-                .buildAgnosticsElements();
+                .buildAgnostics();
         List<AgnosticElement> agnosticComponents = definitionParser
-                .getAgnosticApplicationComponents();
+                .getAgnosticElements();
         assertEquals(agnosticComponents.size(), 2);
     }
 
     @Test
     public void testBuildElements_EmptyParsing()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
-        definitionParser.buildAgnosticsElements();
-        assertEquals(definitionParser.getAgnosticApplicationComponents().size(), 0);
-        assertEquals(definitionParser.getAgnosticApplicationsComponentRelations().size(), 0);
+        definitionParser.buildAgnostics();
+        assertEquals(definitionParser.getAgnosticElements().size(), 0);
+        assertEquals(definitionParser.getAgnosticRelations().size(), 0);
     }
 }

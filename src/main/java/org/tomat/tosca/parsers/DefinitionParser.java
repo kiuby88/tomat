@@ -27,7 +27,7 @@ public class DefinitionParser {
 
     //Esta es la que hay que eliminar
     //private List<AgnosticApplicationComponent> agnosticApplicationComponents = null;
-    private Map<AgnosticElement, List<AgnosticElement>> agnosticApplicationsComponentRelations = null;
+    private Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = null;
     private List<AgnosticElement> generatedAgnosticElements = null;
     private List<TNodeTemplate> nodeTemplatesOfTopology = null;
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
@@ -50,14 +50,14 @@ public class DefinitionParser {
         return this;
     }
 
-    public DefinitionParser buildAgnosticsElements()
+    public DefinitionParser buildAgnostics()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
-        buildAgnosticApplicationComponentList();
-        buildAgnosticApplicationsComponentRelations();
+        buildAgnosticElementsList();
+        buildAgnosticElementsRelations();
         return this;
     }
 
-    private void buildAgnosticApplicationComponentList()
+    private void buildAgnosticElementsList()
             throws NodeTemplateTypeNotSupportedException {
         generatedAgnosticElements = new LinkedList<AgnosticElement>();
         for (TNodeTemplate nodeTemplate : nodeTemplatesOfTopology) {
@@ -66,7 +66,7 @@ public class DefinitionParser {
         }
     }
 
-    private void buildAgnosticApplicationsComponentRelations()
+    private void buildAgnosticElementsRelations()
             throws TopologyTemplateFormatException {
 
         MatchingDictionary capabilityIdsNodeTemplateIsDictionary =
@@ -74,10 +74,10 @@ public class DefinitionParser {
         MatchingDictionary requirementIdsNodeTemplateIsDictionary =
                 createRequirementIdsNodeTemplateIdsDictionary(generatedAgnosticElements);
 
-        agnosticApplicationsComponentRelations =
+        agnosticRelations =
                 new HashMap<AgnosticElement, List<AgnosticElement>>();
         for (TRelationshipTemplate relationshipTemplate : relationshipTemplatesOfTopology) {
-            addRelationTemplateToAgnosticApplicationComponentRelation(
+            addRelationTemplateToAgnosticRelation(
                     relationshipTemplate,
                     capabilityIdsNodeTemplateIsDictionary,
                     requirementIdsNodeTemplateIsDictionary);
@@ -98,7 +98,7 @@ public class DefinitionParser {
         return dictionary;
     }
 
-    private void addRelationTemplateToAgnosticApplicationComponentRelation
+    private void addRelationTemplateToAgnosticRelation
             (TRelationshipTemplate relationshipTemplate,
              MatchingDictionary capabilitiesIdsNodeTemplateIdsDictionary,
              MatchingDictionary requirementsIdsNodeTemplateIdsDictionary)
@@ -116,30 +116,30 @@ public class DefinitionParser {
                     .get(source.getId());
             AgnosticElement nodeTemplateTargetId = capabilitiesIdsNodeTemplateIdsDictionary
                     .get(target.getId());
-            addRelationAgnosticApplicationComponentRelation(nodeTemplateSourceId,
+            addRelationAgnosticRelation(nodeTemplateSourceId,
                     nodeTemplateTargetId);
         }
     }
 
-    private void addRelationAgnosticApplicationComponentRelation(AgnosticElement source,
-                                                                 AgnosticElement target) {
+    private void addRelationAgnosticRelation(AgnosticElement source,
+                                             AgnosticElement target) {
         List<AgnosticElement> targetValues;
-        if (agnosticApplicationsComponentRelations.containsKey(source)) {
-            targetValues = agnosticApplicationsComponentRelations.get(source);
+        if (agnosticRelations.containsKey(source)) {
+            targetValues = agnosticRelations.get(source);
         } else {
             targetValues = new LinkedList<AgnosticElement>();
         }
         targetValues.add(target);
-        agnosticApplicationsComponentRelations.put(source, targetValues);
+        agnosticRelations.put(source, targetValues);
     }
 
     //<editor-fold desc="Getters and Setters">
-    public List<AgnosticElement> getAgnosticApplicationComponents() {
+    public List<AgnosticElement> getAgnosticElements() {
         return generatedAgnosticElements;
     }
 
-    public Map<AgnosticElement, List<AgnosticElement>> getAgnosticApplicationsComponentRelations() {
-        return agnosticApplicationsComponentRelations;
+    public Map<AgnosticElement, List<AgnosticElement>> getAgnosticRelations() {
+        return agnosticRelations;
     }
     //</editor-fold>
 
