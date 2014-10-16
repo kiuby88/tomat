@@ -22,6 +22,7 @@ import static org.junit.Assert.*;
 
 public class DefinitionParserTest {
 
+    //TODO rename the methods using the methodology of Google JAva Style
     DefinitionParser definitionParser;
     String AWSFileMalFormedRelation = "resources/AWS-Location-Sample-MalFormedRelation.xml";
     String AWSFile = "resources/AWS-Location-Sample.xml";
@@ -29,6 +30,7 @@ public class DefinitionParserTest {
     String mainWebAppId="MainWebApp".toLowerCase();
 
     public static void main(String[] args) {
+
         Result result = JUnitCore.runClasses(DefinitionParserTest.class);
     }
 
@@ -52,15 +54,18 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnosticsElements();
-        Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = definitionParser.getAgnosticApplicationsComponentRelations();
+        Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = definitionParser
+                .getAgnosticApplicationsComponentRelations();
         assertEquals(agnosticRelations.size(),1);
         Set<AgnosticElement> keySet=agnosticRelations.keySet();
 
-        AgnosticElement agnosticElementMainWebApp=AgnosticElementUtils.findAgnosticElementById(keySet,mainWebAppId);
+        AgnosticElement agnosticElementMainWebApp=AgnosticElementUtils
+                .findAgnosticElementById(keySet,mainWebAppId);
         assertNotNull(agnosticElementMainWebApp);
         assertEquals(agnosticRelations.containsKey(agnosticElementMainWebApp),true);
         assertEquals(agnosticRelations.get(agnosticElementMainWebApp).size(),1);
-        assertEquals(agnosticRelations.get(agnosticElementMainWebApp).get(0).getId().toLowerCase(), jBossMainWebServerId);
+        assertEquals(agnosticRelations
+                .get(agnosticElementMainWebApp).get(0).getId().toLowerCase(), jBossMainWebServerId);
     }
 
     @Test
@@ -69,7 +74,16 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnosticsElements();
-        List<AgnosticElement> agnosticComponents = definitionParser.getAgnosticApplicationComponents();
+        List<AgnosticElement> agnosticComponents = definitionParser
+                .getAgnosticApplicationComponents();
         assertEquals(agnosticComponents.size(), 2);
+    }
+
+    @Test
+    public void testBuildElements_EmptyParsing()
+            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
+        definitionParser.buildAgnosticsElements();
+        assertEquals(definitionParser.getAgnosticApplicationComponents().size(), 0);
+        assertEquals(definitionParser.getAgnosticApplicationsComponentRelations().size(), 0);
     }
 }

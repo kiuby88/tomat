@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNull;
  */
 public class ProviderTest {
 
+    //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSSample;
     //List<TRelationshipTemplate> relationshipTemplateListMalFormedTopology;
     TNodeTemplate nodeTemplateAWS;
@@ -54,8 +55,10 @@ public class ProviderTest {
     }
 
     @Test
-    public void nodeTemplateProviderJBossServerProperties() throws NodeTemplateTypeNotSupportedException {
-        JBossAgnosticElement jBossNodeTemplateParser = (JBossAgnosticElement) AgnosticElementProvider
+    public void nodeTemplateProviderJBossServerProperties()
+            throws NodeTemplateTypeNotSupportedException {
+        JBossAgnosticElement jBossNodeTemplateParser =
+                (JBossAgnosticElement) AgnosticElementProvider
                 .createAgnosticElement(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
         assertEquals(jBossNodeTemplateParser.getHttpPort(), "80");
         assertNull(jBossNodeTemplateParser.getHttpsPort());

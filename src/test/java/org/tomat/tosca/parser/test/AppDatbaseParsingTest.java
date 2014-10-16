@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class AppDatbaseParsingTest {
 
+    //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSDbSample;
     DefinitionParser definitionParser;
     String AWSApplicationDatabaseFile = "resources/AWS-Application-DatabaseSample.xml";
@@ -36,10 +37,14 @@ public class AppDatbaseParsingTest {
     }
 
     @Before
-    public void setUp() throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
-        nodeTemplateListAWSDbSample = DefinitionUtils.getNodeTemplates(new File(AWSApplicationDatabaseFile));
+    public void setUp() throws TopologyTemplateFormatException,
+            NodeTemplateTypeNotSupportedException {
+        nodeTemplateListAWSDbSample = DefinitionUtils
+                .getNodeTemplates(new File(AWSApplicationDatabaseFile));
         definitionParser = new DefinitionParser();
-        definitionParser.parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnosticsElements();
+        definitionParser
+                .parsingApplicationTopology(AWSApplicationDatabaseFile)
+                .buildAgnosticsElements();
         relationMaps =
                 definitionParser.getAgnosticApplicationsComponentRelations();
     }
@@ -78,7 +83,8 @@ public class AppDatbaseParsingTest {
         List<AgnosticElement> targets;
         Set<AgnosticElement> relationsKeyMap = relationMaps.keySet();
 
-        sourceAgnosticElement= AgnosticElementUtils.findAgnosticElementById(relationsKeyMap, sourceId);
+        sourceAgnosticElement= AgnosticElementUtils
+                .findAgnosticElementById(relationsKeyMap, sourceId);
         assertNotNull(sourceAgnosticElement);
         assertEquals(relationMaps.containsKey(sourceAgnosticElement), true);
 

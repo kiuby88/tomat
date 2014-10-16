@@ -27,7 +27,8 @@ public class MySQLAgnosticElement extends AgnosticElement {
     }
 
     private void initRootPassWord(Map<String, String> propertiesMap) {
-        rootPassword = AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(ROOT_PASSWORD));
+        rootPassword = AgnosticElementUtils
+                .findValueMapUsingCollection(propertiesMap, Arrays.asList(ROOT_PASSWORD));
     }
 
     // <editor-fold desc="Getters and Setters">

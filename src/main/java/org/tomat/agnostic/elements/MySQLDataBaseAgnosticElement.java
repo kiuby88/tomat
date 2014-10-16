@@ -14,7 +14,8 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
 
     private final static String[] DB_NAME = {"DBName", "databaseName", "database_name", "db_ame"};
     private final static String[] DB_USER = {"DB_USER", "databaseUser", "database_user", "db_user"};
-    private final static String[] DB_PASSWORD = {"DB_PASSWORD", "databasePassword", "database_password", "db_password"};
+    private final static String[] DB_PASSWORD = {"DB_PASSWORD", "databasePassword",
+            "database_password", "db_password"};
     private final static String[] DB_PORT = {"DB_PORT", "databasePort", "database_port", "db_port"};
 
     private String dbName = null;
@@ -40,15 +41,18 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
     }
 
     private void initDbUser(Map<String, String> propertiesMap) {
-        setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_USER)));
+        setDbName(AgnosticElementUtils
+                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_USER)));
     }
 
     private void initDbPassword(Map<String, String> propertiesMap) {
-        setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PASSWORD)));
+        setDbName(AgnosticElementUtils
+                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PASSWORD)));
     }
 
     private void initDbPort(Map<String, String> propertiesMap) {
-        setDbName(AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PORT)));
+        setDbName(AgnosticElementUtils
+                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PORT)));
     }
 
     // <editor-fold desc="Getters and Setters">

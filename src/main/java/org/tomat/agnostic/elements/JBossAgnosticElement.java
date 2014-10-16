@@ -31,11 +31,13 @@ public class JBossAgnosticElement extends AgnosticElement {
     }
 
     private void initHttpPort(Map<String, String> propertiesMap) {
-        httpPort = AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTP_PROPERTY));
+        httpPort = AgnosticElementUtils
+                .findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTP_PROPERTY));
     }
 
     private void initHttpsPort(Map<String, String> propertiesMap) {
-        httpsPort = AgnosticElementUtils.findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTPS_PROPERTY));
+        httpsPort = AgnosticElementUtils
+                .findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTPS_PROPERTY));
     }
 
     // <editor-fold desc="Getters and Setters">

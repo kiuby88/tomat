@@ -20,7 +20,9 @@ import java.util.Map;
  * Created by JoseC on 23/09/2014.
  */
 //TODO check the clean code to specifi <variableName>List (e.g.).
-//Esta clase contendrá un metodo para parsear el fichero que contiene la topología
+//TODO El nombre de esta clase debería ser algo refereico con parsear la topología
+//TODO Esta clase contendrá un metodo para parsear el fichero que contiene la topología
+//
 public class DefinitionParser {
 
     //Esta es la que hay que eliminar
@@ -31,7 +33,8 @@ public class DefinitionParser {
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
 
     public DefinitionParser() {
-
+        nodeTemplatesOfTopology = new LinkedList<TNodeTemplate>();
+        relationshipTemplatesOfTopology = new LinkedList<TRelationshipTemplate>();
     }
 
     public DefinitionParser parsingApplicationTopology(String definitionFilePath)
@@ -41,10 +44,9 @@ public class DefinitionParser {
 
     private DefinitionParser parsingApplicationTopology(File definitionFilePath)
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
-
         nodeTemplatesOfTopology = DefinitionUtils.getNodeTemplates(definitionFilePath);
-        relationshipTemplatesOfTopology = DefinitionUtils.getRelationshipTemplates(definitionFilePath);
-        //generatedAgnosticElements = getNodeTemplateParsers(nodeTemplatesOfTopology);
+        relationshipTemplatesOfTopology = DefinitionUtils
+                .getRelationshipTemplates(definitionFilePath);
         return this;
     }
 
@@ -66,17 +68,19 @@ public class DefinitionParser {
 
     private void buildAgnosticApplicationsComponentRelations()
             throws TopologyTemplateFormatException {
-        MatchingDictionary capabilityIdsNodeTempateIsDictionary =
+
+        MatchingDictionary capabilityIdsNodeTemplateIsDictionary =
                 createCapabilityIdsNodeTemplateIdsDictionary(generatedAgnosticElements);
-        MatchingDictionary requirementIdsNodeTempateIsDictionary =
+        MatchingDictionary requirementIdsNodeTemplateIsDictionary =
                 createRequirementIdsNodeTemplateIdsDictionary(generatedAgnosticElements);
 
-        agnosticApplicationsComponentRelations = new HashMap<AgnosticElement, List<AgnosticElement>>();
+        agnosticApplicationsComponentRelations =
+                new HashMap<AgnosticElement, List<AgnosticElement>>();
         for (TRelationshipTemplate relationshipTemplate : relationshipTemplatesOfTopology) {
             addRelationTemplateToAgnosticApplicationComponentRelation(
                     relationshipTemplate,
-                    capabilityIdsNodeTempateIsDictionary,
-                    requirementIdsNodeTempateIsDictionary);
+                    capabilityIdsNodeTemplateIsDictionary,
+                    requirementIdsNodeTemplateIsDictionary);
         }
     }
 
@@ -97,27 +101,34 @@ public class DefinitionParser {
     private void addRelationTemplateToAgnosticApplicationComponentRelation
             (TRelationshipTemplate relationshipTemplate,
              MatchingDictionary capabilitiesIdsNodeTemplateIdsDictionary,
-             MatchingDictionary requirementsIdsNodeTemplateIdsDictionary) throws TopologyTemplateFormatException {
+             MatchingDictionary requirementsIdsNodeTemplateIdsDictionary)
+            throws TopologyTemplateFormatException {
 
         TRequirement source = (TRequirement) relationshipTemplate.getSourceElement().getRef();
         TCapability target = (TCapability) relationshipTemplate.getTargetElement().getRef();
 
-        if ((source == null) || (target == null))
-            throw new TopologyTemplateFormatException("Inconsistent relation " + relationshipTemplate.getId()
+        if ((source == null) || (target == null)) {
+            throw new TopologyTemplateFormatException("Inconsistent relation"
+                    + relationshipTemplate.getId()
                     + " source or target do not defined correctly");
-        else {
-            AgnosticElement nodeTemplateSourceId = requirementsIdsNodeTemplateIdsDictionary.get(source.getId());
-            AgnosticElement nodeTemplateTargetId = capabilitiesIdsNodeTemplateIdsDictionary.get(target.getId());
-            addRelationAgnosticApplicationComponentRelation(nodeTemplateSourceId, nodeTemplateTargetId);
+        } else {
+            AgnosticElement nodeTemplateSourceId = requirementsIdsNodeTemplateIdsDictionary
+                    .get(source.getId());
+            AgnosticElement nodeTemplateTargetId = capabilitiesIdsNodeTemplateIdsDictionary
+                    .get(target.getId());
+            addRelationAgnosticApplicationComponentRelation(nodeTemplateSourceId,
+                    nodeTemplateTargetId);
         }
     }
 
-    private void addRelationAgnosticApplicationComponentRelation(AgnosticElement source, AgnosticElement target) {
+    private void addRelationAgnosticApplicationComponentRelation(AgnosticElement source,
+                                                                 AgnosticElement target) {
         List<AgnosticElement> targetValues;
-        if (agnosticApplicationsComponentRelations.containsKey(source))
+        if (agnosticApplicationsComponentRelations.containsKey(source)) {
             targetValues = agnosticApplicationsComponentRelations.get(source);
-        else
+        } else {
             targetValues = new LinkedList<AgnosticElement>();
+        }
         targetValues.add(target);
         agnosticApplicationsComponentRelations.put(source, targetValues);
     }
@@ -141,9 +152,11 @@ public class DefinitionParser {
         }
 
         public void addDictionaryEntrys(List<String> keys, AgnosticElement value) {
-            if ((keys != null) && (value != null))
-                for (String key : keys)
+            if ((keys != null) && (value != null)) {
+                for (String key : keys) {
                     dictionary.put(key, value);
+                }
+            }
         }
 
         public boolean containsKey(String key) {
@@ -151,10 +164,11 @@ public class DefinitionParser {
         }
 
         public AgnosticElement get(String key) {
-            if (containsKey(key))
+            if (containsKey(key)) {
                 return dictionary.get(key);
-            else
+            } else {
                 return null;
+            }
         }
 
     }

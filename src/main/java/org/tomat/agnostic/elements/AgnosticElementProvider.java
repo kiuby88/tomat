@@ -36,7 +36,8 @@ public class AgnosticElementProvider {
             agnosticElement = new MySQLDataBaseAgnosticElement(nodeTemplate);
 
         else
-            throw new NodeTemplateTypeNotSupportedException("Type: " + nodeTemplateType + " not supported yet.");
+            throw new NodeTemplateTypeNotSupportedException("Type: " + nodeTemplateType
+                    + " not supported yet.");
         return agnosticElement;
     }
 
