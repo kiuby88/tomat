@@ -71,7 +71,7 @@ public class DefinitionParserTest {
 
     @Test
     public void testAgnosticMetadataDefinition() throws NodeTemplateTypeNotSupportedException,
-            TopologyTemplateFormatException {
+            TopologyTemplateFormatException, AgnosticPropertyException {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnostics();

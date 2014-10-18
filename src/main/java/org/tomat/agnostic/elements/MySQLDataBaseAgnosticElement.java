@@ -3,11 +3,10 @@ package org.tomat.agnostic.elements;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.MySQLDbNameAgnosticProperty;
 import org.tomat.agnostic.properties.MySQLDbPasswordAgnosticProperty;
-import org.tomat.agnostic.properties.MySQLDbPort;
+import org.tomat.agnostic.properties.MySQLDbPortAgnosticProperty;
 import org.tomat.agnostic.properties.MySQLDbUserAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -64,12 +63,12 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
 //    }
 
     @Override
-    public Map<String, Class<?>> getExpectedProperties(){
+    public Map<String, Class<?>> getExpectedProperties() {
         Map<String, Class<?>> map = super.getExpectedProperties();
         map.put("dbName", MySQLDbNameAgnosticProperty.class);
         map.put("dbUser", MySQLDbUserAgnosticProperty.class);
         map.put("dbPassword", MySQLDbPasswordAgnosticProperty.class);
-        map.put("dbPort", MySQLDbPort.class);
+        map.put("dbPort", MySQLDbPortAgnosticProperty.class);
         return map;
     }
 

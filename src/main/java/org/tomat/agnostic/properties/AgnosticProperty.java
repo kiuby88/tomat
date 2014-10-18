@@ -21,10 +21,8 @@ public abstract class AgnosticProperty {
     }
 
     private String  parsingRelation(Map<String, String > properties){
-        String[] j = getAllowedPropertyIds();
-         String jj=AgnosticElementUtils
+        return AgnosticElementUtils
                 .findValueMapUsingCollection(properties, getAllowedPropertyIds());
-        return jj;
     }
 
     public abstract String[] getAllowedPropertyIds();

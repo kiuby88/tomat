@@ -17,11 +17,6 @@ public class MySQLDbNameAgnosticProperty extends AgnosticProperty {
     public String[] getAllowedPropertyIds() {
         return DB_NAME;
     }
-
-    private final static String[] DB_USER = {"DB_USER", "databaseUser", "database_user", "db_user"};
-    private final static String[] DB_PASSWORD = {"DB_PASSWORD", "databasePassword",
-            "database_password", "db_password"};
-    private final static String[] DB_PORT = {"DB_PORT", "databasePort", "database_port", "db_port"};
 }
 
 
