@@ -4,6 +4,7 @@ import org.opentosca.model.tosca.TCapability;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.TRequirement;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
+import org.tomat.agnostic.Agnostic;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Map;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class AgnosticElement {
+public class AgnosticElement implements Agnostic {
 
     private static final String DEFAULT_LOCATION = "localhost";
 

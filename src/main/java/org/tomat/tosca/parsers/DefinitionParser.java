@@ -1,10 +1,8 @@
 package org.tomat.tosca.parsers;
 
-import org.opentosca.model.tosca.TCapability;
-import org.opentosca.model.tosca.TNodeTemplate;
-import org.opentosca.model.tosca.TRelationshipTemplate;
-import org.opentosca.model.tosca.TRequirement;
+import org.opentosca.model.tosca.*;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
+import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.agnostic.elements.AgnosticElementProvider;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
@@ -31,6 +29,8 @@ public class DefinitionParser {
     private List<AgnosticElement> generatedAgnosticElements = null;
     private List<TNodeTemplate> nodeTemplatesOfTopology = null;
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
+    private TServiceTemplate serviceTemplateOfTopology=null;
+    private ApplicationAgnosticMetadata applicationAgnosticMetadata;
 
     public DefinitionParser() {
         nodeTemplatesOfTopology = new LinkedList<TNodeTemplate>();
@@ -44,9 +44,12 @@ public class DefinitionParser {
 
     private DefinitionParser parsingApplicationTopology(File definitionFilePath)
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
+        //TODO this could optimiced using TDefinitionTemplate to extract the lists check in a
+        //TODO branch
         nodeTemplatesOfTopology = DefinitionUtils.getNodeTemplates(definitionFilePath);
         relationshipTemplatesOfTopology = DefinitionUtils
                 .getRelationshipTemplates(definitionFilePath);
+        serviceTemplateOfTopology=DefinitionUtils.getServiceTemplate(definitionFilePath);
         return this;
     }
 
@@ -54,6 +57,7 @@ public class DefinitionParser {
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
         buildAgnosticElementsList();
         buildAgnosticElementsRelations();
+        buildApplicationAgnosticMetadata();
         return this;
     }
 
@@ -133,6 +137,15 @@ public class DefinitionParser {
         agnosticRelations.put(source, targetValues);
     }
 
+    private void buildApplicationAgnosticMetadata(){
+        if(serviceTemplateOfTopology!=null){
+            this.setApplicationAgnosticMetadata(
+                    new ApplicationAgnosticMetadata(this.serviceTemplateOfTopology));
+        }else{
+            this.setApplicationAgnosticMetadata(new ApplicationAgnosticMetadata());
+        }
+    }
+
     //<editor-fold desc="Getters and Setters">
     public List<AgnosticElement> getAgnosticElements() {
         return generatedAgnosticElements;
@@ -140,6 +153,14 @@ public class DefinitionParser {
 
     public Map<AgnosticElement, List<AgnosticElement>> getAgnosticRelations() {
         return agnosticRelations;
+    }
+
+    public ApplicationAgnosticMetadata getApplicationAgnosticMetadata() {
+        return applicationAgnosticMetadata;
+    }
+
+    public void setApplicationAgnosticMetadata(ApplicationAgnosticMetadata applicationAgnosticMetadata) {
+        this.applicationAgnosticMetadata = applicationAgnosticMetadata;
     }
     //</editor-fold>
 

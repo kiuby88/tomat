@@ -3,6 +3,7 @@ package org.tomat.agnostic.graphs;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+import org.tomat.agnostic.Agnostic;
 import org.tomat.agnostic.elements.AgnosticElement;
 
 import java.util.LinkedList;
@@ -14,7 +15,7 @@ import java.util.Set;
 /**
  * Created by Jose on 15/10/14.
  */
-public class AgnosticGraph {
+public class AgnosticGraph implements Agnostic {
 
     DirectedGraph<AgnosticElement, DefaultEdge> agnosticGraph;
 
@@ -41,10 +42,11 @@ public class AgnosticGraph {
         agnosticGraph.addVertex(agnosticElement);
     }
 
-    public Set<AgnosticElement> getVertexSet(){
+    public Set<AgnosticElement> getVertexSet() {
         return agnosticGraph.vertexSet();
     }
-    public int getNumberOfEdges(){
+
+    public int getNumberOfEdges() {
         return agnosticGraph.edgeSet().size();
     }
 
@@ -54,21 +56,21 @@ public class AgnosticGraph {
      *
      * @return The returned list contains the elements which do not have out-going edges.
      */
-    public List<AgnosticElement> getIndependentVertex(){
+    public List<AgnosticElement> getIndependentVertex() {
         List<AgnosticElement> agnosticElementsWhioutOupPutDependences;
-        agnosticElementsWhioutOupPutDependences=new LinkedList<AgnosticElement>();
-        for(AgnosticElement agnosticElementVertex: this.getVertexSet()){
-            if(!hasOutgoingEdges(agnosticElementVertex)){
+        agnosticElementsWhioutOupPutDependences = new LinkedList<AgnosticElement>();
+        for (AgnosticElement agnosticElementVertex : this.getVertexSet()) {
+            if (!hasOutgoingEdges(agnosticElementVertex)) {
                 agnosticElementsWhioutOupPutDependences.add(agnosticElementVertex);
             }
         }
         return agnosticElementsWhioutOupPutDependences;
     }
 
-    private boolean hasOutgoingEdges(AgnosticElement agnosticElementVertex){
+    private boolean hasOutgoingEdges(AgnosticElement agnosticElementVertex) {
         //TODO check if element is contained in the graph
         Set<DefaultEdge> outgoingEdges = agnosticGraph.outgoingEdgesOf(agnosticElementVertex);
-        return ((outgoingEdges!=null)&&(!outgoingEdges.isEmpty()));
+        return ((outgoingEdges != null) && (!outgoingEdges.isEmpty()));
     }
 
 }

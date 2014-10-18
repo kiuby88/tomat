@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.elements.AgnosticElementUtils;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
@@ -36,7 +37,6 @@ public class DefinitionParserTest {
 
     @Before
     public void setUp() throws TopologyTemplateFormatException {
-
         definitionParser=new DefinitionParser();
     }
 
@@ -69,6 +69,19 @@ public class DefinitionParserTest {
     }
 
     @Test
+    public void testAgnosticMetadataDefinition() throws NodeTemplateTypeNotSupportedException,
+            TopologyTemplateFormatException {
+        definitionParser
+                .parsingApplicationTopology(AWSFile)
+                .buildAgnostics();
+        ApplicationAgnosticMetadata applicationAgnosticMetadata=definitionParser
+                .getApplicationAgnosticMetadata();
+        assertNotNull(applicationAgnosticMetadata);
+        assertEquals(applicationAgnosticMetadata.getId(), "AppOnlineRetailing");
+        assertEquals(applicationAgnosticMetadata.getName(),"OnlineRetailing Template");
+    }
+
+    @Test
     public void agnosticComponentsGenerationCorrect()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
         definitionParser
@@ -85,5 +98,6 @@ public class DefinitionParserTest {
         definitionParser.buildAgnostics();
         assertEquals(definitionParser.getAgnosticElements().size(), 0);
         assertEquals(definitionParser.getAgnosticRelations().size(), 0);
+        assertNotNull(definitionParser.getApplicationAgnosticMetadata());
     }
 }
