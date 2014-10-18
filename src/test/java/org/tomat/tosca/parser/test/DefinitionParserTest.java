@@ -6,6 +6,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.elements.AgnosticElementUtils;
+import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.agnostic.elements.AgnosticElement;
@@ -42,7 +43,7 @@ public class DefinitionParserTest {
 
     @Test(expected = TopologyTemplateFormatException.class)
     public void definitionThrowExceptionByMalformedRelation()
-            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException{
+            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         definitionParser
                 .parsingApplicationTopology(AWSFileMalFormedRelation)
                 .buildAgnostics();
@@ -50,7 +51,7 @@ public class DefinitionParserTest {
 
     @Test
     public void agnosticRelationComponentsGenerationCorrect()
-            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
+            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnostics();
@@ -83,7 +84,7 @@ public class DefinitionParserTest {
 
     @Test
     public void agnosticComponentsGenerationCorrect()
-            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
+            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnostics();
@@ -94,7 +95,8 @@ public class DefinitionParserTest {
 
     @Test
     public void testBuildElements_EmptyParsing()
-            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
+            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException,
+            AgnosticPropertyException {
         definitionParser.buildAgnostics();
         assertEquals(definitionParser.getAgnosticElements().size(), 0);
         assertEquals(definitionParser.getAgnosticRelations().size(), 0);

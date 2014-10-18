@@ -50,7 +50,7 @@
                           type="JBossWebServer">
                 <Properties>
                     <ns2:JBossWebServerProperties>
-                        <httpdport>80</httpdport>
+                        <httpPort>80</httpPort>
                     </ns2:JBossWebServerProperties>
                 </Properties>
                 <Location locationId="AWS"/>

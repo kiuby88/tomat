@@ -6,6 +6,8 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
+import org.tomat.agnostic.properties.AgnosticProperty;
+import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.agnostic.elements.AgnosticElementProvider;
@@ -48,7 +50,8 @@ public class ProviderTest {
     }
 
     @Test
-    public void nodeTemplateProviderJBossServer() throws NodeTemplateTypeNotSupportedException {
+    public void nodeTemplateProviderJBossServer() throws NodeTemplateTypeNotSupportedException,
+            AgnosticPropertyException {
         AgnosticElement nodeTemplateParser = AgnosticElementProvider
                 .createAgnosticElement(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
         assertEquals((nodeTemplateParser instanceof JBossAgnosticElement), true);
@@ -56,17 +59,26 @@ public class ProviderTest {
 
     @Test
     public void nodeTemplateProviderJBossServerProperties()
-            throws NodeTemplateTypeNotSupportedException {
-        JBossAgnosticElement jBossNodeTemplateParser =
+            throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
+        JBossAgnosticElement jBossAgnosticElement =
                 (JBossAgnosticElement) AgnosticElementProvider
                 .createAgnosticElement(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
-        assertEquals(jBossNodeTemplateParser.getHttpPort(), "80");
-        assertNull(jBossNodeTemplateParser.getHttpsPort());
+        List<AgnosticProperty> jBossProperties= jBossAgnosticElement.getProperties();
+        assertEquals(jBossProperties.size(), 2);
+        System.out.println(jBossProperties.get(0).getClass().getName());
+        System.out.println(jBossProperties.get(1).getClass().getName());
+        System.out.println(jBossProperties.get(0).getId());
+        System.out.println(jBossProperties.get(1).getId());
+        assertNull(jBossProperties.get(0).getValue());
+        assertEquals(jBossProperties.get(1).getValue(), "80");
+
+        //assertEquals(jBossNodeTemplateParser.getHttpPort(), "80");
+        //assertNull(jBossNodeTemplateParser.getHttpsPort());
     }
 
     @Test(expected = NodeTemplateTypeNotSupportedException.class)
     public void unsupportedNodeTemplateType()
-            throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
+            throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException, AgnosticPropertyException {
         definitionParser.parsingApplicationTopology(AWSUnsupportedType).buildAgnostics();
     }
 }

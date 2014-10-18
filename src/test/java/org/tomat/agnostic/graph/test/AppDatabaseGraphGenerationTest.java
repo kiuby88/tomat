@@ -7,6 +7,7 @@ import org.junit.runner.Result;
 import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.agnostic.elements.AgnosticElementUtils;
 import org.tomat.agnostic.graphs.AgnosticGraph;
+import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.tosca.parsers.DefinitionParser;
@@ -33,7 +34,7 @@ public class AppDatabaseGraphGenerationTest {
 
     @Before
     public void setUp() throws TopologyTemplateFormatException,
-            NodeTemplateTypeNotSupportedException {
+            NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         definitionParser = new DefinitionParser();
         definitionParser
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();

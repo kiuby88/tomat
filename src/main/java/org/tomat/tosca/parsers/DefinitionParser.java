@@ -5,6 +5,7 @@ import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.agnostic.elements.AgnosticElementProvider;
+import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
 
@@ -54,7 +55,9 @@ public class DefinitionParser {
     }
 
     public DefinitionParser buildAgnostics()
-            throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
+            throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException,
+            AgnosticPropertyException {
+
         buildAgnosticElementsList();
         buildAgnosticElementsRelations();
         buildApplicationAgnosticMetadata();
@@ -62,8 +65,8 @@ public class DefinitionParser {
     }
 
     private void buildAgnosticElementsList()
-            throws NodeTemplateTypeNotSupportedException {
-        generatedAgnosticElements = new LinkedList<AgnosticElement>();
+            throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
+        generatedAgnosticElements = new LinkedList<>();
         for (TNodeTemplate nodeTemplate : nodeTemplatesOfTopology) {
             generatedAgnosticElements
                     .add(AgnosticElementProvider.createAgnosticElement(nodeTemplate));

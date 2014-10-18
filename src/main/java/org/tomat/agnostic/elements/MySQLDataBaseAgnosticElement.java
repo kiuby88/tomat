@@ -1,6 +1,11 @@
 package org.tomat.agnostic.elements;
 
 import org.opentosca.model.tosca.TNodeTemplate;
+import org.tomat.agnostic.properties.MySQLDbNameAgnosticProperty;
+import org.tomat.agnostic.properties.MySQLDbPasswordAgnosticProperty;
+import org.tomat.agnostic.properties.MySQLDbPort;
+import org.tomat.agnostic.properties.MySQLDbUserAgnosticProperty;
+import org.tomat.exceptions.AgnosticPropertyException;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -12,82 +17,94 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
 
     //Define the properties Of the Element
 
-    private final static String[] DB_NAME = {"DBName", "databaseName", "database_name", "db_ame"};
-    private final static String[] DB_USER = {"DB_USER", "databaseUser", "database_user", "db_user"};
-    private final static String[] DB_PASSWORD = {"DB_PASSWORD", "databasePassword",
-            "database_password", "db_password"};
-    private final static String[] DB_PORT = {"DB_PORT", "databasePort", "database_port", "db_port"};
+    //TODO delete the following comments
+//    private final static String[] DB_NAME = {"DBName", "databaseName", "database_name", "db_ame"};
+//    private final static String[] DB_USER = {"DB_USER", "databaseUser", "database_user", "db_user"};
+//    private final static String[] DB_PASSWORD = {"DB_PASSWORD", "databasePassword",
+//            "database_password", "db_password"};
+//    private final static String[] DB_PORT = {"DB_PORT", "databasePort", "database_port", "db_port"};
+//
+//    private String dbName = null;
+//    private String dbUser = null;
+//    private String dbPassword = null;
+//    private String dbPort = null;
 
-    private String dbName = null;
-    private String dbUser = null;
-    private String dbPassword = null;
-    private String dbPort = null;
-
-    public MySQLDataBaseAgnosticElement(TNodeTemplate nodeTemplateSource) {
+    public MySQLDataBaseAgnosticElement(TNodeTemplate nodeTemplateSource)
+            throws AgnosticPropertyException {
         super(nodeTemplateSource);
-        parsingProperties();
+        //parsingProperties();
     }
 
-    private void parsingProperties() {
-        Map<String, String> propertiesMap = getNodeTemplateProperties();
-        initDbName(propertiesMap);
-        initDbUser(propertiesMap);
-        initDbPassword(propertiesMap);
-        initDbPort(propertiesMap);
-    }
+//    private void parsingProperties() {
+//        Map<String, String> propertiesMap = getNodeTemplateProperties();
+//        initDbName(propertiesMap);
+//        initDbUser(propertiesMap);
+//        initDbPassword(propertiesMap);
+//        initDbPort(propertiesMap);
+//    }
 
-    private void initDbName(Map<String, String> propertiesMap) {
-        setDbName(AgnosticElementUtils
-                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_NAME)));
-    }
+//    private void initDbName(Map<String, String> propertiesMap) {
+//        setDbName(AgnosticElementUtils
+//                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_NAME)));
+//    }
+//
+//    private void initDbUser(Map<String, String> propertiesMap) {
+//        setDbName(AgnosticElementUtils
+//                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_USER)));
+//    }
+//
+//    private void initDbPassword(Map<String, String> propertiesMap) {
+//        setDbName(AgnosticElementUtils
+//                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PASSWORD)));
+//    }
+//
+//    private void initDbPort(Map<String, String> propertiesMap) {
+//        setDbName(AgnosticElementUtils
+//                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PORT)));
+//    }
 
-    private void initDbUser(Map<String, String> propertiesMap) {
-        setDbName(AgnosticElementUtils
-                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_USER)));
-    }
-
-    private void initDbPassword(Map<String, String> propertiesMap) {
-        setDbName(AgnosticElementUtils
-                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PASSWORD)));
-    }
-
-    private void initDbPort(Map<String, String> propertiesMap) {
-        setDbName(AgnosticElementUtils
-                .findValueMapUsingCollection(propertiesMap, Arrays.asList(DB_PORT)));
+    @Override
+    public Map<String, Class<?>> getExpectedProperties(){
+        Map<String, Class<?>> map = super.getExpectedProperties();
+        map.put("dbName", MySQLDbNameAgnosticProperty.class);
+        map.put("dbUser", MySQLDbUserAgnosticProperty.class);
+        map.put("dbPassword", MySQLDbPasswordAgnosticProperty.class);
+        map.put("dbPort", MySQLDbPort.class);
+        return map;
     }
 
     // <editor-fold desc="Getters and Setters">
-    public String getDbName() {
-        return dbName;
-    }
-
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
-    }
-
-    public String getDbUser() {
-        return dbUser;
-    }
-
-    public void setDbUser(String dbUser) {
-        this.dbUser = dbUser;
-    }
-
-    public String getDbPassword() {
-        return dbPassword;
-    }
-
-    public void setDbPassword(String dbPassword) {
-        this.dbPassword = dbPassword;
-    }
-
-    public String getDbPort() {
-        return dbPort;
-    }
-
-    public void setDbPort(String dbPort) {
-        this.dbPort = dbPort;
-    }
+//    public String getDbName() {
+//        return dbName;
+//    }
+//
+//    public void setDbName(String dbName) {
+//        this.dbName = dbName;
+//    }
+//
+//    public String getDbUser() {
+//        return dbUser;
+//    }
+//
+//    public void setDbUser(String dbUser) {
+//        this.dbUser = dbUser;
+//    }
+//
+//    public String getDbPassword() {
+//        return dbPassword;
+//    }
+//
+//    public void setDbPassword(String dbPassword) {
+//        this.dbPassword = dbPassword;
+//    }
+//
+//    public String getDbPort() {
+//        return dbPort;
+//    }
+//
+//    public void setDbPort(String dbPort) {
+//        this.dbPort = dbPort;
+//    }
     // </editor-fold>
 
 }

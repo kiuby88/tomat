@@ -3,6 +3,7 @@ package org.tomat.agnostic.elements;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
+import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.tosca.parsers.ToscaSupportedTypeProvider;
 
@@ -19,7 +20,7 @@ public class AgnosticElementProvider {
      * @throws NodeTemplateTypeNotSupportedException
      */
     public static AgnosticElement createAgnosticElement(TNodeTemplate nodeTemplate)
-            throws NodeTemplateTypeNotSupportedException {
+            throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         AgnosticElement agnosticElement;
         String nodeTemplateType = getTypeName(nodeTemplate).toLowerCase();
 

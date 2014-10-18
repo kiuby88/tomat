@@ -8,6 +8,7 @@ import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.agnostic.elements.AgnosticElementUtils;
+import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.tosca.parsers.DefinitionParser;
@@ -38,7 +39,7 @@ public class AppDatbaseParsingTest {
 
     @Before
     public void setUp() throws TopologyTemplateFormatException,
-            NodeTemplateTypeNotSupportedException {
+            NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         nodeTemplateListAWSDbSample = DefinitionUtils
                 .getNodeTemplates(new File(AWSApplicationDatabaseFile));
         definitionParser = new DefinitionParser();
