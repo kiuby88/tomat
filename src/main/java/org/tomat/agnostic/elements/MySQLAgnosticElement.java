@@ -1,6 +1,8 @@
 package org.tomat.agnostic.elements;
 
 import org.opentosca.model.tosca.TNodeTemplate;
+import org.tomat.agnostic.Agnostic;
+import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.agnostic.properties.MySQLRootPasswordAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 
@@ -12,6 +14,9 @@ import java.util.Map;
  */
 public class MySQLAgnosticElement extends AgnosticElement {
 
+    public static final String  TYPE="MySQLDB";
+
+    //TODO delete this property comment
    // private String rootPassword = null;
 
     public MySQLAgnosticElement(TNodeTemplate nodeTemplateSource)
@@ -30,10 +35,15 @@ public class MySQLAgnosticElement extends AgnosticElement {
 //    }
 
     @Override
-    public Map<String, Class<?>> getExpectedProperties() {
-        Map<String, Class<?>> map = super.getExpectedProperties();
+    public Map<String, Class<? extends AgnosticProperty>> getExpectedProperties() {
+        Map<String, Class<? extends AgnosticProperty>> map = super.getExpectedProperties();
         map.put("rootPassword", MySQLRootPasswordAgnosticProperty.class);
         return map;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     //TODO delete the following elements

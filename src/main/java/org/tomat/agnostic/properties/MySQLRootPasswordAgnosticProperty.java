@@ -10,8 +10,8 @@ public class MySQLRootPasswordAgnosticProperty extends AgnosticProperty {
     private final static String[] DB_PASSWORD = {"DB_PASSWORD", "databasePassword",
             "database_password", "db_password"};
 
-    public MySQLRootPasswordAgnosticProperty(String id, Map<String, String > properties){
-        super(id, properties);
+    public MySQLRootPasswordAgnosticProperty( Map<String, String > properties){
+        super(properties);
     }
 
     @Override

@@ -21,21 +21,26 @@ import java.util.Map;
 //TODO check the clean code to specifi <variableName>List (e.g.).
 //TODO El nombre de esta clase debería ser algo refereico con parsear la topología
 //TODO Esta clase contendrá un metodo para parsear el fichero que contiene la topología
-//
+//TODO se podria llamar algo como TopologyProcessor o TopologyManager o TopologyAnalizer
 public class DefinitionParser {
 
-    //Esta es la que hay que eliminar
-    //private List<AgnosticApplicationComponent> agnosticApplicationComponents = null;
-    private Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = null;
-    private List<AgnosticElement> generatedAgnosticElements = null;
+
     private List<TNodeTemplate> nodeTemplatesOfTopology = null;
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
     private TServiceTemplate serviceTemplateOfTopology=null;
+
+    private List<AgnosticElement> generatedAgnosticElements = null;
+    private Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = null;
     private ApplicationAgnosticMetadata applicationAgnosticMetadata;
 
     public DefinitionParser() {
         nodeTemplatesOfTopology = new LinkedList<TNodeTemplate>();
         relationshipTemplatesOfTopology = new LinkedList<TRelationshipTemplate>();
+
+        generatedAgnosticElements=new LinkedList<>();
+        agnosticRelations=new HashMap<>();
+        applicationAgnosticMetadata=new ApplicationAgnosticMetadata();
+
     }
 
     public DefinitionParser parsingApplicationTopology(String definitionFilePath)

@@ -17,20 +17,18 @@ public class AgnosticElementUtils {
 
     public static String findValueMapUsingCollection(Map<String, String> map,
                                                     String[] keysCollection) {
-        String key = aKeyIsAMapKey(keysCollection, map);
+        String key = anyKeyFromCollectionIsAMapKey(keysCollection, map);
         if (key != null) {
-            String j = map.get(key);
-            return j;
+            return map.get(key);
         }
         return null;
     }
 
-    private static String aKeyIsAMapKey(String[] keysCollection,
-                                        Map<String, String> map) {
+    public static String anyKeyFromCollectionIsAMapKey(String[] keysCollection,
+                                                        Map<String, String> map) {
 
         for (String key : keysCollection) {
             if (map.containsKey(key.toLowerCase())){
-            //if(isContainsIgnoreCase(map.keySet(), key)){
                 return key;
             }
         }

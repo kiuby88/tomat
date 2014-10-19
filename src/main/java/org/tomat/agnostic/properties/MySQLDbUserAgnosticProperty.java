@@ -9,8 +9,8 @@ public class MySQLDbUserAgnosticProperty extends AgnosticProperty {
 
     private final static String[] DB_USER = {"DB_USER", "databaseUser", "database_user", "db_user"};
 
-    public MySQLDbUserAgnosticProperty(String id, Map<String, String> properties){
-        super(id, properties);
+    public MySQLDbUserAgnosticProperty( Map<String, String > properties){
+        super(properties);
     }
 
     @Override

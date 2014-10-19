@@ -13,7 +13,7 @@ public class AgnosticApplication {
     private AgnosticGraph agnosticGraph;
 
     public AgnosticApplication(DefinitionParser definitionParser) {
-        setMetadata(definitionParser.getApplicationAgnosticMetadata());
+        setAgnosticMetadata(definitionParser.getApplicationAgnosticMetadata());
         setAgnosticGraph(new AgnosticGraph(
                 definitionParser.getAgnosticElements(),
                 definitionParser.getAgnosticRelations()));
@@ -25,11 +25,11 @@ public class AgnosticApplication {
     }
 
     //<editor-fold desc="Getters and Setters">
-    public ApplicationAgnosticMetadata getMetadata() {
+    public ApplicationAgnosticMetadata getAgnosticMetadata() {
         return metadata;
     }
 
-    public void setMetadata(ApplicationAgnosticMetadata metadata) {
+    public void setAgnosticMetadata(ApplicationAgnosticMetadata metadata) {
         this.metadata = metadata;
     }
 

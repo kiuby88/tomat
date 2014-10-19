@@ -8,8 +8,8 @@ import org.tomat.agnostic.Agnostic;
  */
 public class ApplicationAgnosticMetadata implements Agnostic {
 
-    public final static String APPLICATION_NAME_BY_DEFAULT = "ApplicationNAME";
-    public final static String APPLICATION_ID_BY_DEFAULT = "ApplicationID";
+    public final static String APPLICATION_NAME_BY_DEFAULT = "APPLICATION_NAME";
+    public final static String APPLICATION_ID_BY_DEFAULT = "APPLICATION_ID";
     private String name;
     private String id;
 

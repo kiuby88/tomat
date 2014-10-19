@@ -16,14 +16,16 @@ import java.util.*;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class AgnosticElement implements Agnostic {
+//TODO migrate the name to AgnosticComponent and not AgnosticElement
+public abstract class AgnosticElement implements Agnostic {
+
 
     private static final String DEFAULT_LOCATION = "localhost";
     private static final Class<?> ROOT_AGNOSTIC_PROPERTY_CLASS = AgnosticProperty.class;
 
     private String id;
     private String name;
-    private String type;
+    //private String type;
     private String location;
     private TNodeTemplate sourceNodeTemplate;
     private List<AgnosticProperty> properties;
@@ -49,7 +51,9 @@ public class AgnosticElement implements Agnostic {
         if (sourceNodeTemplate != null) {
             id = sourceNodeTemplate.getId();
             name = sourceNodeTemplate.getName();
-            type = DefinitionUtils.getTypeName(sourceNodeTemplate);
+            //TODO delete the next line because the type is specify
+            //TODO by the AgnosticElementConcreted
+            //type = DefinitionUtils.getTypeName(sourceNodeTemplate);
             setLocation(sourceNodeTemplate);
         }
     }
@@ -96,27 +100,30 @@ public class AgnosticElement implements Agnostic {
     private void initProperties()
             throws AgnosticPropertyException {
 
-        Map<String, Class<?>> expectedProperties = this.getExpectedProperties();
-        Set<String> propertyIdsOfAgnosticElement = expectedProperties.keySet();
+        Map<String, Class<? extends AgnosticProperty>> expectedProperties = this.getExpectedProperties();
+        Set<String> propertyIdsOfExpectedProperties = expectedProperties.keySet();
         Class expectedPropertySpecification;
 
         setProperties(new LinkedList<AgnosticProperty>());
-        for (String expectedPropertyId : propertyIdsOfAgnosticElement) {
+        for (String expectedPropertyId : propertyIdsOfExpectedProperties) {
             expectedPropertySpecification = expectedProperties.get(expectedPropertyId);
-            addProperty(expectedPropertyId, expectedPropertySpecification);
+            addExpectedProperty(expectedPropertyId, expectedPropertySpecification);
         }
     }
 
-    private void addProperty(String id, Class<?> propertyClass) throws AgnosticPropertyException {
+    private void addExpectedProperty(String id, Class<? extends AgnosticProperty> propertyClass)
+            throws AgnosticPropertyException {
         try {
 
-            if(checkClassIsAgnosticDefinitionClass(propertyClass))
-                throw new AgnosticPropertyException("Class "+propertyClass.getName()
-                        +" is not a AgnosticPropertyDefinition");
-
-            AgnosticProperty agnosticProperty = (AgnosticProperty) propertyClass
-                    .getConstructor(String.class, Map.class)
-                    .newInstance(id, getNodeTemplateProperties());
+            //TODO delete the following class because it is not contained
+            //if(checkClassIsAgnosticDefinitionClass(propertyClass)){
+            //    throw new AgnosticPropertyException("Class "+propertyClass.getName()
+            //            +" is not a AgnosticPropertyDefinition");
+            //}
+            //TODO refactor de generation in a new element
+            AgnosticProperty agnosticProperty = propertyClass
+                    .getConstructor(Map.class)
+                    .newInstance(getNodeTemplateProperties());
             addProperty(agnosticProperty);
 
         } catch (InstantiationException | IllegalAccessException
@@ -130,9 +137,11 @@ public class AgnosticElement implements Agnostic {
         getProperties().add(property);
     }
 
-    private boolean checkClassIsAgnosticDefinitionClass(Class<?> propertyClass) {
-        return propertyClass.isAssignableFrom(ROOT_AGNOSTIC_PROPERTY_CLASS);
-    }
+    //TODO remove this method, because the properties of expected properties
+    //always are AgnosticProperties
+    //private boolean checkClassIsAgnosticDefinitionClass(Class<?> propertyClass) {
+    //    return propertyClass.isAssignableFrom(ROOT_AGNOSTIC_PROPERTY_CLASS);
+    //}
 
     private void clearNotCompletedProperties(){
         /*
@@ -168,13 +177,17 @@ public class AgnosticElement implements Agnostic {
     }
 
     //TODO probar este metodo en package visibility to check that only the package classes are able to use it
-    public Map<String, Class<?>> getExpectedProperties() {
+    //TODO change the name to getAllowedProperties (NOT USING REFACTORING, changing manually).
+    public Map<String, Class<?extends AgnosticProperty>> getExpectedProperties() {
         return new HashMap<>();
     }
 
-    //TODO este metodo es demasiado pesado, habría que cambiarlo para que no siempre se tenga que llamar al metodo que
-    //construye el mapa en lowercase
-    //TODO optimice
+    /*
+    TODO este metodo es demasiado pesado, habría que cambiarlo para que no siempre se tenga que llamar al metodo que
+    TODO construye el mapa en lowercase, el test tarda medio segundo x culpa de este metodo. cuando denria de tardar solo
+    TODO medio segundo maximo
+    TODO optimice
+     */
     Map<String, String> getNodeTemplateProperties() {
         return AgnosticElementUtils.putLowerCaseMapKeys(DefinitionUtils.getProperties(this.getNodeTemplate()));
     }
@@ -200,9 +213,8 @@ public class AgnosticElement implements Agnostic {
         return name;
     }
 
-    public String getType() {
-        return type;
-    }
+    //TODO do it is element abstract to will be concret in the subclass
+    public abstract String getType();
 
     public String getLocation() {
         return location;

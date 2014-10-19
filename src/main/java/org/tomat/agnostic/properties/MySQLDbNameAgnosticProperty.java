@@ -9,8 +9,8 @@ public class MySQLDbNameAgnosticProperty extends AgnosticProperty {
 
     private final static String[] DB_NAME = {"DBName", "databaseName", "database_name", "db_ame"};
 
-    public MySQLDbNameAgnosticProperty(String id, Map<String, String> properties){
-        super(id, properties);
+    public MySQLDbNameAgnosticProperty( Map<String, String > properties){
+        super(properties);
     }
 
     @Override

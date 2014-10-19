@@ -1,9 +1,11 @@
-package org.tomat.agnostic.graph.test;
+package org.tomat.agnostic.application.test;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import org.tomat.agnostic.application.AgnosticApplication;
+import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.agnostic.elements.AgnosticElementUtils;
 import org.tomat.agnostic.graphs.AgnosticGraph;
@@ -13,7 +15,6 @@ import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.tosca.parsers.DefinitionParser;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,15 +22,15 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by Jose on 15/10/14.
  */
-public class AppDatabaseGraphGenerationTest {
+public class AppDatabaseAgnosticApplicationTest {
 
     DefinitionParser definitionParser;
     String AWSApplicationDatabaseFile = "resources/AWS-Application-DatabaseSample.xml";
-    AgnosticGraph agnosticGraph;
-    Set<AgnosticElement> agnosticElementVertex;
+    AgnosticApplication agnosticApplication;
+    private AgnosticGraph agnosticGraph;
 
     public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(AppDatabaseGraphGenerationTest.class);
+        Result result = JUnitCore.runClasses(AppDatabaseAgnosticApplicationTest.class);
     }
 
     @Before
@@ -38,27 +39,37 @@ public class AppDatabaseGraphGenerationTest {
         definitionParser = new DefinitionParser();
         definitionParser
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
-        agnosticGraph = new AgnosticGraph(definitionParser.getAgnosticElements(),
-                definitionParser.getAgnosticRelations());
-        agnosticElementVertex = agnosticGraph.getVertexSet();
+        agnosticApplication=new AgnosticApplication(definitionParser);
+        agnosticGraph=agnosticApplication.getAgnosticGraph();
     }
 
     @Test
-    public void testGraphCreation_DefinitionEmpty(){
-        definitionParser=new DefinitionParser();
-        agnosticGraph=new AgnosticGraph(definitionParser.getAgnosticElements(),
-                definitionParser.getAgnosticRelations());
-        assertNotNull(agnosticGraph);
+    public void testCreation_definitionEmpty() {
+        agnosticApplication=new AgnosticApplication(new DefinitionParser());
+        assertNotNull(agnosticApplication);
+        assertNotNull(agnosticApplication.getAgnosticGraph());
     }
 
     @Test
-    public void testNumberOfEdges() {
-        assertEquals(agnosticGraph.getNumberOfEdges(), 3);
+    public void testMetadata_definitionEmpty() {
+        agnosticApplication=new AgnosticApplication(new DefinitionParser());
+        ApplicationAgnosticMetadata metadata = agnosticApplication.getAgnosticMetadata();
+        assertEquals(metadata.getId(), ApplicationAgnosticMetadata.APPLICATION_ID_BY_DEFAULT);
+        assertEquals(metadata.getName(), ApplicationAgnosticMetadata.APPLICATION_NAME_BY_DEFAULT);
+    }
+
+    @Test
+    public void testMetadata(){
+        ApplicationAgnosticMetadata metadata=
+                agnosticApplication.getAgnosticMetadata();
+
+        assertEquals(metadata.getId(), "AppOnlineRetailing");
+        assertEquals(metadata.getName(), "OnlineRetailing Template");
     }
 
     @Test
     public void testNumberOfVertex() {
-        assertEquals(agnosticGraph.getVertexSet().size(), 4);
+        assertEquals(agnosticApplication.getAgnosticGraph().getVertexSet().size(), 4);
     }
 
     @Test

@@ -24,11 +24,19 @@ public class AgnosticElementProvider {
         AgnosticElement agnosticElement;
         String nodeTemplateType = getTypeName(nodeTemplate).toLowerCase();
 
+
+
+        //TODO it could be interesting change this method using a switch and using
+        //TODO types of the AgnosticElements. Really, the TOSCA support class
+        //TODO it is not used, because the elements are specify using the Types
+        //TODO And in any moments is necessary check if it is supported because,
+        //TODO it are managed using the default method.
+        //TODO In any case or use switch or using Google code style.
         if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.JBOSS_WEB_SERVER))
             agnosticElement = new JBossAgnosticElement(nodeTemplate);
 
         else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.WEB_APPLICATION))
-            agnosticElement = new AgnosticElement(nodeTemplate);
+            agnosticElement = new WebAppAgnosticElement(nodeTemplate);
 
         else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.MySQL_DBMS))
             agnosticElement = new MySQLAgnosticElement(nodeTemplate);

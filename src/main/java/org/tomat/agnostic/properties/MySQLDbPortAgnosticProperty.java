@@ -8,8 +8,8 @@ import java.util.Map;
 public class MySQLDbPortAgnosticProperty extends AgnosticProperty {
 
     private final static String[] DB_PORT = {"DB_PORT", "databasePort", "database_port", "db_port"};
-    public MySQLDbPortAgnosticProperty(String id, Map<String, String> properties){
-        super(id, properties);
+    public MySQLDbPortAgnosticProperty( Map<String, String > properties){
+        super(properties);
     }
 
     @Override

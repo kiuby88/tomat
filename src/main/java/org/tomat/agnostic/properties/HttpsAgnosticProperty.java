@@ -9,8 +9,8 @@ public class HttpsAgnosticProperty extends AgnosticProperty{
 
     private final static String[] HTTPS_PROPERTY = {"https", "httpsport"};
 
-    public HttpsAgnosticProperty(String id, Map<String, String > properties){
-        super(id, properties);
+    public HttpsAgnosticProperty( Map<String, String > properties){
+        super(properties);
     }
 
     @Override
