@@ -5,12 +5,12 @@ import java.util.Map;
 /**
  * Created by Jose on 17/10/14.
  */
-public class MySQLRootPasswordAgnosticProperty extends AgnosticProperty {
+public class MySQLRootPasswordAgnosticPropertyAgnosticProperty extends AgnosticProperty implements MySQLDbConnectionParametersAgnosticProperty {
 
     private final static String[] DB_PASSWORD = {"DB_PASSWORD", "databasePassword",
             "database_password", "db_password"};
 
-    public MySQLRootPasswordAgnosticProperty( Map<String, String > properties){
+    public MySQLRootPasswordAgnosticPropertyAgnosticProperty(Map<String, String> properties){
         super(properties);
     }
 

@@ -1,12 +1,10 @@
 package org.tomat.agnostic.elements;
 
 import org.opentosca.model.tosca.TNodeTemplate;
-import org.tomat.agnostic.Agnostic;
 import org.tomat.agnostic.properties.AgnosticProperty;
-import org.tomat.agnostic.properties.MySQLRootPasswordAgnosticProperty;
+import org.tomat.agnostic.properties.MySQLRootPasswordAgnosticPropertyAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -37,7 +35,7 @@ public class MySQLAgnosticElement extends AgnosticElement {
     @Override
     public Map<String, Class<? extends AgnosticProperty>> getExpectedProperties() {
         Map<String, Class<? extends AgnosticProperty>> map = super.getExpectedProperties();
-        map.put("rootPassword", MySQLRootPasswordAgnosticProperty.class);
+        map.put("rootPassword", MySQLRootPasswordAgnosticPropertyAgnosticProperty.class);
         return map;
     }
 

@@ -64,10 +64,10 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
     @Override
     public Map<String, Class<? extends AgnosticProperty>> getExpectedProperties() {
         Map<String, Class<? extends AgnosticProperty>> map = super.getExpectedProperties();
-        map.put("dbName", MySQLDbNameAgnosticProperty.class);
-        map.put("dbUser", MySQLDbUserAgnosticProperty.class);
-        map.put("dbPassword", MySQLDbPasswordAgnosticProperty.class);
-        map.put("dbPort", MySQLDbPortAgnosticProperty.class);
+        map.put("dbName", MySQLDbNameAgnosticPropertyAgnosticProperty.class);
+        map.put("dbUser", MySQLDbUserAgnosticPropertyAgnosticProperty.class);
+        map.put("dbPassword", MySQLDbPasswordAgnosticPropertyAgnosticProperty.class);
+        map.put("dbPort", MySQLDbPortAgnosticPropertyAgnosticProperty.class);
         return map;
     }
 

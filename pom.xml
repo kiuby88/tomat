@@ -24,6 +24,11 @@
                 <artifactId>jgrapht</artifactId>
                 <version>0.7.3</version>
             </dependency>
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>1.15-SNAPSHOT</version>
+            </dependency>
         </dependencies>
 
     </project>

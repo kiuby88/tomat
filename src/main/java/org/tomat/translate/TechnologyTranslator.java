@@ -2,7 +2,6 @@ package org.tomat.translate;
 
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.translate.brooklyn.exceptions.NotSupportedTypeByBrooklynException;
 import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 
 /**

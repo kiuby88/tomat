@@ -41,7 +41,7 @@
 		importType="http://schemas.xmlsoap.org/wsdl/" 
 		location="Imports/MoodleBuildPlanArtifacts.wsdl" />
 
-	<ServiceTemplate id="AppOnlineRetailing" name="OnlineRetailing Template">
+	<ServiceTemplate id="dbApp" name="DatabaseApp">
 
 		<TopologyTemplate>
 

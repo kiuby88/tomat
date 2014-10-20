@@ -6,6 +6,7 @@ import org.opentosca.model.tosca.TRequirement;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
 
 import org.tomat.agnostic.Agnostic;
+import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 
@@ -31,8 +32,13 @@ public abstract class AgnosticElement implements Agnostic {
     private List<AgnosticProperty> properties;
     private List<String> capabilitiesIds;
     private List<String> requirementsIds;
+    private List<AgnosticDeploymentArtifact> deploymentArtifacts;
 
     public AgnosticElement() {
+        properties= new LinkedList<>();
+        capabilitiesIds= new LinkedList<>();
+        requirementsIds= new LinkedList<>();
+        deploymentArtifacts= new LinkedList<>();
     }
 
     public AgnosticElement(String id) {
@@ -45,6 +51,11 @@ public abstract class AgnosticElement implements Agnostic {
         initCapabilitiesIds();
         initRequirementsIds();
         initProperties();
+        initDeploymentArtifacts();
+    }
+
+    private void initDeploymentArtifacts() {
+        deploymentArtifacts=new LinkedList<>();
     }
 
     private void initGenericValues() {

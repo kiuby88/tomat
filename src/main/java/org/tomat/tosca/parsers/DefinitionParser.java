@@ -33,9 +33,10 @@ public class DefinitionParser {
     private Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = null;
     private ApplicationAgnosticMetadata applicationAgnosticMetadata;
 
+
     public DefinitionParser() {
-        nodeTemplatesOfTopology = new LinkedList<TNodeTemplate>();
-        relationshipTemplatesOfTopology = new LinkedList<TRelationshipTemplate>();
+        nodeTemplatesOfTopology = new LinkedList<>();
+        relationshipTemplatesOfTopology = new LinkedList<>();
 
         generatedAgnosticElements=new LinkedList<>();
         agnosticRelations=new HashMap<>();
@@ -72,11 +73,23 @@ public class DefinitionParser {
     private void buildAgnosticElementsList()
             throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         generatedAgnosticElements = new LinkedList<>();
+        AgnosticElement agnosticElement;
         for (TNodeTemplate nodeTemplate : nodeTemplatesOfTopology) {
+            AgnosticElementProvider.createAgnosticElement(nodeTemplate);
             generatedAgnosticElements
-                    .add(AgnosticElementProvider.createAgnosticElement(nodeTemplate));
+                    .add(buildAgnosticElement(nodeTemplate));
         }
     }
+
+    private AgnosticElement buildAgnosticElement(TNodeTemplate nodeTemplate)
+            throws AgnosticPropertyException, NodeTemplateTypeNotSupportedException {
+        AgnosticElement agnosticElement =
+                AgnosticElementProvider.createAgnosticElement(nodeTemplate);
+        Es necesario añadir los artefactos de implementacion
+        return agnosticElement;
+    }
+
+    
 
     private void buildAgnosticElementsRelations()
             throws TopologyTemplateFormatException {

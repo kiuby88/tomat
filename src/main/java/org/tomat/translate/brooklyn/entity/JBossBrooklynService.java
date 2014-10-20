@@ -23,8 +23,8 @@ public class JBossBrooklynService extends BrooklynServiceEntity {
 
     @Override
     public Map<Class<? extends AgnosticProperty>, String > getSupportedAgnosticPropertiesAndBrooklynPropertyId(){
-
-        Map<Class<? extends AgnosticProperty>, String > result=new HashMap<>();
+        Map<Class<? extends AgnosticProperty>, String > result=
+                super.getSupportedAgnosticPropertiesAndBrooklynPropertyId();
         result.put(HttpAgnosticProperty.class, "port.http");
         result.put(HttpsAgnosticProperty.class, "port.https");
         return result;

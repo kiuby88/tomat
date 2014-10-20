@@ -5,10 +5,10 @@ import java.util.Map;
 /**
  * Created by Jose on 17/10/14.
  */
-public class MySQLDbPortAgnosticProperty extends AgnosticProperty {
+public class MySQLDbPortAgnosticPropertyAgnosticProperty extends AgnosticProperty implements MySQLDbConnectionParametersAgnosticProperty {
 
     private final static String[] DB_PORT = {"DB_PORT", "databasePort", "database_port", "db_port"};
-    public MySQLDbPortAgnosticProperty( Map<String, String > properties){
+    public MySQLDbPortAgnosticPropertyAgnosticProperty(Map<String, String> properties){
         super(properties);
     }
 

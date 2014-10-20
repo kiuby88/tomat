@@ -5,11 +5,11 @@ import java.util.Map;
 /**
  * Created by Jose on 17/10/14.
  */
-public class MySQLDbUserAgnosticProperty extends AgnosticProperty {
+public class MySQLDbUserAgnosticPropertyAgnosticProperty extends AgnosticProperty implements MySQLDbConnectionParametersAgnosticProperty {
 
     private final static String[] DB_USER = {"DB_USER", "databaseUser", "database_user", "db_user"};
 
-    public MySQLDbUserAgnosticProperty( Map<String, String > properties){
+    public MySQLDbUserAgnosticPropertyAgnosticProperty(Map<String, String> properties){
         super(properties);
     }
 

@@ -6,17 +6,16 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.AgnosticElementUtils;
-import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.tosca.parsers.DefinitionParser;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynEntity;
-import org.tomat.translate.brooklyn.exceptions.NotSupportedTypeByBrooklynException;
+import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
+import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -25,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by Jose on 15/10/14.
  */
-public class BrooklynTranslatorTest {
+public class BrooklynTranslatorSimpleAppTest {
 
     DefinitionParser definitionParser;
     String AWSApplicationDatabaseFile = "resources/AWS-Location-Sample.xml";
@@ -33,8 +32,9 @@ public class BrooklynTranslatorTest {
     BrooklynTranslator brooklynTranslator;
     BrooklynApplicationEntity brooklynApplicationEntity;
 
+    //TODO refactor test to init using less code
     public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(BrooklynTranslatorTest.class);
+        Result result = JUnitCore.runClasses(BrooklynTranslatorSimpleAppTest.class);
     }
 
     @Before
@@ -44,6 +44,7 @@ public class BrooklynTranslatorTest {
         definitionParser
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
         agnosticApplication=new AgnosticApplication(definitionParser);
+        brooklynTranslator=new BrooklynTranslator(agnosticApplication);
     }
 
     @Test
@@ -55,12 +56,11 @@ public class BrooklynTranslatorTest {
         assertEquals(brooklynApplicationEntity.getId(), ApplicationAgnosticMetadata.APPLICATION_ID_BY_DEFAULT);
         assertEquals(brooklynApplicationEntity.getName(), ApplicationAgnosticMetadata.APPLICATION_NAME_BY_DEFAULT);
         assertEquals(brooklynApplicationEntity.getLocation(), BrooklynEntity.LOCATION_BY_DEFAULT);
+        assertEquals(brooklynApplicationEntity.getServices().size(), 0);
     }
-    //hacer parsing con vacia
 
     @Test
     public void testBrooklynTranslatorMetadata() {
-        brooklynTranslator=new BrooklynTranslator(agnosticApplication);
         brooklynApplicationEntity=brooklynTranslator.getBrooklynApplicationEntity();
         assertNotNull(brooklynApplicationEntity);
         assertEquals(brooklynApplicationEntity.getId(), "AppOnlineRetailing");
@@ -69,9 +69,31 @@ public class BrooklynTranslatorTest {
     }
 
     @Test
-    public void testBrooklynParsing() throws NotSupportedTypeByBrooklynException {
+    public void testBrooklynTranslating_Empty() throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+        agnosticApplication=new AgnosticApplication(new DefinitionParser());
         brooklynTranslator=new BrooklynTranslator(agnosticApplication);
         brooklynTranslator.translate();
     }
+
+    @Test
+    public void testBrooklynTranslating() throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+        brooklynTranslator.translate();
+        brooklynApplicationEntity=brooklynTranslator.getBrooklynApplicationEntity();
+        assertEquals(brooklynApplicationEntity.getServices().size(),1);
+        List<BrooklynServiceEntity> service = brooklynApplicationEntity.getServices();
+        BrooklynServiceEntity jBossBrooklynService=service.get(0);
+        assertNotNull(jBossBrooklynService.getBrooklinConfigProperties());
+        assertEquals(jBossBrooklynService.getBrooklinConfigProperties().size(), 2);
+        assertEquals(jBossBrooklynService.getBrooklinConfigProperties().get("port.http"), "80+");
+        assertEquals(jBossBrooklynService.getBrooklinConfigProperties().get("port.https"),null);
+    }
+
+    @Test
+    public void testBrooklynPrinting() throws AgnosticComponentTypeNotSupportedbyBrooklyException, IOException {
+        brooklynTranslator.translate();
+        brooklynApplicationEntity=brooklynTranslator.getBrooklynApplicationEntity();
+        brooklynTranslator.print("resources/test.yaml");
+    }
+
 
 }

@@ -4,6 +4,7 @@ import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.translate.TechnologyComponent;
 import org.tomat.translate.brooklyn.property.BrooklynProperty;
+import org.tomat.translate.brooklyn.property.BrooklynPropertyProvider;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
     }
 
     private void initBrooklynConfigProperties(){
-        brooklinConfigProperties=new HashMap<>();
+        setBrooklinConfigProperties(new HashMap<String, Object>());
         List<AgnosticProperty> propertiesOfAgnosticElement=
                 agnosticElement.getProperties();
         for(AgnosticProperty agnosticProperty : propertiesOfAgnosticElement){
@@ -48,9 +49,16 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
 
     private void addSupportedProperty(AgnosticProperty agnosticProperty){
         if(checkIsSupported(agnosticProperty)){
-            BrooklynProperty brooklynProperty= getBrooklynPropertyFabric(agnosticProperty);
-            this.brooklinConfigProperties
-                    .put(brooklynProperty.getId(), brooklynProperty.getValue());
+            BrooklynProperty brooklynProperty= getBrooklynPropertyTranslation(agnosticProperty);
+            //it could be good idea add the property to a list,
+            //however it could be necessary add a new map to relate the
+            //BrooklynPRoperties tot he ids.
+            String technologyComponentPropertyId=
+                    getSupportedAgnosticPropertiesAndBrooklynPropertyId()
+                            .get(agnosticProperty.getClass());
+
+            this.getBrooklinConfigProperties()
+                    .put(technologyComponentPropertyId, brooklynProperty.getValue());
         }
     }
 
@@ -61,10 +69,10 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
     }
     //TODO rename this method because we do not need the fabric, we need a
     //TODO property translation
-    private BrooklynProperty getBrooklynPropertyFabric(AgnosticProperty agnosticProperty){
+    private BrooklynProperty getBrooklynPropertyTranslation(AgnosticProperty agnosticProperty){
         //TODO Add a fabric of properties, it is important because currently
         //TODO the elements are created
-        return new BrooklynProperty(agnosticProperty.getId(), agnosticProperty.getValue());
+        return BrooklynPropertyProvider.createBrooklynProperty(agnosticProperty);
     }
 
     @Override
@@ -73,4 +81,12 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
     }
 
     public abstract String getServiceType();
+
+    public Map<String, Object> getBrooklinConfigProperties() {
+        return brooklinConfigProperties;
+    }
+
+    public void setBrooklinConfigProperties(Map<String, Object> brooklinConfigProperties) {
+        this.brooklinConfigProperties = brooklinConfigProperties;
+    }
 }

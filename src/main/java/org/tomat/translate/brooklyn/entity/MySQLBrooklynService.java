@@ -24,15 +24,6 @@ public class MySQLBrooklynService extends BrooklynServiceEntity {
     }
 
     @Override
-    public Map<Class<? extends AgnosticProperty>, String > getSupportedAgnosticPropertiesAndBrooklynPropertyId(){
-
-        Map<Class<? extends AgnosticProperty>, String > result=new HashMap<>();
-        //result.put(HttpAgnosticProperty.class, "port.http");
-        //result.put(HttpsAgnosticProperty.class, "port.https");
-        return result;
-    }
-
-    @Override
     public String getServiceType() {
         return SERVICE_TYPE;
     }
