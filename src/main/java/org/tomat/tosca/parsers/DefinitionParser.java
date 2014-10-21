@@ -2,7 +2,9 @@ package org.tomat.tosca.parsers;
 
 import org.opentosca.model.tosca.*;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
+import org.tomat.agnostic.Agnostic;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
+import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.agnostic.elements.AgnosticElementProvider;
 import org.tomat.exceptions.AgnosticPropertyException;
@@ -27,20 +29,19 @@ public class DefinitionParser {
 
     private List<TNodeTemplate> nodeTemplatesOfTopology = null;
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
-    private TServiceTemplate serviceTemplateOfTopology=null;
-
+    private TServiceTemplate serviceTemplateOfTopology = null;
+    private TDefinitions definitions = null;
     private List<AgnosticElement> generatedAgnosticElements = null;
     private Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = null;
     private ApplicationAgnosticMetadata applicationAgnosticMetadata;
-
 
     public DefinitionParser() {
         nodeTemplatesOfTopology = new LinkedList<>();
         relationshipTemplatesOfTopology = new LinkedList<>();
 
-        generatedAgnosticElements=new LinkedList<>();
-        agnosticRelations=new HashMap<>();
-        applicationAgnosticMetadata=new ApplicationAgnosticMetadata();
+        generatedAgnosticElements = new LinkedList<>();
+        agnosticRelations = new HashMap<>();
+        applicationAgnosticMetadata = new ApplicationAgnosticMetadata();
 
     }
 
@@ -56,7 +57,8 @@ public class DefinitionParser {
         nodeTemplatesOfTopology = DefinitionUtils.getNodeTemplates(definitionFilePath);
         relationshipTemplatesOfTopology = DefinitionUtils
                 .getRelationshipTemplates(definitionFilePath);
-        serviceTemplateOfTopology=DefinitionUtils.getServiceTemplate(definitionFilePath);
+        serviceTemplateOfTopology = DefinitionUtils.getServiceTemplate(definitionFilePath);
+        definitions = DefinitionUtils.getDefinitions(definitionFilePath);
         return this;
     }
 
@@ -71,9 +73,8 @@ public class DefinitionParser {
     }
 
     private void buildAgnosticElementsList()
-            throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
+            throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException, TopologyTemplateFormatException {
         generatedAgnosticElements = new LinkedList<>();
-        AgnosticElement agnosticElement;
         for (TNodeTemplate nodeTemplate : nodeTemplatesOfTopology) {
             AgnosticElementProvider.createAgnosticElement(nodeTemplate);
             generatedAgnosticElements
@@ -82,14 +83,62 @@ public class DefinitionParser {
     }
 
     private AgnosticElement buildAgnosticElement(TNodeTemplate nodeTemplate)
-            throws AgnosticPropertyException, NodeTemplateTypeNotSupportedException {
+            throws AgnosticPropertyException, NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
         AgnosticElement agnosticElement =
                 AgnosticElementProvider.createAgnosticElement(nodeTemplate);
-        Es necesario añadir los artefactos de implementacion
+
+        //TODO adding deploymentArtifacts
+        //agnosticElement.setAgnosticDeploymentArtifacts(getAgnosticDeploymentArtifacts(nodeTemplate));
+
         return agnosticElement;
     }
 
-    
+    private List<AgnosticDeploymentArtifact> getAgnosticDeploymentArtifacts(TNodeTemplate nodeTemplate)
+            throws TopologyTemplateFormatException {
+
+        List<AgnosticDeploymentArtifact> result;
+        List<TDeploymentArtifact> deploymentArtifacts =
+                DefinitionUtils.getDeploymentArtifact(definitions, nodeTemplate);
+
+            result = getAgnosticDeploymentArtifacts(deploymentArtifacts);
+
+        return result;
+    }
+
+    private List<AgnosticDeploymentArtifact> getAgnosticDeploymentArtifacts(List<TDeploymentArtifact> deploymentArtifacts)
+            throws TopologyTemplateFormatException {
+
+        List<AgnosticDeploymentArtifact> result = null;
+        if (deploymentArtifacts != null) {
+            result = new LinkedList<>();
+            AgnosticDeploymentArtifact agnosticDeploymentArtifact;
+            for (TDeploymentArtifact deploymentArtifact : deploymentArtifacts) {
+
+                agnosticDeploymentArtifact = getAgnosticDeploymentArtifact(deploymentArtifact);
+                result.add(agnosticDeploymentArtifact);
+            }
+        }
+        return result;
+    }
+
+    private AgnosticDeploymentArtifact getAgnosticDeploymentArtifact(TDeploymentArtifact deploymentArtifact)
+            throws TopologyTemplateFormatException {
+
+        TArtifactTemplate artifactTemplate = DefinitionUtils.getArtifactTemplate(definitions, deploymentArtifact);
+        if(artifactTemplate==null){
+            getAgnosticDeploymentArtifactWithoutArtifactTemplate(deploymentArtifact);
+        }
+        return new AgnosticDeploymentArtifact(artifactTemplate);
+    }
+
+    //TODO it could be good idea change the name using throwExceptionForNotArtifactTemplatefound or similar
+    private AgnosticDeploymentArtifact getAgnosticDeploymentArtifactWithoutArtifactTemplate(TDeploymentArtifact deploymentArtifact) throws TopologyTemplateFormatException {
+        //TODO make a test to this case. Where in a topology is not defined the
+        //TODO the artifactTemplate from a DeploymentArtifact
+        throw new TopologyTemplateFormatException(
+                "ArtifactTemplate " + deploymentArtifact.getArtifactRef().getLocalPart()
+                        + " declaration was not found for DeploymentArtifact.");
+    }
 
     private void buildAgnosticElementsRelations()
             throws TopologyTemplateFormatException {
@@ -158,11 +207,11 @@ public class DefinitionParser {
         agnosticRelations.put(source, targetValues);
     }
 
-    private void buildApplicationAgnosticMetadata(){
-        if(serviceTemplateOfTopology!=null){
+    private void buildApplicationAgnosticMetadata() {
+        if (serviceTemplateOfTopology != null) {
             this.setApplicationAgnosticMetadata(
                     new ApplicationAgnosticMetadata(this.serviceTemplateOfTopology));
-        }else{
+        } else {
             this.setApplicationAgnosticMetadata(new ApplicationAgnosticMetadata());
         }
     }

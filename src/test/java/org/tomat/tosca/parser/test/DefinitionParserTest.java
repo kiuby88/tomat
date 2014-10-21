@@ -50,7 +50,7 @@ public class DefinitionParserTest {
     }
 
     @Test
-    public void agnosticRelationComponentsGenerationCorrect()
+    public void agnosticRelationComponentsGeneration_CorrectTopology()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
@@ -83,7 +83,7 @@ public class DefinitionParserTest {
     }
 
     @Test
-    public void agnosticComponentsGenerationCorrect()
+    public void agnosticComponentsGeneration_CorrectTopology()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         definitionParser
                 .parsingApplicationTopology(AWSFile)

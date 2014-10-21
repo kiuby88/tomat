@@ -63,8 +63,8 @@ public class AppDatabaseAgnosticApplicationTest {
         ApplicationAgnosticMetadata metadata=
                 agnosticApplication.getAgnosticMetadata();
 
-        assertEquals(metadata.getId(), "AppOnlineRetailing");
-        assertEquals(metadata.getName(), "OnlineRetailing Template");
+        assertEquals(metadata.getId(), "dbApp");
+        assertEquals(metadata.getName(), "DatabaseApp");
     }
 
     @Test

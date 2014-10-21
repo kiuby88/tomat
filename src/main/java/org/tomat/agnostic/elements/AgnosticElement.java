@@ -32,13 +32,13 @@ public abstract class AgnosticElement implements Agnostic {
     private List<AgnosticProperty> properties;
     private List<String> capabilitiesIds;
     private List<String> requirementsIds;
-    private List<AgnosticDeploymentArtifact> deploymentArtifacts;
+    private List<AgnosticDeploymentArtifact> agnosticDeploymentArtifacts;
 
     public AgnosticElement() {
-        properties= new LinkedList<>();
-        capabilitiesIds= new LinkedList<>();
-        requirementsIds= new LinkedList<>();
-        deploymentArtifacts= new LinkedList<>();
+        properties = new LinkedList<>();
+        capabilitiesIds = new LinkedList<>();
+        requirementsIds = new LinkedList<>();
+        setAgnosticDeploymentArtifacts(new LinkedList<AgnosticDeploymentArtifact>());
     }
 
     public AgnosticElement(String id) {
@@ -51,11 +51,6 @@ public abstract class AgnosticElement implements Agnostic {
         initCapabilitiesIds();
         initRequirementsIds();
         initProperties();
-        initDeploymentArtifacts();
-    }
-
-    private void initDeploymentArtifacts() {
-        deploymentArtifacts=new LinkedList<>();
     }
 
     private void initGenericValues() {
@@ -70,10 +65,11 @@ public abstract class AgnosticElement implements Agnostic {
     }
 
     private void setLocation(TNodeTemplate nodeTemplate) {
-        if (locationIsEmpty(nodeTemplate))
+        if (locationIsEmpty(nodeTemplate)) {
             location = DEFAULT_LOCATION;
-        else
+        } else {
             location = nodeTemplate.getLocation().getLocationId();
+        }
     }
 
     private boolean locationIsEmpty(TNodeTemplate nodeTemplate) {
@@ -154,7 +150,7 @@ public abstract class AgnosticElement implements Agnostic {
     //    return propertyClass.isAssignableFrom(ROOT_AGNOSTIC_PROPERTY_CLASS);
     //}
 
-    private void clearNotCompletedProperties(){
+    private void clearNotCompletedProperties() {
         /*
         initProperties initializes the properties using null for properties
         which were not defined in the TOSCA, and they have not a value.
@@ -164,15 +160,15 @@ public abstract class AgnosticElement implements Agnostic {
         completed and not completed properties will be the concrete-builder
         of any technology.
          */
-        for(AgnosticProperty property: getProperties()){
-            if(!property.isCompleted()){
+        for (AgnosticProperty property : getProperties()) {
+            if (!property.isCompleted()) {
                 deleteProperty(property);
             }
         }
     }
 
-    private void deleteProperty(AgnosticProperty property){
-        if(getProperties().contains(property)){
+    private void deleteProperty(AgnosticProperty property) {
+        if (getProperties().contains(property)) {
             getProperties().remove(property);
         }
     }
@@ -189,7 +185,7 @@ public abstract class AgnosticElement implements Agnostic {
 
     //TODO probar este metodo en package visibility to check that only the package classes are able to use it
     //TODO change the name to getAllowedProperties (NOT USING REFACTORING, changing manually).
-    public Map<String, Class<?extends AgnosticProperty>> getExpectedProperties() {
+    public Map<String, Class<? extends AgnosticProperty>> getExpectedProperties() {
         return new HashMap<>();
     }
 
@@ -245,6 +241,14 @@ public abstract class AgnosticElement implements Agnostic {
 
     public void setProperties(List<AgnosticProperty> properties) {
         this.properties = properties;
+    }
+
+    public List<AgnosticDeploymentArtifact> getAgnosticDeploymentArtifacts() {
+        return agnosticDeploymentArtifacts;
+    }
+
+    public void setAgnosticDeploymentArtifacts(List<AgnosticDeploymentArtifact> agnosticDeploymentArtifacts) {
+        this.agnosticDeploymentArtifacts = agnosticDeploymentArtifacts;
     }
     //</editor-fold>
 }

@@ -28,7 +28,6 @@ public class ProviderTest {
 
     //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSSample;
-    //List<TRelationshipTemplate> relationshipTemplateListMalFormedTopology;
     TNodeTemplate nodeTemplateAWS;
     DefinitionParser definitionParser;
     String AWSFile = "resources/AWS-Location-Sample.xml";
@@ -65,15 +64,9 @@ public class ProviderTest {
                 .createAgnosticElement(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
         List<AgnosticProperty> jBossProperties= jBossAgnosticElement.getProperties();
         assertEquals(jBossProperties.size(), 2);
-        System.out.println(jBossProperties.get(0).getClass().getName());
-        System.out.println(jBossProperties.get(1).getClass().getName());
-        System.out.println(jBossProperties.get(0).getId());
-        System.out.println(jBossProperties.get(1).getId());
         assertNull(jBossProperties.get(0).getValue());
         assertEquals(jBossProperties.get(1).getValue(), "80");
-
-        //assertEquals(jBossNodeTemplateParser.getHttpPort(), "80");
-        //assertNull(jBossNodeTemplateParser.getHttpsPort());
+        assertNull(jBossAgnosticElement.getAgnosticDeploymentArtifacts());
     }
 
     @Test(expected = NodeTemplateTypeNotSupportedException.class)
