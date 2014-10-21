@@ -87,8 +87,8 @@ public class DefinitionParser {
         AgnosticElement agnosticElement =
                 AgnosticElementProvider.createAgnosticElement(nodeTemplate);
 
-        //TODO adding deploymentArtifacts
-        //agnosticElement.setAgnosticDeploymentArtifacts(getAgnosticDeploymentArtifacts(nodeTemplate));
+
+        agnosticElement.setAgnosticDeploymentArtifacts(getAgnosticDeploymentArtifacts(nodeTemplate));
 
         return agnosticElement;
     }
@@ -96,11 +96,13 @@ public class DefinitionParser {
     private List<AgnosticDeploymentArtifact> getAgnosticDeploymentArtifacts(TNodeTemplate nodeTemplate)
             throws TopologyTemplateFormatException {
 
-        List<AgnosticDeploymentArtifact> result;
+        List<AgnosticDeploymentArtifact> result=null;
         List<TDeploymentArtifact> deploymentArtifacts =
                 DefinitionUtils.getDeploymentArtifact(definitions, nodeTemplate);
-
+            //if((deploymentArtifacts!=null)
+            //    || (!deploymentArtifacts.isEmpty())){
             result = getAgnosticDeploymentArtifacts(deploymentArtifacts);
+            //}
 
         return result;
     }
@@ -113,7 +115,6 @@ public class DefinitionParser {
             result = new LinkedList<>();
             AgnosticDeploymentArtifact agnosticDeploymentArtifact;
             for (TDeploymentArtifact deploymentArtifact : deploymentArtifacts) {
-
                 agnosticDeploymentArtifact = getAgnosticDeploymentArtifact(deploymentArtifact);
                 result.add(agnosticDeploymentArtifact);
             }
