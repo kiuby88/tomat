@@ -220,7 +220,6 @@ public class DefinitionParserTest {
     }
 }
 
-//TODO test check the behavior whitout the different elements.
 //TODO test if we have several no related elements
 //TODO test if a type use several deployments artifacts.
 //TODO test if using several deployments artifacts any it is mal-formed

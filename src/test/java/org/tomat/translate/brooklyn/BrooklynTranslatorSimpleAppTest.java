@@ -82,10 +82,10 @@ public class BrooklynTranslatorSimpleAppTest {
         assertEquals(brooklynApplicationEntity.getServices().size(),1);
         List<BrooklynServiceEntity> service = brooklynApplicationEntity.getServices();
         BrooklynServiceEntity jBossBrooklynService=service.get(0);
-        assertNotNull(jBossBrooklynService.getBrooklinConfigProperties());
-        assertEquals(jBossBrooklynService.getBrooklinConfigProperties().size(), 2);
-        assertEquals(jBossBrooklynService.getBrooklinConfigProperties().get("port.http"), "80+");
-        assertEquals(jBossBrooklynService.getBrooklinConfigProperties().get("port.https"),null);
+        assertNotNull(jBossBrooklynService.getBrooklynConfigProperties());
+        assertEquals(jBossBrooklynService.getBrooklynConfigProperties().size(), 1);
+        assertEquals(jBossBrooklynService.getBrooklynConfigProperties().get("port.http"), "80+");
+        //assertEquals(jBossBrooklynService.getBrooklynConfigProperties().get("port.https"),null);
     }
 
     @Test

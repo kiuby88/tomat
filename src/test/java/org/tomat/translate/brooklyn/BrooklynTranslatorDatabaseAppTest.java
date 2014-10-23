@@ -49,16 +49,16 @@ public class BrooklynTranslatorDatabaseAppTest {
         definitionParser = new DefinitionParser();
         definitionParser
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
-        agnosticApplication=new AgnosticApplication(definitionParser);
-        brooklynTranslator=new BrooklynTranslator(agnosticApplication)
+        agnosticApplication = new AgnosticApplication(definitionParser);
+        brooklynTranslator = new BrooklynTranslator(agnosticApplication)
                 .translate();
-        brooklynApplicationEntity=brooklynTranslator.getBrooklynApplicationEntity();
+        brooklynApplicationEntity = brooklynTranslator.getBrooklynApplicationEntity();
         services = brooklynApplicationEntity.getServices();
     }
 
     @Test
-    public void testBrooklynServiceEntitiesSize(){
-        assertEquals(brooklynApplicationEntity.getServices().size(),2);
+    public void testBrooklynServiceEntitiesSize() {
+        assertEquals(brooklynApplicationEntity.getServices().size(), 2);
     }
 
     @Test
@@ -72,25 +72,24 @@ public class BrooklynTranslatorDatabaseAppTest {
     @Test
     public void testBrooklynTranslating_JBoss()
             throws AgnosticComponentTypeNotSupportedbyBrooklyException {
-        BrooklynServiceEntity jBossBrooklynService=services.get(0);
-        assertNotNull(jBossBrooklynService.getBrooklinConfigProperties());
-        assertEquals(jBossBrooklynService.getBrooklinConfigProperties().size(), 2);
-        assertEquals(jBossBrooklynService.getBrooklinConfigProperties().get("port.http"), "80+");
-        assertEquals(jBossBrooklynService.getBrooklinConfigProperties().get("port.https"), null);
+        BrooklynServiceEntity jBossBrooklynService = services.get(0);
+        assertNotNull(jBossBrooklynService.getBrooklynConfigProperties());
+        assertEquals(jBossBrooklynService.getBrooklynConfigProperties().size(), 1);
+        assertEquals(jBossBrooklynService.getBrooklynConfigProperties().get("port.http"), "80+");
     }
 
     @Test
     public void testBrooklynTranslating_MySQL()
             throws AgnosticComponentTypeNotSupportedbyBrooklyException {
-        BrooklynServiceEntity mySQL=services.get(1);
+        BrooklynServiceEntity mySQL = services.get(1);
         assertNotNull(mySQL);
-        assertNotNull(mySQL.getBrooklinConfigProperties());
-        assertEquals(mySQL.getBrooklinConfigProperties().size(),0);
+        assertNotNull(mySQL.getBrooklynConfigProperties());
+        assertEquals(mySQL.getBrooklynConfigProperties().size(), 0);
     }
 
     @Test
     public void testBrooklynPrinting() throws AgnosticComponentTypeNotSupportedbyBrooklyException, IOException {
-        brooklynApplicationEntity=brooklynTranslator.getBrooklynApplicationEntity();
+        brooklynApplicationEntity = brooklynTranslator.getBrooklynApplicationEntity();
         brooklynTranslator.print("resources/testDbApp.yaml");
     }
 }

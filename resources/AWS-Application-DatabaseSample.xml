@@ -41,6 +41,44 @@
 		importType="http://schemas.xmlsoap.org/wsdl/" 
 		location="Imports/MoodleBuildPlanArtifacts.wsdl" />
 
+    <!-- NodeTypeImplementation WebApplication -->
+    <NodeTypeImplementation name="WebAppNodeTypeImplementation"
+                            nodeType="WebApplication">
+        <DeploymentArtifacts>
+            <DeploymentArtifact artifactRef="WebAppArtifactTemplate"
+                                artifactType="ns2:ArchiveArtifact" name="WebAppImplementation-archive">
+            </DeploymentArtifact>
+        </DeploymentArtifacts>
+    </NodeTypeImplementation>
+
+    <ArtifactTemplate id="WebAppArtifactTemplate"
+                      name="WebAppArtifactTemplate-archive" type="ns2:ArchiveArtifact">
+        <ArtifactReferences>
+            <ArtifactReference reference="webAppArtifactImplementation.war" />
+        </ArtifactReferences>
+    </ArtifactTemplate>
+    <!-- __END__ NodeTypeImplementation WebApplication -->
+
+    <!-- NodeTypeImplementation MySQLDatabase -->
+    <NodeTypeImplementation name="Main Database"
+                            nodeType="MySQLDB">
+        <DeploymentArtifacts>
+            <DeploymentArtifact artifactRef="DataBaseArtifactTemplate"
+                                artifactType="ns2:ArchiveArtifact" name="DatabaseImplementation-archive">
+            </DeploymentArtifact>
+        </DeploymentArtifacts>
+    </NodeTypeImplementation>
+
+    <ArtifactTemplate id="DataBaseArtifactTemplate"
+                      name="DatabaseArtifactTemplate-archive" type="ns2:ArchiveArtifact">
+        <ArtifactReferences>
+            <ArtifactReference reference="database.sql" />
+        </ArtifactReferences>
+    </ArtifactTemplate>
+    <!-- __END__ NodeTypeImplementation MySQLDatabase -->
+
+
+
 	<ServiceTemplate id="dbApp" name="DatabaseApp">
 
 		<TopologyTemplate>

@@ -134,8 +134,6 @@ public class DefinitionParser {
 
     //TODO it could be good idea change the name using throwExceptionForNotArtifactTemplatefound or similar
     private AgnosticDeploymentArtifact getAgnosticDeploymentArtifactWithoutArtifactTemplate(TDeploymentArtifact deploymentArtifact) throws TopologyTemplateFormatException {
-        //TODO make a test to this case. Where in a topology is not defined the
-        //TODO the artifactTemplate from a DeploymentArtifact
         throw new TopologyTemplateFormatException(
                 "ArtifactTemplate " + deploymentArtifact.getArtifactRef().getLocalPart()
                         + " declaration was not found for DeploymentArtifact.");

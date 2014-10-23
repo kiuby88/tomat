@@ -17,7 +17,7 @@ import java.util.Map;
 //TODO o en singular
 public abstract class BrooklynServiceEntity extends BrooklynEntity implements TechnologyComponent {
 
-    private Map<String, Object> brooklinConfigProperties;
+    private Map<String, Object> brooklynConfigProperties;
     private AgnosticElement agnosticElement;
 
     public BrooklynServiceEntity(AgnosticElement agnosticElement){
@@ -39,7 +39,7 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
     }
 
     private void initBrooklynConfigProperties(){
-        setBrooklinConfigProperties(new HashMap<String, Object>());
+        setBrooklynConfigProperties(new HashMap<String, Object>());
         List<AgnosticProperty> propertiesOfAgnosticElement=
                 agnosticElement.getProperties();
         for(AgnosticProperty agnosticProperty : propertiesOfAgnosticElement){
@@ -52,13 +52,12 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
             BrooklynProperty brooklynProperty= getBrooklynPropertyTranslation(agnosticProperty);
             //it could be good idea add the property to a list,
             //however it could be necessary add a new map to relate the
-            //BrooklynPRoperties tot he ids.
+            //BrooklynProperties tot he ids.
             String technologyComponentPropertyId=
                     getSupportedAgnosticPropertiesAndBrooklynPropertyId()
                             .get(agnosticProperty.getClass());
 
-            this.getBrooklinConfigProperties()
-                    .put(technologyComponentPropertyId, brooklynProperty.getValue());
+            this.addConfigProperty(technologyComponentPropertyId, brooklynProperty.getValue());
         }
     }
 
@@ -67,6 +66,15 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
                 .keySet()
                 .contains(agnosticProperty.getClass());
     }
+
+    //TODO this asume only a level, if we have more level we could add an recursive method based
+    //TODOin the iterable property
+    private void addConfigProperty(String agnosticProperty, Object value){
+        if(value!=null){
+            this.getBrooklynConfigProperties().put(agnosticProperty,value);
+        }
+    }
+
     //TODO rename this method because we do not need the fabric, we need a
     //TODO property translation
     private BrooklynProperty getBrooklynPropertyTranslation(AgnosticProperty agnosticProperty){
@@ -82,11 +90,17 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
 
     public abstract String getServiceType();
 
-    public Map<String, Object> getBrooklinConfigProperties() {
-        return brooklinConfigProperties;
+    public Map<String, Object> getBrooklynConfigProperties() {
+        return brooklynConfigProperties;
     }
 
-    public void setBrooklinConfigProperties(Map<String, Object> brooklinConfigProperties) {
-        this.brooklinConfigProperties = brooklinConfigProperties;
+    public void setBrooklynConfigProperties(Map<String, Object> brooklynConfigProperties) {
+        this.brooklynConfigProperties =new HashMap<>();
+
+        if(brooklynConfigProperties !=null){
+            for(String propertyId : brooklynConfigProperties.keySet()){
+                addConfigProperty(propertyId, brooklynConfigProperties.get(propertyId));
+            }
+        }
     }
 }

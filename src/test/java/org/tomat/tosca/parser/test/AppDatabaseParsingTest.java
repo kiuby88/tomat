@@ -6,8 +6,8 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.AgnosticElementUtils;
+import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
+import org.tomat.agnostic.elements.*;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
@@ -21,11 +21,12 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by Jose on 06/10/14.
  */
-public class AppDatbaseParsingTest {
+public class AppDatabaseParsingTest {
 
     //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSDbSample;
@@ -34,7 +35,7 @@ public class AppDatbaseParsingTest {
     Map<AgnosticElement, List<AgnosticElement>> relationMaps;
 
     public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(AppDatbaseParsingTest.class);
+        Result result = JUnitCore.runClasses(AppDatabaseParsingTest.class);
     }
 
     @Before
@@ -64,12 +65,58 @@ public class AppDatbaseParsingTest {
                 ToscaSupportedTypeProvider.WEB_APPLICATION.toLowerCase());
         assertEquals(DefinitionUtils.getTypeName(nodeTemplateListAWSDbSample.get(2)).toLowerCase(),
                 ToscaSupportedTypeProvider.MySQL_DBMS.toLowerCase());
+        assertEquals(DefinitionUtils.getTypeName(nodeTemplateListAWSDbSample.get(3)).toLowerCase(),
+                ToscaSupportedTypeProvider.MySQL_DB.toLowerCase());
+    }
+
+    @Test
+    public void testDeploymentArtifacts_All(){
+
+        List<AgnosticElement> agnosticElements=definitionParser.getAgnosticElements();
+        assertEquals(agnosticElements.size(),4);
+
+        testDeploymentArtifacts_JBoss(agnosticElements);
+        testDeploymentArtifacts_WebApp(agnosticElements);
+        testDeploymentArtifacts_MySQL(agnosticElements);
+        testDeploymentArtifacts_MySQLDb(agnosticElements);
+    }
+
+    public void testDeploymentArtifacts_JBoss(List<AgnosticElement> agnosticElements){
+        assertEquals(agnosticElements.get(0).getType(), JBossAgnosticElement.TYPE);
+        assertNull(agnosticElements.get(0).getAgnosticDeploymentArtifacts());
+    }
+
+    public void testDeploymentArtifacts_WebApp(List<AgnosticElement> agnosticElements){
+        assertEquals(agnosticElements.get(1).getType(), WebAppAgnosticElement.TYPE);
+        List<AgnosticDeploymentArtifact> agnosticDeploymentArtifactWebApp=agnosticElements.get(1).getAgnosticDeploymentArtifacts();
+        assertNotNull(agnosticDeploymentArtifactWebApp);
+        assertEquals(agnosticDeploymentArtifactWebApp.size(), 1);
+        assertEquals(agnosticDeploymentArtifactWebApp.get(0).getArtifactReferences().size(), 1);
+        AgnosticDeploymentArtifact webAppAgnosticDeploymentArtifact = agnosticDeploymentArtifactWebApp.get(0);
+        assertEquals(webAppAgnosticDeploymentArtifact.getArtifactReferences().size(), 1);
+        assertEquals(webAppAgnosticDeploymentArtifact.getArtifactReferences().get(0), "webAppArtifactImplementation.war");
+    }
+
+    public void testDeploymentArtifacts_MySQL(List<AgnosticElement> agnosticElements){
+        assertEquals(agnosticElements.get(2).getType(), MySQLAgnosticElement.TYPE);
+        assertNull(agnosticElements.get(2).getAgnosticDeploymentArtifacts());
+    }
+
+    public void testDeploymentArtifacts_MySQLDb(List<AgnosticElement> agnosticElements){
+        assertEquals(agnosticElements.get(3).getType(), MySQLDataBaseAgnosticElement.TYPE);
+        List<AgnosticDeploymentArtifact> agnosticDeploymentArtifactMySQLDb=agnosticElements.get(3).getAgnosticDeploymentArtifacts();
+        assertNotNull(agnosticDeploymentArtifactMySQLDb);
+        assertEquals(agnosticDeploymentArtifactMySQLDb.size(), 1);
+        assertEquals(agnosticDeploymentArtifactMySQLDb.get(0).getArtifactReferences().size(), 1);
+        AgnosticDeploymentArtifact MySQLDbAgnosticDeploymentArtifact = agnosticDeploymentArtifactMySQLDb.get(0);
+        assertEquals(MySQLDbAgnosticDeploymentArtifact.getArtifactReferences().size(), 1);
+        assertEquals(MySQLDbAgnosticDeploymentArtifact.getArtifactReferences().get(0), "database.sql");
+
     }
 
     @Test
     public void checkRelations()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
-
         int numberOfRelationShipKeys = 2;
         assertEquals(relationMaps.size(), numberOfRelationShipKeys);
 
@@ -79,7 +126,6 @@ public class AppDatbaseParsingTest {
     }
 
     public void checkRelation(String sourceId, String targetId){
-
         AgnosticElement sourceAgnosticElement, targetAgnosticElement;
         List<AgnosticElement> targets;
         Set<AgnosticElement> relationsKeyMap = relationMaps.keySet();
@@ -92,6 +138,5 @@ public class AppDatbaseParsingTest {
         targets=relationMaps.get(sourceAgnosticElement);
         targetAgnosticElement=AgnosticElementUtils.findAgnosticElementById(targets, targetId);
         assertNotNull(targetAgnosticElement);
-
     }
 }

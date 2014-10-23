@@ -4,8 +4,7 @@ location: localhost
 name: OnlineRetailing Template
 services:
 - !!org.tomat.translate.brooklyn.entity.JBossBrooklynService
-  brooklinConfigProperties:
-    port.https: null
+  brooklynConfigProperties:
     port.http: 80+
   id: JBossMainWebServer
   location: AWS
