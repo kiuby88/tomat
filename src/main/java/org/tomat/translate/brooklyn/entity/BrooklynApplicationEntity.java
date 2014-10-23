@@ -1,10 +1,5 @@
 package org.tomat.translate.brooklyn.entity;
 
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-
-import java.io.File;
-import java.io.FileWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,7 +26,6 @@ public class BrooklynApplicationEntity extends BrooklynEntity {
     public void setServices(List<BrooklynServiceEntity> services) {
         this.services = services;
     }
-
 
     public static class Builder extends BrooklynEntity.Builder {
 

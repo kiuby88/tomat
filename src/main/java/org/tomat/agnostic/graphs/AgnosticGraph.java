@@ -24,6 +24,7 @@ public class AgnosticGraph implements Agnostic {
                 new DefaultDirectedGraph<AgnosticElement, DefaultEdge>(DefaultEdge.class);
         initVertex(agnosticElements);
         initEdges(relations);
+
     }
 
     private void initVertex(List<AgnosticElement> agnosticElements) {
@@ -38,6 +39,7 @@ public class AgnosticGraph implements Agnostic {
                 agnosticGraph.addEdge(sourceAgnosticElement, targetAgnosticElement);
     }
 
+    //TODO refactor name of agnosticElement to vertex in the parameter of the method
     private void addVertex(AgnosticElement agnosticElement) {
         agnosticGraph.addVertex(agnosticElement);
     }
@@ -57,20 +59,39 @@ public class AgnosticGraph implements Agnostic {
      * @return The returned list contains the elements which do not have out-going edges.
      */
     public List<AgnosticElement> getIndependentVertex() {
-        List<AgnosticElement> agnosticElementsWhioutOupPutDependences;
-        agnosticElementsWhioutOupPutDependences = new LinkedList<AgnosticElement>();
+        List<AgnosticElement> agnosticElementsWithoutOupPutDependencies;
+        agnosticElementsWithoutOupPutDependencies = new LinkedList<>();
         for (AgnosticElement agnosticElementVertex : this.getVertexSet()) {
             if (!hasOutgoingEdges(agnosticElementVertex)) {
-                agnosticElementsWhioutOupPutDependences.add(agnosticElementVertex);
+                agnosticElementsWithoutOupPutDependencies.add(agnosticElementVertex);
             }
         }
-        return agnosticElementsWhioutOupPutDependences;
+        return agnosticElementsWithoutOupPutDependencies;
     }
 
+    //TODO refactor name of agnosticElement to vertex in the parameter of the method
     private boolean hasOutgoingEdges(AgnosticElement agnosticElementVertex) {
         //TODO check if element is contained in the graph
         Set<DefaultEdge> outgoingEdges = agnosticGraph.outgoingEdgesOf(agnosticElementVertex);
         return ((outgoingEdges != null) && (!outgoingEdges.isEmpty()));
+    }
+
+    //TODO refactor name of agnosticElement to vertex in the parameter of the method
+    public Set<DefaultEdge> getIncomingEdgesOf(AgnosticElement agnosticElement){
+        return agnosticGraph.incomingEdgesOf(agnosticElement);
+    }
+
+    //TODO refactor name of agnosticElement to vertex in the parameter of the method
+    public List<AgnosticElement> getIncompongVertexOf(AgnosticElement agnosticElement){
+        List<AgnosticElement> result=null;
+        Set<DefaultEdge> incomingVertex= getIncomingEdgesOf(agnosticElement);
+        if(incomingVertex!=null){
+            result=new LinkedList<>();
+            for(DefaultEdge edge : incomingVertex){
+                result.add(agnosticGraph.getEdgeSource(edge));
+            }
+        }
+        return result;
     }
 
 }

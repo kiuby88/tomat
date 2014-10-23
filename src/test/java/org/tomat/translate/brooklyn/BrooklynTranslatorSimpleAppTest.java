@@ -13,7 +13,7 @@ import org.tomat.tosca.parsers.DefinitionParser;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
-import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
+import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 
 import java.io.IOException;
 import java.util.List;
@@ -69,14 +69,14 @@ public class BrooklynTranslatorSimpleAppTest {
     }
 
     @Test
-    public void testBrooklynTranslating_Empty() throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+    public void testBrooklynTranslating_Empty() throws NotSupportedTypeByTechnologyException {
         agnosticApplication=new AgnosticApplication(new DefinitionParser());
         brooklynTranslator=new BrooklynTranslator(agnosticApplication);
         brooklynTranslator.translate();
     }
 
     @Test
-    public void testBrooklynTranslating() throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+    public void testBrooklynTranslating() throws NotSupportedTypeByTechnologyException {
         brooklynTranslator.translate();
         brooklynApplicationEntity=brooklynTranslator.getBrooklynApplicationEntity();
         assertEquals(brooklynApplicationEntity.getServices().size(),1);
@@ -89,7 +89,8 @@ public class BrooklynTranslatorSimpleAppTest {
     }
 
     @Test
-    public void testBrooklynPrinting() throws AgnosticComponentTypeNotSupportedbyBrooklyException, IOException {
+    public void testBrooklynPrinting()
+            throws NotSupportedTypeByTechnologyException, IOException {
         brooklynTranslator.translate();
         brooklynApplicationEntity=brooklynTranslator.getBrooklynApplicationEntity();
         brooklynTranslator.print("resources/test.yaml");

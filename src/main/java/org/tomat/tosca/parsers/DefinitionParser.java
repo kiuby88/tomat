@@ -2,7 +2,6 @@ package org.tomat.tosca.parsers;
 
 import org.opentosca.model.tosca.*;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
-import org.tomat.agnostic.Agnostic;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.elements.AgnosticElement;
@@ -96,14 +95,10 @@ public class DefinitionParser {
     private List<AgnosticDeploymentArtifact> getAgnosticDeploymentArtifacts(TNodeTemplate nodeTemplate)
             throws TopologyTemplateFormatException {
 
-        List<AgnosticDeploymentArtifact> result=null;
+        List<AgnosticDeploymentArtifact> result;
         List<TDeploymentArtifact> deploymentArtifacts =
                 DefinitionUtils.getDeploymentArtifact(definitions, nodeTemplate);
-            //if((deploymentArtifacts!=null)
-            //    || (!deploymentArtifacts.isEmpty())){
-            result = getAgnosticDeploymentArtifacts(deploymentArtifacts);
-            //}
-
+        result = getAgnosticDeploymentArtifacts(deploymentArtifacts);
         return result;
     }
 
@@ -126,14 +121,13 @@ public class DefinitionParser {
             throws TopologyTemplateFormatException {
 
         TArtifactTemplate artifactTemplate = DefinitionUtils.getArtifactTemplate(definitions, deploymentArtifact);
-        if(artifactTemplate==null){
-            getAgnosticDeploymentArtifactWithoutArtifactTemplate(deploymentArtifact);
+        if (artifactTemplate == null) {
+            throwExceptionForNotFoundArtifactTemplate(deploymentArtifact);
         }
         return new AgnosticDeploymentArtifact(artifactTemplate);
     }
 
-    //TODO it could be good idea change the name using throwExceptionForNotArtifactTemplatefound or similar
-    private AgnosticDeploymentArtifact getAgnosticDeploymentArtifactWithoutArtifactTemplate(TDeploymentArtifact deploymentArtifact) throws TopologyTemplateFormatException {
+    private AgnosticDeploymentArtifact throwExceptionForNotFoundArtifactTemplate(TDeploymentArtifact deploymentArtifact) throws TopologyTemplateFormatException {
         throw new TopologyTemplateFormatException(
                 "ArtifactTemplate " + deploymentArtifact.getArtifactRef().getLocalPart()
                         + " declaration was not found for DeploymentArtifact.");
@@ -148,7 +142,7 @@ public class DefinitionParser {
                 createRequirementIdsNodeTemplateIdsDictionary(generatedAgnosticElements);
 
         agnosticRelations =
-                new HashMap<AgnosticElement, List<AgnosticElement>>();
+                new HashMap<>();
         for (TRelationshipTemplate relationshipTemplate : relationshipTemplatesOfTopology) {
             addRelationTemplateToAgnosticRelation(
                     relationshipTemplate,
@@ -171,10 +165,10 @@ public class DefinitionParser {
         return dictionary;
     }
 
-    private void addRelationTemplateToAgnosticRelation
-            (TRelationshipTemplate relationshipTemplate,
-             MatchingDictionary capabilitiesIdsNodeTemplateIdsDictionary,
-             MatchingDictionary requirementsIdsNodeTemplateIdsDictionary)
+    private void addRelationTemplateToAgnosticRelation(
+            TRelationshipTemplate relationshipTemplate,
+            MatchingDictionary capabilitiesIdsNodeTemplateIdsDictionary,
+            MatchingDictionary requirementsIdsNodeTemplateIdsDictionary)
             throws TopologyTemplateFormatException {
 
         TRequirement source = (TRequirement) relationshipTemplate.getSourceElement().getRef();
@@ -200,7 +194,7 @@ public class DefinitionParser {
         if (agnosticRelations.containsKey(source)) {
             targetValues = agnosticRelations.get(source);
         } else {
-            targetValues = new LinkedList<AgnosticElement>();
+            targetValues = new LinkedList<>();
         }
         targetValues.add(target);
         agnosticRelations.put(source, targetValues);

@@ -1,12 +1,12 @@
 package org.tomat.agnostic.elements;
 
 import org.opentosca.model.tosca.TNodeTemplate;
+import org.tomat.agnostic.properties.AgnosticProperty;
+import org.tomat.agnostic.properties.HttpAgnosticProperty;
+import org.tomat.agnostic.properties.HttpsAgnosticProperty;
+import org.tomat.exceptions.AgnosticPropertyException;
 
 import java.util.Map;
-
-import org.tomat.agnostic.Agnostic;
-import org.tomat.agnostic.properties.*;
-import org.tomat.exceptions.AgnosticPropertyException;
 
 /**
  * Created by MariaC on 24/09/2014.

@@ -1,11 +1,10 @@
-!!org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity
+name: OnlineRetailing Template
 id: AppOnlineRetailing
 location: localhost
-name: OnlineRetailing Template
 services:
-- !!org.tomat.translate.brooklyn.entity.JBossBrooklynService
+- serviceType: brooklyn.entity.webapp.jboss.JBoss7Server
+  name: JBoss Main Web Server
+  location: AWS
+  id: JBossMainWebServer
   brooklynConfigProperties:
     port.http: 80+
-  id: JBossMainWebServer
-  location: AWS
-  name: JBoss Main Web Server

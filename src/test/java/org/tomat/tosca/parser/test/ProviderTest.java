@@ -6,14 +6,14 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
+import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.elements.AgnosticElementProvider;
+import org.tomat.agnostic.elements.JBossAgnosticElement;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.agnostic.elements.AgnosticElementProvider;
 import org.tomat.tosca.parsers.DefinitionParser;
-import org.tomat.agnostic.elements.JBossAgnosticElement;
-import org.tomat.agnostic.elements.AgnosticElement;
 
 import java.io.File;
 import java.util.List;
@@ -63,9 +63,8 @@ public class ProviderTest {
                 (JBossAgnosticElement) AgnosticElementProvider
                 .createAgnosticElement(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
         List<AgnosticProperty> jBossProperties= jBossAgnosticElement.getProperties();
-        assertEquals(jBossProperties.size(), 2);
-        assertNull(jBossProperties.get(0).getValue());
-        assertEquals(jBossProperties.get(1).getValue(), "80");
+        assertEquals(jBossProperties.size(), 1);
+        assertEquals(jBossProperties.get(0).getValue(), "80");
         assertNull(jBossAgnosticElement.getAgnosticDeploymentArtifacts());
     }
 
@@ -74,4 +73,5 @@ public class ProviderTest {
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException, AgnosticPropertyException {
         definitionParser.parsingApplicationTopology(AWSUnsupportedType).buildAgnostics();
     }
+
 }

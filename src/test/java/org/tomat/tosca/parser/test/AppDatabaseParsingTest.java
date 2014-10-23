@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Jose on 06/10/14.
@@ -70,6 +68,16 @@ public class AppDatabaseParsingTest {
     }
 
     @Test
+    public void testMySQLDbProperties(){
+
+        List<AgnosticElement> agnosticElements=definitionParser.getAgnosticElements();
+        AgnosticElement mySQLDb= agnosticElements.get(3);
+        System.out.println(mySQLDb.getProperties().size());
+        assertEquals(mySQLDb.getProperties().size(),1000);
+
+    }
+
+    @Test
     public void testDeploymentArtifacts_All(){
 
         List<AgnosticElement> agnosticElements=definitionParser.getAgnosticElements();
@@ -104,7 +112,8 @@ public class AppDatabaseParsingTest {
 
     public void testDeploymentArtifacts_MySQLDb(List<AgnosticElement> agnosticElements){
         assertEquals(agnosticElements.get(3).getType(), MySQLDataBaseAgnosticElement.TYPE);
-        List<AgnosticDeploymentArtifact> agnosticDeploymentArtifactMySQLDb=agnosticElements.get(3).getAgnosticDeploymentArtifacts();
+        List<AgnosticDeploymentArtifact> agnosticDeploymentArtifactMySQLDb=
+                agnosticElements.get(3).getAgnosticDeploymentArtifacts();
         assertNotNull(agnosticDeploymentArtifactMySQLDb);
         assertEquals(agnosticDeploymentArtifactMySQLDb.size(), 1);
         assertEquals(agnosticDeploymentArtifactMySQLDb.get(0).getArtifactReferences().size(), 1);

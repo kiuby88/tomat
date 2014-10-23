@@ -1,14 +1,9 @@
 package org.tomat.translate.brooklyn.entity;
 
 import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.properties.AgnosticProperty;
-import org.tomat.agnostic.properties.HttpAgnosticProperty;
-import org.tomat.agnostic.properties.HttpsAgnosticProperty;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import org.tomat.agnostic.graphs.AgnosticGraph;
+import org.tomat.translate.TechnologyVisitorRelationConfiguration;
+import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfiguration;
 
 /**
  * Created by Jose on 19/10/14.
@@ -17,18 +12,19 @@ import java.util.Map;
 // TODO into .entity
 public class MySQLBrooklynService extends BrooklynServiceEntity {
 
-    private final static String SERVICE_TYPE="org.jboss";
+    private final static String SERVICE_TYPE="brooklyn.entity.database.mysql.MySqlNode";
 
     public MySQLBrooklynService(AgnosticElement agnosticElement) {
         super(agnosticElement);
+        setServiceType(SERVICE_TYPE);
     }
 
     @Override
-    public String getServiceType() {
-        return SERVICE_TYPE;
+    public void accept(TechnologyVisitorRelationConfiguration visit,
+                       AgnosticElement agnosticElement,
+                       AgnosticGraph agnosticGraph) {
+        ((BrooklynVisitorRelationConfiguration)visit)
+                .visit(this, agnosticElement, agnosticGraph);
     }
-
-    @Override
-    public void configureRelations() {}
 
 }

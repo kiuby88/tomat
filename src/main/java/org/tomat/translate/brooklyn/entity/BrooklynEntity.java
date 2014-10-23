@@ -1,6 +1,5 @@
 package org.tomat.translate.brooklyn.entity;
 
-import org.tomat.translate.TechnologyComponent;
 import org.tomat.translate.brooklyn.BrooklynElement;
 
 /**

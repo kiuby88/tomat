@@ -1,10 +1,13 @@
 package org.tomat.translate.brooklyn.entity;
 
 import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.translate.TechnologyComponent;
+import org.tomat.translate.TechnologyVisitorRelationConfiguration;
 import org.tomat.translate.brooklyn.property.BrooklynProperty;
 import org.tomat.translate.brooklyn.property.BrooklynPropertyProvider;
+import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfiguration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +20,16 @@ import java.util.Map;
 //TODO o en singular
 public abstract class BrooklynServiceEntity extends BrooklynEntity implements TechnologyComponent {
 
+    private final static String TYPE="IT_IS_NECESSARY_To_SPECIFY_A_TYPE";
+
     private Map<String, Object> brooklynConfigProperties;
     private AgnosticElement agnosticElement;
+    private String serviceType;
 
     public BrooklynServiceEntity(AgnosticElement agnosticElement){
         super(generateBuilder(agnosticElement));
         this.agnosticElement=agnosticElement;
+        setServiceType(TYPE);
         initBrooklynConfigProperties();
     }
 
@@ -49,10 +56,7 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
 
     private void addSupportedProperty(AgnosticProperty agnosticProperty){
         if(checkIsSupported(agnosticProperty)){
-            BrooklynProperty brooklynProperty= getBrooklynPropertyTranslation(agnosticProperty);
-            //it could be good idea add the property to a list,
-            //however it could be necessary add a new map to relate the
-            //BrooklynProperties tot he ids.
+            BrooklynProperty brooklynProperty= buildBrooklynProperty(agnosticProperty);
             String technologyComponentPropertyId=
                     getSupportedAgnosticPropertiesAndBrooklynPropertyId()
                             .get(agnosticProperty.getClass());
@@ -69,7 +73,7 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
 
     //TODO this asume only a level, if we have more level we could add an recursive method based
     //TODOin the iterable property
-    private void addConfigProperty(String agnosticProperty, Object value){
+    public void addConfigProperty(String agnosticProperty, Object value){
         if(value!=null){
             this.getBrooklynConfigProperties().put(agnosticProperty,value);
         }
@@ -77,7 +81,7 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
 
     //TODO rename this method because we do not need the fabric, we need a
     //TODO property translation
-    private BrooklynProperty getBrooklynPropertyTranslation(AgnosticProperty agnosticProperty){
+    private BrooklynProperty buildBrooklynProperty(AgnosticProperty agnosticProperty){
         //TODO Add a fabric of properties, it is important because currently
         //TODO the elements are created
         return BrooklynPropertyProvider.createBrooklynProperty(agnosticProperty);
@@ -88,7 +92,13 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
         return agnosticElement;
     }
 
-    public abstract String getServiceType();
+    public String getServiceType(){
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType){
+        this.serviceType=serviceType;
+    }
 
     public Map<String, Object> getBrooklynConfigProperties() {
         return brooklynConfigProperties;
@@ -103,4 +113,6 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
             }
         }
     }
+
+
 }

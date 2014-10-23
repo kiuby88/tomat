@@ -1,11 +1,14 @@
 package org.tomat.translate.brooklyn.entity;
 
 import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.agnostic.properties.HttpAgnosticProperty;
 import org.tomat.agnostic.properties.HttpsAgnosticProperty;
+import org.tomat.translate.TechnologyVisitorRelationConfiguration;
+import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfiguration;
 
-import java.util.*;
+import java.util.Map;
 
 /**
  * Created by Jose on 19/10/14.
@@ -14,11 +17,12 @@ import java.util.*;
 // TODO into .entity
 public class JBossBrooklynService extends BrooklynServiceEntity {
 
-    private final static String SERVICE_TYPE="org.jboss";
+    private final static String SERVICE_TYPE="brooklyn.entity.webapp.jboss.JBoss7Server";
 
-    //TODO check the GCS if is ){ or ) {. In the last case change intelliJeditorConfiguration
+
     public JBossBrooklynService(AgnosticElement agnosticElement) {
         super(agnosticElement);
+        setServiceType(SERVICE_TYPE);
     }
 
     @Override
@@ -31,10 +35,10 @@ public class JBossBrooklynService extends BrooklynServiceEntity {
     }
 
     @Override
-    public String getServiceType() {
-        return SERVICE_TYPE;
+    public void accept(TechnologyVisitorRelationConfiguration visit,
+                       AgnosticElement agnosticElement,
+                       AgnosticGraph agnosticGraph) {
+        ((BrooklynVisitorRelationConfiguration)visit)
+                .visit(this, agnosticElement, agnosticGraph);
     }
-
-    @Override
-    public void configureRelations() {}
 }

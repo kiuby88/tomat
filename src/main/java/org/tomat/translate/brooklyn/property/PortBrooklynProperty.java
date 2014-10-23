@@ -1,7 +1,5 @@
 package org.tomat.translate.brooklyn.property;
 
-import org.tomat.agnostic.properties.AgnosticProperty;
-
 /**
  * Created by Jose on 20/10/14.
  */

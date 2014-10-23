@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public class MySQLDbNameAgnosticPropertyAgnosticProperty extends AgnosticProperty implements MySQLDbConnectionParametersAgnosticProperty {
 
-    private final static String[] DB_NAME = {"DBName", "databaseName", "database_name", "db_ame"};
+    private final static String[] DB_NAME = {"DBName", "databaseName", "database_name", "db_name"};
 
     public MySQLDbNameAgnosticPropertyAgnosticProperty(Map<String, String> properties){
         super(properties);

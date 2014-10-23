@@ -6,11 +6,11 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
+import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.agnostic.elements.AgnosticElementUtils;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.tosca.parsers.DefinitionParser;
 
 import java.util.List;

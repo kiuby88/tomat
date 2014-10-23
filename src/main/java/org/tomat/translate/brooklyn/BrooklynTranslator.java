@@ -3,20 +3,24 @@ package org.tomat.translate.brooklyn;
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.JBossAgnosticElement;
+import org.tomat.agnostic.graphs.AgnosticGraph;
+import org.tomat.translate.TechnologyComponent;
+import org.tomat.translate.TechnologyElementsFabric;
 import org.tomat.translate.TechnologyTranslator;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
-import org.tomat.translate.brooklyn.entity.BrooklynServiceEntityProvider;
-import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
+import org.tomat.translate.brooklyn.print.ReversedPropertyUtils;
+import org.tomat.translate.brooklyn.print.SkipEmptyAndNullRepresenter;
+import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfiguration;
+import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfigurationProvider;
+import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.introspector.Property;
-import org.yaml.snakeyaml.nodes.*;
-import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,10 +29,12 @@ import java.util.Set;
 public class BrooklynTranslator extends TechnologyTranslator {
 
     private BrooklynApplicationEntity brooklynApplicationEntity;
+    private BrooklynElementsFabric brooklynElementsFabric;
 
     public BrooklynTranslator(AgnosticApplication agnosticApplication){
         super(agnosticApplication);
         initBrooklynApplicationEntity();
+        brooklynElementsFabric=new BrooklynElementsFabric();
     }
 
     private void initBrooklynApplicationEntity() {
@@ -40,24 +46,53 @@ public class BrooklynTranslator extends TechnologyTranslator {
                 .build();
     }
 
+    public TechnologyElementsFabric getTechnologyElementFabric(){
+        return brooklynElementsFabric;
+    }
+
+
     @Override
-    public BrooklynTranslator translate() throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+    public BrooklynTranslator translate()
+            throws NotSupportedTypeByTechnologyException {
         translateAgnosticElements();
         return this;
     }
 
-    private void translateAgnosticElements() throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+    private void translateAgnosticElements()
+            throws NotSupportedTypeByTechnologyException {
         Set<AgnosticElement> agnosticElements = getAgnosticApplication()
                 .getAgnosticGraph()
                 .getVertexSet();
         BrooklynServiceEntity brooklynServiceEntity;
         for(AgnosticElement agnosticElement: agnosticElements){
-            brooklynServiceEntity= this.getTechnologyComponentTranslation(agnosticElement);
-            //TODO refactoring
+
+            brooklynServiceEntity= buildBrooklynComponent(agnosticElement);
+
             if(brooklynServiceEntity!=null){
                 //TODO hay que configurar relaciones antes de añadirlo
+                configureRelations(brooklynServiceEntity);
                 addTechnologyComponent(brooklynServiceEntity);
             }
+        }
+    }
+
+    private BrooklynServiceEntity buildBrooklynComponent(AgnosticElement agnosticElement)
+            throws NotSupportedTypeByTechnologyException {
+        return (BrooklynServiceEntity) getTechnologyElementFabric()
+                .buildTechnologyComponent(agnosticElement);
+    }
+
+    @Override
+    public void configureRelations(TechnologyComponent technologyServiceEntity){
+
+        AgnosticGraph agnosticGraph=getAgnosticApplication().getAgnosticGraph();
+        AgnosticElement agnosticElementOfBrooklynService=technologyServiceEntity.getAgnosticElement();
+        List<AgnosticElement> incomingVertexList=agnosticGraph.getIncompongVertexOf(agnosticElementOfBrooklynService);
+        BrooklynVisitorRelationConfiguration visitor;
+
+        for(AgnosticElement incomingVertex : incomingVertexList){
+            visitor=BrooklynVisitorRelationConfigurationProvider.createVisit(incomingVertex);
+            technologyServiceEntity.accept(visitor, incomingVertex, agnosticGraph);
         }
     }
 
@@ -66,13 +101,8 @@ public class BrooklynTranslator extends TechnologyTranslator {
     }
 
     @Override
-    public BrooklynServiceEntity getTechnologyComponentTranslation(AgnosticElement agnosticElement)
-            throws AgnosticComponentTypeNotSupportedbyBrooklyException {
-        return BrooklynServiceEntityProvider.createBrooklynServiceEntity(agnosticElement);
-    }
-
-    @Override
     public void getTranslation() {
+
     }
 
     public BrooklynApplicationEntity getBrooklynApplicationEntity(){
@@ -87,6 +117,7 @@ public class BrooklynTranslator extends TechnologyTranslator {
     public void print(FileWriter file){
         DumperOptions options = new DumperOptions();
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
         //options
         //options.setCanonical(false);
         options.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
@@ -96,72 +127,12 @@ public class BrooklynTranslator extends TechnologyTranslator {
         skipEmptyAndNullRepresenter.addClassTag(org.tomat.translate.brooklyn.entity.MySQLBrooklynService.class, Tag.MAP);
         skipEmptyAndNullRepresenter.addClassTag(BrooklynApplicationEntity.class, Tag.MAP);
 
+        skipEmptyAndNullRepresenter.setPropertyUtils(new ReversedPropertyUtils());
+
         Yaml yaml=new Yaml(skipEmptyAndNullRepresenter, options);
         yaml.dump(this.getBrooklynApplicationEntity(), file);
     }
 
-    private class SkipEmptyAndNullRepresenter extends Representer {
-
-        @Override
-        protected NodeTuple representJavaBeanProperty(Object javaBean, Property property,
-                                                      Object propertyValue, Tag customTag) {
-            NodeTuple tuple = super.representJavaBeanProperty(javaBean, property, propertyValue,
-                    customTag);
-            NodeTuple result = tuple;
-            if (valueIsNull(tuple)
-                    || isAEmptyCollection(tuple)) {
-                result=null;
-            }
-            return result;
-        }
-
-        public boolean valueIsNull(NodeTuple tuple) {
-            Node valueNode = tuple.getValueNode();
-            return Tag.NULL.equals(valueNode.getTag());
-        }
-
-        public boolean isAEmptyCollection(NodeTuple tuple) {
-            return isASeqEmptyCollection(tuple)
-                    || isAMapEmptyCollection(tuple);
-        }
-
-        public boolean isASeqEmptyCollection(NodeTuple tuple) {
-            boolean result = false;
-            Node valueNode = tuple.getValueNode();
-            if (isASeqCollection(tuple)) {
-                SequenceNode seq = (SequenceNode) valueNode;
-                result=seq.getValue().isEmpty();
-            }
-            return result;
-        }
-
-        public boolean isASeqCollection(NodeTuple tuple) {
-            Node valueNode = tuple.getValueNode();
-            return isACollection(tuple)
-                    && Tag.SEQ.equals(valueNode.getTag());
-        }
-
-        public boolean isACollection(NodeTuple tuple) {
-            Node valueNode = tuple.getValueNode();
-            return valueNode instanceof CollectionNode;
-        }
-
-        public boolean isAMapEmptyCollection(NodeTuple tuple) {
-            boolean result = false;
-            Node valueNode = tuple.getValueNode();
-            if (isAMapCollection(tuple)) {
-                MappingNode seq = (MappingNode) valueNode;
-                result=seq.getValue().isEmpty();
-            }
-            return result;
-        }
-
-        public boolean isAMapCollection(NodeTuple tuple) {
-            Node valueNode = tuple.getValueNode();
-            return isACollection(tuple)
-                    && Tag.MAP.equals(valueNode.getTag());
-        }
-    }
 
 
 }

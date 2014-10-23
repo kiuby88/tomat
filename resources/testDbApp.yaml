@@ -1,12 +1,17 @@
+name: DatabaseApp
 id: dbApp
 location: localhost
-name: DatabaseApp
 services:
-- brooklynConfigProperties:
-    port.http: 80+
-  id: JBossMainWebServer
-  location: AWS
+- serviceType: brooklyn.entity.webapp.jboss.JBoss7Server
   name: JBoss Main Web Server
-- id: MainMySql
-  location: localhost
+  location: AWS
+  id: JBossMainWebServer
+  brooklynConfigProperties:
+    wars.root: webAppArtifactImplementation.war
+    port.http: 80+
+- serviceType: brooklyn.entity.database.mysql.MySqlNode
   name: MainMySQL
+  location: localhost
+  id: MainMySql
+  brooklynConfigProperties:
+    datastore.creation.script.url: database.sql

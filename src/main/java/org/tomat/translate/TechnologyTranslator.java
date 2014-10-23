@@ -1,12 +1,12 @@
 package org.tomat.translate;
 
 import org.tomat.agnostic.application.AgnosticApplication;
-import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 
 /**
  * Created by Jose on 18/10/14.
  */
+//TODO describe it is a abstract fabric client. The fabric is described by
 public abstract class TechnologyTranslator {
 
     private AgnosticApplication agnosticApplication;
@@ -17,13 +17,11 @@ public abstract class TechnologyTranslator {
 
     public abstract TechnologyTranslator translate() throws NotSupportedTypeByTechnologyException;
 
-    public abstract TechnologyComponent getTechnologyComponentTranslation(AgnosticElement agnosticElement)
-            throws NotSupportedTypeByTechnologyException;
+    public abstract TechnologyElementsFabric getTechnologyElementFabric();
 
-    /**
-     * Este se supone genera el yaml
-     */
     public abstract void getTranslation();
+
+    public abstract void configureRelations(TechnologyComponent technologyComponent);
 
     public AgnosticApplication getAgnosticApplication() {
         return agnosticApplication;

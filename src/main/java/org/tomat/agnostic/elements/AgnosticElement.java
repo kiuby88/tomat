@@ -4,7 +4,6 @@ import org.opentosca.model.tosca.TCapability;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.TRequirement;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
-
 import org.tomat.agnostic.Agnostic;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.properties.AgnosticProperty;
@@ -121,17 +120,10 @@ public abstract class AgnosticElement implements Agnostic {
     private void addExpectedProperty(String id, Class<? extends AgnosticProperty> propertyClass)
             throws AgnosticPropertyException {
         try {
-
-            //TODO delete the following class because it is not contained
-            //if(checkClassIsAgnosticDefinitionClass(propertyClass)){
-            //    throw new AgnosticPropertyException("Class "+propertyClass.getName()
-            //            +" is not a AgnosticPropertyDefinition");
-            //}
-            //TODO refactor de generation in a new element
             AgnosticProperty agnosticProperty = propertyClass
                     .getConstructor(Map.class)
                     .newInstance(getNodeTemplateProperties());
-            addProperty(agnosticProperty);
+            addPropertyIfIsCompleted(agnosticProperty);
 
         } catch (InstantiationException | IllegalAccessException
                 | NoSuchMethodException | InvocationTargetException e) {
@@ -140,47 +132,14 @@ public abstract class AgnosticElement implements Agnostic {
         }
     }
 
+    private void addPropertyIfIsCompleted(AgnosticProperty property){
+        if (property.isCompleted()){
+            addProperty(property);
+        }
+    }
+
     private void addProperty(AgnosticProperty property) {
         getProperties().add(property);
-    }
-
-    //TODO remove this method, because the properties of expected properties
-    //always are AgnosticProperties
-    //private boolean checkClassIsAgnosticDefinitionClass(Class<?> propertyClass) {
-    //    return propertyClass.isAssignableFrom(ROOT_AGNOSTIC_PROPERTY_CLASS);
-    //}
-
-    private void clearNotCompletedProperties() {
-        /*
-        initProperties initializes the properties using null for properties
-        which were not defined in the TOSCA, and they have not a value.
-        Although the no-completed properties could be cleared by the
-        AgnosticElements, a final technology could need the fully agnostic
-        properties of an agnostic element. So, the charge of purge the
-        completed and not completed properties will be the concrete-builder
-        of any technology.
-         */
-        for (AgnosticProperty property : getProperties()) {
-            if (!property.isCompleted()) {
-                deleteProperty(property);
-            }
-        }
-    }
-
-    private void deleteProperty(AgnosticProperty property) {
-        if (getProperties().contains(property)) {
-            getProperties().remove(property);
-        }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        boolean result = false;
-        if (o instanceof AgnosticElement) {
-            AgnosticElement that = (AgnosticElement) o;
-            result = this.getId().equalsIgnoreCase(that.getId());
-        }
-        return result;
     }
 
     //TODO probar este metodo en package visibility to check that only the package classes are able to use it
