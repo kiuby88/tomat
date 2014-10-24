@@ -3,6 +3,9 @@ package org.tomat.agnostic.elements;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.*;
 import org.tomat.exceptions.AgnosticPropertyException;
+import org.tomat.translate.TechnologyComponent;
+import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.util.Map;
 
@@ -33,5 +36,11 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
         return TYPE;
     }
 
+
+    @Override
+    public TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory)
+            throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+        return factory.buildTechnologyComponent(this);
+    }
 
 }

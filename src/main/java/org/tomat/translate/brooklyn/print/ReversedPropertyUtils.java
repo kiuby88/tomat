@@ -44,24 +44,23 @@ public class ReversedPropertyUtils extends PropertyUtils {
         Property propertyLocation = null;
         Property propertyServices = null;
 
-        System.out.println("--Entre");
+
 
         for (Property property : super.createPropertySet(type, bAccess)) {
 
             if (property.getName().equals("id")) {
-                System.out.println("id");
+
                 propertyId = property;
             }
             if (property.getName().equals("name")) {
-                System.out.println("name");
                 propertyName = property;
             }
             if (property.getName().equals("location")) {
-                System.out.println("location");
                 propertyLocation = property;
+
+
             }
             if (property.getName().equals("services")) {
-                System.out.println("services");
                 propertyServices = property;
             }
         }
@@ -70,9 +69,6 @@ public class ReversedPropertyUtils extends PropertyUtils {
         result.add(propertyId);
         result.add(propertyLocation);
         result.add(propertyServices);
-
-        for(Property s:result)
-            System.out.println("--"+s.getName());
 
         return result;
     }

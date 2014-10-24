@@ -5,6 +5,9 @@ import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.agnostic.properties.HttpAgnosticProperty;
 import org.tomat.agnostic.properties.HttpsAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
+import org.tomat.translate.TechnologyComponent;
+import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.util.Map;
 
@@ -49,6 +52,12 @@ public class JBossAgnosticElement extends AgnosticElement {
         map.put("http", HttpAgnosticProperty.class);
         map.put("https", HttpsAgnosticProperty.class);
         return map;
+    }
+
+    @Override
+    public TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory)
+            throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+        return factory.buildTechnologyComponent(this);
     }
 
     @Override

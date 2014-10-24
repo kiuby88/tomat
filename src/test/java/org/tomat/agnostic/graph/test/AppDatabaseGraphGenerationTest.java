@@ -38,7 +38,8 @@ public class AppDatabaseGraphGenerationTest {
         definitionParser = new DefinitionParser();
         definitionParser
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
-        agnosticGraph = new AgnosticGraph(definitionParser.getAgnosticElements(),
+        agnosticGraph = new AgnosticGraph(
+                definitionParser.getAgnosticElements(),
                 definitionParser.getAgnosticRelations());
         agnosticElementVertex = agnosticGraph.getVertexSet();
     }

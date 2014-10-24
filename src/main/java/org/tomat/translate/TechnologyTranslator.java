@@ -17,7 +17,7 @@ public abstract class TechnologyTranslator {
 
     public abstract TechnologyTranslator translate() throws NotSupportedTypeByTechnologyException;
 
-    public abstract TechnologyElementsFabric getTechnologyElementFabric();
+    public abstract TechnologyElementsFactory getTechnologyElementFactory();
 
     public abstract void getTranslation();
 

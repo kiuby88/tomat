@@ -5,7 +5,7 @@ import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.elements.AgnosticElement;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.translate.TechnologyComponent;
-import org.tomat.translate.TechnologyElementsFabric;
+import org.tomat.translate.TechnologyElementsFactory;
 import org.tomat.translate.TechnologyTranslator;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
@@ -29,12 +29,12 @@ import java.util.Set;
 public class BrooklynTranslator extends TechnologyTranslator {
 
     private BrooklynApplicationEntity brooklynApplicationEntity;
-    private BrooklynElementsFabric brooklynElementsFabric;
+    private BrooklynElementsFactory brooklynElementsFactory;
 
     public BrooklynTranslator(AgnosticApplication agnosticApplication){
         super(agnosticApplication);
         initBrooklynApplicationEntity();
-        brooklynElementsFabric=new BrooklynElementsFabric();
+        brooklynElementsFactory =new BrooklynElementsFactory();
     }
 
     private void initBrooklynApplicationEntity() {
@@ -46,8 +46,8 @@ public class BrooklynTranslator extends TechnologyTranslator {
                 .build();
     }
 
-    public TechnologyElementsFabric getTechnologyElementFabric(){
-        return brooklynElementsFabric;
+    public TechnologyElementsFactory getTechnologyElementFactory(){
+        return brooklynElementsFactory;
     }
 
 
@@ -69,7 +69,6 @@ public class BrooklynTranslator extends TechnologyTranslator {
             brooklynServiceEntity= buildBrooklynComponent(agnosticElement);
 
             if(brooklynServiceEntity!=null){
-                //TODO hay que configurar relaciones antes de añadirlo
                 configureRelations(brooklynServiceEntity);
                 addTechnologyComponent(brooklynServiceEntity);
             }
@@ -78,8 +77,9 @@ public class BrooklynTranslator extends TechnologyTranslator {
 
     private BrooklynServiceEntity buildBrooklynComponent(AgnosticElement agnosticElement)
             throws NotSupportedTypeByTechnologyException {
-        return (BrooklynServiceEntity) getTechnologyElementFabric()
-                .buildTechnologyComponent(agnosticElement);
+
+        TechnologyElementsFactory factory = getTechnologyElementFactory();
+        return (BrooklynServiceEntity) agnosticElement.buildTechnologyComponent(factory);
     }
 
     @Override

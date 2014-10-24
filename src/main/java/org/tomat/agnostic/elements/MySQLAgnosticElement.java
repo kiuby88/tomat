@@ -4,6 +4,9 @@ import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.agnostic.properties.MySQLRootPasswordAgnosticPropertyAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
+import org.tomat.translate.TechnologyComponent;
+import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.util.Map;
 
@@ -44,16 +47,11 @@ public class MySQLAgnosticElement extends AgnosticElement {
         return TYPE;
     }
 
-    //TODO delete the following elements
-    // <editor-fold desc="Getters and Setters">
-//    public String getRootPassword() {
-//        return rootPassword;
-//    }
-//
-//    public void setRootPassword(String rootPassWord) {
-//        this.rootPassword = rootPassWord;
-//    }
-    // </editor-fold>
+    @Override
+    public TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory)
+            throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+        return factory.buildTechnologyComponent(this);
+    }
 
 
 }

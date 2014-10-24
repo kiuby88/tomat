@@ -20,6 +20,9 @@ public class SkipEmptyAndNullRepresenter extends Representer{
                 || isAEmptyCollection(tuple)) {
             result=null;
         }
+
+
+
         return result;
     }
 

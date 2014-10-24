@@ -2,6 +2,9 @@ package org.tomat.agnostic.elements;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.exceptions.AgnosticPropertyException;
+import org.tomat.translate.TechnologyComponent;
+import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 /**
  * Created by MariaC on 24/09/2014.
@@ -20,8 +23,10 @@ public class WebAppAgnosticElement extends AgnosticElement {
         return TYPE;
     }
 
-
-
-
+    @Override
+    public TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory)
+            throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+        return factory.buildTechnologyComponent(this);
+    }
 
 }

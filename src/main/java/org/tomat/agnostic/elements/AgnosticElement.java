@@ -8,6 +8,9 @@ import org.tomat.agnostic.Agnostic;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
+import org.tomat.translate.TechnologyComponent;
+import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -21,7 +24,7 @@ public abstract class AgnosticElement implements Agnostic {
 
 
     private static final String DEFAULT_LOCATION = "localhost";
-    private static final Class<?> ROOT_AGNOSTIC_PROPERTY_CLASS = AgnosticProperty.class;
+    //private static final Class<?> ROOT_AGNOSTIC_PROPERTY_CLASS = AgnosticProperty.class;
 
     private String id;
     private String name;
@@ -157,6 +160,9 @@ public abstract class AgnosticElement implements Agnostic {
     Map<String, String> getNodeTemplateProperties() {
         return AgnosticElementUtils.putLowerCaseMapKeys(DefinitionUtils.getProperties(this.getNodeTemplate()));
     }
+
+    //TODO esto está feisimo aquí, pero feo feo.
+    public abstract TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory) throws AgnosticComponentTypeNotSupportedbyBrooklyException;
 
     // <editor-fold desc="Getters and Setters">
     public List<String> getCapabilitiesIds() {
