@@ -1,6 +1,6 @@
 package org.tomat.translate.brooklyn.entity;
 
-import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.translate.TechnologyVisitorRelationConfiguration;
 import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfiguration;
@@ -14,17 +14,17 @@ public class MySQLBrooklynService extends BrooklynServiceEntity {
 
     private final static String SERVICE_TYPE="brooklyn.entity.database.mysql.MySqlNode";
 
-    public MySQLBrooklynService(AgnosticElement agnosticElement) {
-        super(agnosticElement);
+    public MySQLBrooklynService(AgnosticComponent agnosticComponent) {
+        super(agnosticComponent);
         setServiceType(SERVICE_TYPE);
     }
 
     @Override
     public void accept(TechnologyVisitorRelationConfiguration visit,
-                       AgnosticElement agnosticElement,
+                       AgnosticComponent agnosticComponent,
                        AgnosticGraph agnosticGraph) {
         ((BrooklynVisitorRelationConfiguration)visit)
-                .visit(this, agnosticElement, agnosticGraph);
+                .visit(this, agnosticComponent, agnosticGraph);
     }
 
 }

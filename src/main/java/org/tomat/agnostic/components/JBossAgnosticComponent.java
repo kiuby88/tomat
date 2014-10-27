@@ -1,4 +1,4 @@
-package org.tomat.agnostic.elements;
+package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.AgnosticProperty;
@@ -6,7 +6,7 @@ import org.tomat.agnostic.properties.HttpAgnosticProperty;
 import org.tomat.agnostic.properties.HttpsAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.translate.TechnologyComponent;
-import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.util.Map;
@@ -14,16 +14,11 @@ import java.util.Map;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class JBossAgnosticElement extends AgnosticElement {
+public class JBossAgnosticComponent extends AgnosticComponent {
 
-      public final static String TYPE="JBossWebServer";
+    public final static String TYPE="JBossWebServer";
 
-    //TODO delete the following declarations
-    //Define the properties Of the Element
-    //private final static String[] HTTP_PROPERTY = {"http", "httpport"};
-    //private final static String[] HTTPS_PROPERTY = {"https", "httpsport"};
-
-    public JBossAgnosticElement(TNodeTemplate nodeTemplateSource)
+    public JBossAgnosticComponent(TNodeTemplate nodeTemplateSource)
             throws AgnosticPropertyException {
         super(nodeTemplateSource);
 
@@ -40,7 +35,7 @@ public class JBossAgnosticElement extends AgnosticElement {
     }
 
     @Override
-    public TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory)
+    public TechnologyComponent buildTechnologyComponent(TechnologyComponentFactory factory)
             throws AgnosticComponentTypeNotSupportedbyBrooklyException {
         return factory.buildTechnologyComponent(this);
     }
@@ -49,25 +44,4 @@ public class JBossAgnosticElement extends AgnosticElement {
     public  String getType() {
         return TYPE;
     }
-
-//TODO delete the following commets
-    // <editor-fold desc="Getters and Setters">
-//    public String getHttpsPort() {
-//        return httpsPort;
-//    }
-//
-//    public void setHttpPort(String port) {
-//        httpPort = port;
-//    }
-//
-//    public void setHttpsPort(String port) {
-//        httpsPort = port;
-//    }
-//
-//    public String getHttpPort() {
-//        return httpPort;
-//    }
-    // </editor-fold>
-
-
 }

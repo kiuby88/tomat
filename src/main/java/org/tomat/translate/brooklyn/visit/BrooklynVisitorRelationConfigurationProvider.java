@@ -1,11 +1,8 @@
 package org.tomat.translate.brooklyn.visit;
 
-import org.tomat.agnostic.Agnostic;
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.MySQLAgnosticElement;
-import org.tomat.agnostic.elements.MySQLDataBaseAgnosticElement;
-import org.tomat.agnostic.elements.WebAppAgnosticElement;
-import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
+import org.tomat.agnostic.components.AgnosticComponent;
+import org.tomat.agnostic.components.MySQLDataBaseAgnosticComponent;
+import org.tomat.agnostic.components.WebAppAgnosticComponent;
 
 /**
  * Created by Jose on 23/10/14.
@@ -14,21 +11,21 @@ import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
 //TODO, ask if using the packages name it enough to caled the class.
 public class BrooklynVisitorRelationConfigurationProvider {
 
-    public static BrooklynVisitorRelationConfiguration createVisit(AgnosticElement agnosticElement){
+    public static BrooklynVisitorRelationConfiguration createVisit(AgnosticComponent agnosticComponent){
 
         BrooklynVisitorRelationConfiguration result=null;
 
-        String type=agnosticElement.getType();
+        String type=agnosticComponent.getType();
         switch (type){
-            case WebAppAgnosticElement.TYPE:
+            case WebAppAgnosticComponent.TYPE:
                 result = new WebAppBrooklynVisitorRelationConfiguration();
                 break;
 
-            case MySQLDataBaseAgnosticElement.TYPE:
+            case MySQLDataBaseAgnosticComponent.TYPE:
                 result= new MySQLDbBrooklynVisitorRelationConfiguration();
                 break;
             default:
-                //TODO: throws a exception to indicate that this element
+                //TODO: throws a exception to indicate that this component
                 //TODO does not be configured yet.
         }
 

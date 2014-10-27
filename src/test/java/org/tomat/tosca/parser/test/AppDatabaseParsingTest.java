@@ -7,7 +7,7 @@ import org.junit.runner.Result;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
-import org.tomat.agnostic.elements.*;
+import org.tomat.agnostic.components.*;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
@@ -30,7 +30,7 @@ public class AppDatabaseParsingTest {
     List<TNodeTemplate> nodeTemplateListAWSDbSample;
     DefinitionParser definitionParser;
     String AWSApplicationDatabaseFile = "resources/AWS-Application-DatabaseSample.xml";
-    Map<AgnosticElement, List<AgnosticElement>> relationMaps;
+    Map<AgnosticComponent, List<AgnosticComponent>> relationMaps;
 
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(AppDatabaseParsingTest.class);
@@ -70,8 +70,8 @@ public class AppDatabaseParsingTest {
     @Test
     public void testMySQLDbProperties(){
 
-        List<AgnosticElement> agnosticElements=definitionParser.getAgnosticElements();
-        AgnosticElement mySQLDb= agnosticElements.get(3);
+        List<AgnosticComponent> agnosticComponents=definitionParser.getAgnosticComponents();
+        AgnosticComponent mySQLDb= agnosticComponents.get(3);
         assertEquals(mySQLDb.getProperties().size(),4);
 
         assertEquals(mySQLDb.getProperties().get(0).getValue(),"seaclouds");
@@ -83,23 +83,23 @@ public class AppDatabaseParsingTest {
     @Test
     public void testDeploymentArtifacts_All(){
 
-        List<AgnosticElement> agnosticElements=definitionParser.getAgnosticElements();
-        assertEquals(agnosticElements.size(),4);
+        List<AgnosticComponent> agnosticComponents=definitionParser.getAgnosticComponents();
+        assertEquals(agnosticComponents.size(),4);
 
-        testDeploymentArtifacts_JBoss(agnosticElements);
-        testDeploymentArtifacts_WebApp(agnosticElements);
-        testDeploymentArtifacts_MySQL(agnosticElements);
-        testDeploymentArtifacts_MySQLDb(agnosticElements);
+        testDeploymentArtifacts_JBoss(agnosticComponents);
+        testDeploymentArtifacts_WebApp(agnosticComponents);
+        testDeploymentArtifacts_MySQL(agnosticComponents);
+        testDeploymentArtifacts_MySQLDb(agnosticComponents);
     }
 
-    public void testDeploymentArtifacts_JBoss(List<AgnosticElement> agnosticElements){
-        assertEquals(agnosticElements.get(0).getType(), JBossAgnosticElement.TYPE);
-        assertNull(agnosticElements.get(0).getAgnosticDeploymentArtifacts());
+    public void testDeploymentArtifacts_JBoss(List<AgnosticComponent> agnosticComponents){
+        assertEquals(agnosticComponents.get(0).getType(), JBossAgnosticComponent.TYPE);
+        assertNull(agnosticComponents.get(0).getAgnosticDeploymentArtifacts());
     }
 
-    public void testDeploymentArtifacts_WebApp(List<AgnosticElement> agnosticElements){
-        assertEquals(agnosticElements.get(1).getType(), WebAppAgnosticElement.TYPE);
-        List<AgnosticDeploymentArtifact> agnosticDeploymentArtifactWebApp=agnosticElements.get(1).getAgnosticDeploymentArtifacts();
+    public void testDeploymentArtifacts_WebApp(List<AgnosticComponent> agnosticComponents){
+        assertEquals(agnosticComponents.get(1).getType(), WebAppAgnosticComponent.TYPE);
+        List<AgnosticDeploymentArtifact> agnosticDeploymentArtifactWebApp=agnosticComponents.get(1).getAgnosticDeploymentArtifacts();
         assertNotNull(agnosticDeploymentArtifactWebApp);
         assertEquals(agnosticDeploymentArtifactWebApp.size(), 1);
         assertEquals(agnosticDeploymentArtifactWebApp.get(0).getArtifactReferences().size(), 1);
@@ -108,15 +108,15 @@ public class AppDatabaseParsingTest {
         assertEquals(webAppAgnosticDeploymentArtifact.getArtifactReferences().get(0), "webAppArtifactImplementation.war");
     }
 
-    public void testDeploymentArtifacts_MySQL(List<AgnosticElement> agnosticElements){
-        assertEquals(agnosticElements.get(2).getType(), MySQLAgnosticElement.TYPE);
-        assertNull(agnosticElements.get(2).getAgnosticDeploymentArtifacts());
+    public void testDeploymentArtifacts_MySQL(List<AgnosticComponent> agnosticComponents){
+        assertEquals(agnosticComponents.get(2).getType(), MySQLAgnosticComponent.TYPE);
+        assertNull(agnosticComponents.get(2).getAgnosticDeploymentArtifacts());
     }
 
-    public void testDeploymentArtifacts_MySQLDb(List<AgnosticElement> agnosticElements){
-        assertEquals(agnosticElements.get(3).getType(), MySQLDataBaseAgnosticElement.TYPE);
+    public void testDeploymentArtifacts_MySQLDb(List<AgnosticComponent> agnosticComponents){
+        assertEquals(agnosticComponents.get(3).getType(), MySQLDataBaseAgnosticComponent.TYPE);
         List<AgnosticDeploymentArtifact> agnosticDeploymentArtifactMySQLDb=
-                agnosticElements.get(3).getAgnosticDeploymentArtifacts();
+                agnosticComponents.get(3).getAgnosticDeploymentArtifacts();
         assertNotNull(agnosticDeploymentArtifactMySQLDb);
         assertEquals(agnosticDeploymentArtifactMySQLDb.size(), 1);
         assertEquals(agnosticDeploymentArtifactMySQLDb.get(0).getArtifactReferences().size(), 1);
@@ -137,17 +137,17 @@ public class AppDatabaseParsingTest {
     }
 
     public void checkRelation(String sourceId, String targetId){
-        AgnosticElement sourceAgnosticElement, targetAgnosticElement;
-        List<AgnosticElement> targets;
-        Set<AgnosticElement> relationsKeyMap = relationMaps.keySet();
+        AgnosticComponent sourceAgnosticComponent, targetAgnosticComponent;
+        List<AgnosticComponent> targets;
+        Set<AgnosticComponent> relationsKeyMap = relationMaps.keySet();
 
-        sourceAgnosticElement= AgnosticElementUtils
-                .findAgnosticElementById(relationsKeyMap, sourceId);
-        assertNotNull(sourceAgnosticElement);
-        assertEquals(relationMaps.containsKey(sourceAgnosticElement), true);
+        sourceAgnosticComponent= AgnosticComponentUtils
+                .findAgnosticComponentById(relationsKeyMap, sourceId);
+        assertNotNull(sourceAgnosticComponent);
+        assertEquals(relationMaps.containsKey(sourceAgnosticComponent), true);
 
-        targets=relationMaps.get(sourceAgnosticElement);
-        targetAgnosticElement=AgnosticElementUtils.findAgnosticElementById(targets, targetId);
-        assertNotNull(targetAgnosticElement);
+        targets=relationMaps.get(sourceAgnosticComponent);
+        targetAgnosticComponent= AgnosticComponentUtils.findAgnosticComponentById(targets, targetId);
+        assertNotNull(targetAgnosticComponent);
     }
 }

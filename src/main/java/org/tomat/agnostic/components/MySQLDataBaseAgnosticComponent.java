@@ -1,10 +1,10 @@
-package org.tomat.agnostic.elements;
+package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.*;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.translate.TechnologyComponent;
-import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.util.Map;
@@ -12,11 +12,11 @@ import java.util.Map;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class MySQLDataBaseAgnosticElement extends AgnosticElement {
+public class MySQLDataBaseAgnosticComponent extends AgnosticComponent {
 
     public final static String TYPE = "MySQL";
 
-    public MySQLDataBaseAgnosticElement(TNodeTemplate nodeTemplateSource)
+    public MySQLDataBaseAgnosticComponent(TNodeTemplate nodeTemplateSource)
             throws AgnosticPropertyException {
         super(nodeTemplateSource);
     }
@@ -36,11 +36,9 @@ public class MySQLDataBaseAgnosticElement extends AgnosticElement {
         return TYPE;
     }
 
-
     @Override
-    public TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory)
+    public TechnologyComponent buildTechnologyComponent(TechnologyComponentFactory factory)
             throws AgnosticComponentTypeNotSupportedbyBrooklyException {
         return factory.buildTechnologyComponent(this);
     }
-
 }

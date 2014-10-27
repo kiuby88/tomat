@@ -1,4 +1,4 @@
-package org.tomat.agnostic.elements;
+package org.tomat.agnostic.components;
 
 
 import org.opentosca.model.tosca.TNodeTemplate;
@@ -10,7 +10,7 @@ import org.tomat.tosca.parsers.ToscaSupportedTypeProvider;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class AgnosticElementProvider {
+public class AgnosticComponentProvider {
 
     /**
      * Fabric method.
@@ -19,35 +19,35 @@ public class AgnosticElementProvider {
      * @return
      * @throws NodeTemplateTypeNotSupportedException
      */
-    public static AgnosticElement createAgnosticElement(TNodeTemplate nodeTemplate)
+    public static AgnosticComponent createAgnosticComponent(TNodeTemplate nodeTemplate)
             throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        AgnosticElement agnosticElement;
+        AgnosticComponent agnosticComponent;
         String nodeTemplateType = getTypeName(nodeTemplate).toLowerCase();
 
 
 
         //TODO it could be interesting change this method using a switch and using
-        //TODO types of the AgnosticElements. Really, the TOSCA support class
-        //TODO it is not used, because the elements are specify using the Types
+        //TODO types of the AgnosticComponents. Really, the TOSCA support class
+        //TODO it is not used, because the components are specify using the Types
         //TODO And in any moments is necessary check if it is supported because,
         //TODO it are managed using the default method.
         //TODO In any case or use switch or using Google code style.
         if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.JBOSS_WEB_SERVER))
-            agnosticElement = new JBossAgnosticElement(nodeTemplate);
+            agnosticComponent = new JBossAgnosticComponent(nodeTemplate);
 
         else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.WEB_APPLICATION))
-            agnosticElement = new WebAppAgnosticElement(nodeTemplate);
+            agnosticComponent = new WebAppAgnosticComponent(nodeTemplate);
 
         else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.MySQL_DBMS))
-            agnosticElement = new MySQLAgnosticElement(nodeTemplate);
+            agnosticComponent = new MySQLAgnosticComponent(nodeTemplate);
 
         else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.MySQL_DB))
-            agnosticElement = new MySQLDataBaseAgnosticElement(nodeTemplate);
+            agnosticComponent = new MySQLDataBaseAgnosticComponent(nodeTemplate);
 
         else
             throw new NodeTemplateTypeNotSupportedException("Type: " + nodeTemplateType
                     + " not supported yet.");
-        return agnosticElement;
+        return agnosticComponent;
     }
 
     private static String getTypeName(TNodeTemplate nodeTemplate) {

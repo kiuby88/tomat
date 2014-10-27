@@ -4,7 +4,7 @@ import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.tomat.agnostic.Agnostic;
-import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.components.AgnosticComponent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,34 +17,35 @@ import java.util.Set;
  */
 public class AgnosticGraph implements Agnostic {
 
-    DirectedGraph<AgnosticElement, DefaultEdge> agnosticGraph;
+    DirectedGraph<AgnosticComponent, DefaultEdge> agnosticGraph;
 
-    public AgnosticGraph(List<AgnosticElement> agnosticElements, Map<AgnosticElement, List<AgnosticElement>> relations) {
+    public AgnosticGraph(List<AgnosticComponent> agnosticComponents,
+                         Map<AgnosticComponent, List<AgnosticComponent>> relations) {
         agnosticGraph =
-                new DefaultDirectedGraph<AgnosticElement, DefaultEdge>(DefaultEdge.class);
-        initVertex(agnosticElements);
+                new DefaultDirectedGraph<AgnosticComponent, DefaultEdge>(DefaultEdge.class);
+        initVertex(agnosticComponents);
         initEdges(relations);
 
     }
 
-    private void initVertex(List<AgnosticElement> agnosticElements) {
-        for (AgnosticElement agnosticElement : agnosticElements)
-            addVertex(agnosticElement);
+    private void initVertex(List<AgnosticComponent> agnosticComponents) {
+        for (AgnosticComponent agnosticComponent : agnosticComponents)
+            addVertex(agnosticComponent);
     }
 
-    private void initEdges(Map<AgnosticElement, List<AgnosticElement>> relations) {
-        Set<AgnosticElement> agnosticElementKeySet = relations.keySet();
-        for (AgnosticElement sourceAgnosticElement : agnosticElementKeySet)
-            for (AgnosticElement targetAgnosticElement : relations.get(sourceAgnosticElement))
-                agnosticGraph.addEdge(sourceAgnosticElement, targetAgnosticElement);
+    private void initEdges(Map<AgnosticComponent, List<AgnosticComponent>> relations) {
+        Set<AgnosticComponent> agnosticComponentKeySet = relations.keySet();
+        for (AgnosticComponent sourceAgnosticComponent : agnosticComponentKeySet)
+            for (AgnosticComponent targetAgnosticComponent : relations.get(sourceAgnosticComponent))
+                agnosticGraph.addEdge(sourceAgnosticComponent, targetAgnosticComponent);
     }
 
-    //TODO refactor name of agnosticElement to vertex in the parameter of the method
-    private void addVertex(AgnosticElement agnosticElement) {
-        agnosticGraph.addVertex(agnosticElement);
+    //TODO refactor name of agnosticComponent to vertex in the parameter of the method
+    private void addVertex(AgnosticComponent agnosticComponent) {
+        agnosticGraph.addVertex(agnosticComponent);
     }
 
-    public Set<AgnosticElement> getVertexSet() {
+    public Set<AgnosticComponent> getVertexSet() {
         return agnosticGraph.vertexSet();
     }
 
@@ -54,37 +55,37 @@ public class AgnosticGraph implements Agnostic {
 
     /**
      * Returns a {@link List} view of the independent mappings contained in this map.
-     * The returned list contains the elements which do not have out-going edges.
+     * The returned list contains the components which do not have out-going edges.
      *
-     * @return The returned list contains the elements which do not have out-going edges.
+     * @return The returned list contains the components which do not have out-going edges.
      */
-    public List<AgnosticElement> getIndependentVertex() {
-        List<AgnosticElement> agnosticElementsWithoutOupPutDependencies;
-        agnosticElementsWithoutOupPutDependencies = new LinkedList<>();
-        for (AgnosticElement agnosticElementVertex : this.getVertexSet()) {
-            if (!hasOutgoingEdges(agnosticElementVertex)) {
-                agnosticElementsWithoutOupPutDependencies.add(agnosticElementVertex);
+    public List<AgnosticComponent> getIndependentVertex() {
+        List<AgnosticComponent> agnosticComponentWithoutOupPutDependencies;
+        agnosticComponentWithoutOupPutDependencies = new LinkedList<>();
+        for (AgnosticComponent agnosticComponentVertex : this.getVertexSet()) {
+            if (!hasOutgoingEdges(agnosticComponentVertex)) {
+                agnosticComponentWithoutOupPutDependencies.add(agnosticComponentVertex);
             }
         }
-        return agnosticElementsWithoutOupPutDependencies;
+        return agnosticComponentWithoutOupPutDependencies;
     }
 
-    //TODO refactor name of agnosticElement to vertex in the parameter of the method
-    private boolean hasOutgoingEdges(AgnosticElement agnosticElementVertex) {
-        //TODO check if element is contained in the graph
-        Set<DefaultEdge> outgoingEdges = agnosticGraph.outgoingEdgesOf(agnosticElementVertex);
+    //TODO refactor name of agnosticComponent to vertex in the parameter of the method
+    private boolean hasOutgoingEdges(AgnosticComponent agnosticComponentVertex) {
+        //TODO check if component is contained in the graph
+        Set<DefaultEdge> outgoingEdges = agnosticGraph.outgoingEdgesOf(agnosticComponentVertex);
         return ((outgoingEdges != null) && (!outgoingEdges.isEmpty()));
     }
 
-    //TODO refactor name of agnosticElement to vertex in the parameter of the method
-    public Set<DefaultEdge> getIncomingEdgesOf(AgnosticElement agnosticElement){
-        return agnosticGraph.incomingEdgesOf(agnosticElement);
+    //TODO refactor name of agnosticComponent to vertex in the parameter of the method
+    public Set<DefaultEdge> getIncomingEdgesOf(AgnosticComponent agnosticComponent){
+        return agnosticGraph.incomingEdgesOf(agnosticComponent);
     }
 
-    //TODO refactor name of agnosticElement to vertex in the parameter of the method
-    public List<AgnosticElement> getIncomingVertexOf(AgnosticElement agnosticElement){
-        List<AgnosticElement> result=null;
-        Set<DefaultEdge> incomingVertex= getIncomingEdgesOf(agnosticElement);
+    //TODO refactor name of agnosticComponent to vertex in the parameter of the method
+    public List<AgnosticComponent> getIncomingVertexOf(AgnosticComponent agnosticComponent){
+        List<AgnosticComponent> result=null;
+        Set<DefaultEdge> incomingVertex= getIncomingEdgesOf(agnosticComponent);
         if(incomingVertex!=null){
             result=new LinkedList<>();
             for(DefaultEdge edge : incomingVertex){
@@ -94,15 +95,15 @@ public class AgnosticGraph implements Agnostic {
         return result;
     }
 
-    //TODO refactor name of agnosticElement to vertex in the parameter of the method
-    public Set<DefaultEdge> getOutcomingEdgesOf(AgnosticElement agnosticElement){
-        return agnosticGraph.outgoingEdgesOf(agnosticElement);
+    //TODO refactor name of agnosticComponent to vertex in the parameter of the method
+    public Set<DefaultEdge> getOutcomingEdgesOf(AgnosticComponent agnosticComponent){
+        return agnosticGraph.outgoingEdgesOf(agnosticComponent);
     }
 
-    //TODO refactor name of agnosticElement to vertex in the parameter of the method
-    public List<AgnosticElement> getOutcomigngVertexOf(AgnosticElement agnosticElement){
-        List<AgnosticElement> result=null;
-        Set<DefaultEdge> outcomingVertex= getOutcomingEdgesOf(agnosticElement);
+    //TODO refactor name of agnosticComponent to vertex in the parameter of the method
+    public List<AgnosticComponent> getOutcomigngVertexOf(AgnosticComponent agnosticComponent){
+        List<AgnosticComponent> result=null;
+        Set<DefaultEdge> outcomingVertex= getOutcomingEdgesOf(agnosticComponent);
         if(outcomingVertex!=null){
             result=new LinkedList<>();
             for(DefaultEdge edge : outcomingVertex){
@@ -113,25 +114,25 @@ public class AgnosticGraph implements Agnostic {
     }
 
 
-    public boolean containOutcomingRelationByType(AgnosticElement webAppAgnostic,
-                                                   Class<? extends AgnosticElement> type) {
-        return findAgnosticElementOutComingByType(webAppAgnostic, type) != null;
+    public boolean containOutcomingRelationByType(AgnosticComponent webAppAgnostic,
+                                                   Class<? extends AgnosticComponent> type) {
+        return findAgnosticComponentOutComingByType(webAppAgnostic, type) != null;
     }
 
-    public AgnosticElement findAgnosticElementOutComingByType(AgnosticElement agnosticElement,
-                                                               Class<? extends AgnosticElement> type) {
-        List<AgnosticElement> outcomingVertex = this
-                .getOutcomigngVertexOf(agnosticElement);
-        return findAgnosticElementOutComingByType(outcomingVertex, type);
+    public AgnosticComponent findAgnosticComponentOutComingByType(AgnosticComponent agnosticComponent,
+                                                                  Class<? extends AgnosticComponent> type) {
+        List<AgnosticComponent> outcomingVertex = this
+                .getOutcomigngVertexOf(agnosticComponent);
+        return findAgnosticComponentOutComingByType(outcomingVertex, type);
     }
 
-    private AgnosticElement findAgnosticElementOutComingByType(List<AgnosticElement> outcomigngVertex,
-                                                               Class<? extends AgnosticElement> type) {
-        AgnosticElement result = null;
+    private AgnosticComponent findAgnosticComponentOutComingByType(List<AgnosticComponent> outcomigngVertex,
+                                                                   Class<? extends AgnosticComponent> type) {
+        AgnosticComponent result = null;
         if ((outcomigngVertex != null) && (!outcomigngVertex.isEmpty())) {
-            for (AgnosticElement agnosticElement : outcomigngVertex) {
-                if (type.isAssignableFrom(agnosticElement.getClass())) {
-                    result =  agnosticElement;
+            for (AgnosticComponent agnosticComponent : outcomigngVertex) {
+                if (type.isAssignableFrom(agnosticComponent.getClass())) {
+                    result =  agnosticComponent;
                 }
             }
         }

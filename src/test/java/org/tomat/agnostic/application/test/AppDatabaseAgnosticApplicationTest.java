@@ -6,8 +6,8 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.AgnosticElementUtils;
+import org.tomat.agnostic.components.AgnosticComponent;
+import org.tomat.agnostic.components.AgnosticComponentUtils;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
@@ -74,11 +74,11 @@ public class AppDatabaseAgnosticApplicationTest {
 
     @Test
     public void testRelations_OutgoingEdges(){
-        List<AgnosticElement> independentAgnosticElements = agnosticGraph.getIndependentVertex();
-        assertEquals(independentAgnosticElements.size(), 2);
-        assertNotNull(AgnosticElementUtils
-                .findAgnosticElementById(independentAgnosticElements, "JbossMainWebServer"));
-        assertNotNull(AgnosticElementUtils
-                .findAgnosticElementById(independentAgnosticElements, "MainMySql"));
+        List<AgnosticComponent> independentAgnosticComponents = agnosticGraph.getIndependentVertex();
+        assertEquals(independentAgnosticComponents.size(), 2);
+        assertNotNull(AgnosticComponentUtils
+                .findAgnosticComponentById(independentAgnosticComponents, "JbossMainWebServer"));
+        assertNotNull(AgnosticComponentUtils
+                .findAgnosticComponentById(independentAgnosticComponents, "MainMySql"));
     }
 }

@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.AgnosticElementUtils;
+import org.tomat.agnostic.components.AgnosticComponent;
+import org.tomat.agnostic.components.AgnosticComponentUtils;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
@@ -26,7 +26,7 @@ public class AppDatabaseGraphGenerationTest {
     DefinitionParser definitionParser;
     String AWSApplicationDatabaseFile = "resources/AWS-Application-DatabaseSample.xml";
     AgnosticGraph agnosticGraph;
-    Set<AgnosticElement> agnosticElementVertex;
+    Set<AgnosticComponent> agnosticComponentVertexs;
 
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(AppDatabaseGraphGenerationTest.class);
@@ -39,15 +39,15 @@ public class AppDatabaseGraphGenerationTest {
         definitionParser
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
         agnosticGraph = new AgnosticGraph(
-                definitionParser.getAgnosticElements(),
+                definitionParser.getAgnosticComponents(),
                 definitionParser.getAgnosticRelations());
-        agnosticElementVertex = agnosticGraph.getVertexSet();
+        agnosticComponentVertexs = agnosticGraph.getVertexSet();
     }
 
     @Test
     public void testGraphCreation_DefinitionEmpty(){
         definitionParser=new DefinitionParser();
-        agnosticGraph=new AgnosticGraph(definitionParser.getAgnosticElements(),
+        agnosticGraph=new AgnosticGraph(definitionParser.getAgnosticComponents(),
                 definitionParser.getAgnosticRelations());
         assertNotNull(agnosticGraph);
     }
@@ -64,11 +64,11 @@ public class AppDatabaseGraphGenerationTest {
 
     @Test
     public void testRelations_OutgoingEdges(){
-        List<AgnosticElement> independentAgnosticElements = agnosticGraph.getIndependentVertex();
-        assertEquals(independentAgnosticElements.size(), 2);
-        assertNotNull(AgnosticElementUtils
-                .findAgnosticElementById(independentAgnosticElements, "JbossMainWebServer"));
-        assertNotNull(AgnosticElementUtils
-                .findAgnosticElementById(independentAgnosticElements, "MainMySql"));
+        List<AgnosticComponent> independentAgnosticComponents = agnosticGraph.getIndependentVertex();
+        assertEquals(independentAgnosticComponents.size(), 2);
+        assertNotNull(AgnosticComponentUtils
+                .findAgnosticComponentById(independentAgnosticComponents, "JbossMainWebServer"));
+        assertNotNull(AgnosticComponentUtils
+                .findAgnosticComponentById(independentAgnosticComponents, "MainMySql"));
     }
 }

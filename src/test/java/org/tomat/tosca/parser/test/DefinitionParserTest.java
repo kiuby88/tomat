@@ -6,8 +6,8 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.AgnosticElementUtils;
+import org.tomat.agnostic.components.AgnosticComponent;
+import org.tomat.agnostic.components.AgnosticComponentUtils;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
@@ -62,18 +62,18 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnostics();
-        Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = definitionParser
+        Map<AgnosticComponent, List<AgnosticComponent>> agnosticRelations = definitionParser
                 .getAgnosticRelations();
         assertEquals(agnosticRelations.size(),1);
-        Set<AgnosticElement> keySet=agnosticRelations.keySet();
+        Set<AgnosticComponent> keySet=agnosticRelations.keySet();
 
-        AgnosticElement agnosticElementMainWebApp=AgnosticElementUtils
-                .findAgnosticElementById(keySet,mainWebAppId);
-        assertNotNull(agnosticElementMainWebApp);
-        assertEquals(agnosticRelations.containsKey(agnosticElementMainWebApp),true);
-        assertEquals(agnosticRelations.get(agnosticElementMainWebApp).size(),1);
+        AgnosticComponent agnosticComponentMainWebApp= AgnosticComponentUtils
+                .findAgnosticComponentById(keySet, mainWebAppId);
+        assertNotNull(agnosticComponentMainWebApp);
+        assertEquals(agnosticRelations.containsKey(agnosticComponentMainWebApp),true);
+        assertEquals(agnosticRelations.get(agnosticComponentMainWebApp).size(),1);
         assertEquals(agnosticRelations
-                .get(agnosticElementMainWebApp).get(0).getId().toLowerCase(), jBossMainWebServerId);
+                .get(agnosticComponentMainWebApp).get(0).getId().toLowerCase(), jBossMainWebServerId);
     }
 
     @Test
@@ -95,17 +95,17 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnostics();
-        List<AgnosticElement> agnosticComponents = definitionParser
-                .getAgnosticElements();
+        List<AgnosticComponent> agnosticComponents = definitionParser
+                .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
     }
 
     @Test
-    public void testBuildElements_EmptyParsing()
+    public void testBuildComponents_EmptyParsing()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException,
             AgnosticPropertyException {
         definitionParser.buildAgnostics();
-        assertEquals(definitionParser.getAgnosticElements().size(), 0);
+        assertEquals(definitionParser.getAgnosticComponents().size(), 0);
         assertEquals(definitionParser.getAgnosticRelations().size(), 0);
         assertNotNull(definitionParser.getApplicationAgnosticMetadata());
     }
@@ -116,8 +116,8 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSFileArtifactTemplate)
                 .buildAgnostics();
-        List<AgnosticElement> agnosticComponents = definitionParser
-                .getAgnosticElements();
+        List<AgnosticComponent> agnosticComponents = definitionParser
+                .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 
         assertEquals(agnosticComponents.get(1).getType(), "WebApplication");
@@ -136,8 +136,8 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSSeveralDeploymentArtifacts)
                 .buildAgnostics();
-        List<AgnosticElement> agnosticComponents = definitionParser
-                .getAgnosticElements();
+        List<AgnosticComponent> agnosticComponents = definitionParser
+                .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 
         assertEquals(agnosticComponents.get(1).getType(), "WebApplication");
@@ -176,8 +176,8 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSNotDeploymentArtifactListDefined)
                 .buildAgnostics();
-        List<AgnosticElement> agnosticComponents = definitionParser
-                .getAgnosticElements();
+        List<AgnosticComponent> agnosticComponents = definitionParser
+                .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 
         assertEquals(agnosticComponents.get(1).getType(), "WebApplication");
@@ -193,8 +193,8 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSNotDeploymentArtifactDefined)
                 .buildAgnostics();
-        List<AgnosticElement> agnosticComponents = definitionParser
-                .getAgnosticElements();
+        List<AgnosticComponent> agnosticComponents = definitionParser
+                .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 
         assertEquals(agnosticComponents.get(1).getType(), "WebApplication");
@@ -210,8 +210,8 @@ public class DefinitionParserTest {
         definitionParser
                 .parsingApplicationTopology(AWSNotNodeTypeImplementationDefined)
                 .buildAgnostics();
-        List<AgnosticElement> agnosticComponents = definitionParser
-                .getAgnosticElements();
+        List<AgnosticComponent> agnosticComponents = definitionParser
+                .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 
         assertEquals(agnosticComponents.get(1).getType(), "WebApplication");
@@ -220,7 +220,3 @@ public class DefinitionParserTest {
         assertNull(webAppAgnosticDeploymentArtifactList);
     }
 }
-
-//TODO test if we have several no related elements
-//TODO test if a type use several deployments artifacts.
-//TODO test if using several deployments artifacts any it is mal-formed

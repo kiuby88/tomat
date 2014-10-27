@@ -1,14 +1,14 @@
 package org.tomat.agnostic.properties;
 
-import org.tomat.agnostic.Agnostic;
-import org.tomat.agnostic.elements.AgnosticElementUtils;
+import org.tomat.agnostic.AgnosticElement;
+import org.tomat.agnostic.components.AgnosticComponentUtils;
 
 import java.util.Map;
 
 /**
  * Created by Jose on 17/10/14.
  */
-public abstract class AgnosticProperty implements Agnostic{
+public abstract class AgnosticProperty implements AgnosticElement {
     private String id;
     private String value;
 
@@ -25,7 +25,7 @@ public abstract class AgnosticProperty implements Agnostic{
 
     private String findPropertyIdUsed(Map<String, String> properties){
         String[] allowed=getAllowedPropertyIds();
-        return AgnosticElementUtils
+        return AgnosticComponentUtils
                 .anyKeyFromCollectionIsAMapKey(allowed, properties);
     }
 

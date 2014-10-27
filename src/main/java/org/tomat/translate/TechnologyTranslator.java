@@ -1,7 +1,6 @@
 package org.tomat.translate;
 
 import org.tomat.agnostic.application.AgnosticApplication;
-import org.tomat.translate.brooklyn.print.BrooklynYamlPrinter;
 import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public abstract class TechnologyTranslator {
 
     public abstract TechnologyTranslator translate() throws NotSupportedTypeByTechnologyException;
 
-    public abstract TechnologyElementsFactory getTechnologyElementFactory();
+    public abstract TechnologyComponentFactory getTechnologyComponentFactory();
 
     public abstract void configureRelations(TechnologyComponent technologyComponent);
 

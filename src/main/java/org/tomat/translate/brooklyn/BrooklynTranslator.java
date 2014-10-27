@@ -2,10 +2,10 @@ package org.tomat.translate.brooklyn;
 
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
-import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.translate.TechnologyComponent;
-import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.TechnologyTranslator;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynComponentFactory;
@@ -42,7 +42,7 @@ public class BrooklynTranslator extends TechnologyTranslator {
                 .build();
     }
 
-    public TechnologyElementsFactory getTechnologyElementFactory(){
+    public TechnologyComponentFactory getTechnologyComponentFactory(){
         return brooklynComponentFactory;
     }
 
@@ -50,19 +50,19 @@ public class BrooklynTranslator extends TechnologyTranslator {
     @Override
     public BrooklynTranslator translate()
             throws NotSupportedTypeByTechnologyException {
-        translateAgnosticElements();
+        translateAgnosticComponents();
         return this;
     }
 
-    private void translateAgnosticElements()
+    private void translateAgnosticComponents()
             throws NotSupportedTypeByTechnologyException {
-        Set<AgnosticElement> agnosticElements = getAgnosticApplication()
+        Set<AgnosticComponent> agnosticComponents = getAgnosticApplication()
                 .getAgnosticGraph()
                 .getVertexSet();
         BrooklynServiceEntity brooklynServiceEntity;
-        for(AgnosticElement agnosticElement: agnosticElements){
+        for(AgnosticComponent agnosticComponent: agnosticComponents){
 
-            brooklynServiceEntity= buildBrooklynComponent(agnosticElement);
+            brooklynServiceEntity= buildBrooklynComponent(agnosticComponent);
 
             if(brooklynServiceEntity!=null){
                 configureRelations(brooklynServiceEntity);
@@ -71,22 +71,22 @@ public class BrooklynTranslator extends TechnologyTranslator {
         }
     }
 
-    private BrooklynServiceEntity buildBrooklynComponent(AgnosticElement agnosticElement)
+    private BrooklynServiceEntity buildBrooklynComponent(AgnosticComponent agnosticComponent)
             throws NotSupportedTypeByTechnologyException {
 
-        TechnologyElementsFactory factory = getTechnologyElementFactory();
-        return (BrooklynServiceEntity) agnosticElement.buildTechnologyComponent(factory);
+        TechnologyComponentFactory factory = getTechnologyComponentFactory();
+        return (BrooklynServiceEntity) agnosticComponent.buildTechnologyComponent(factory);
     }
 
     @Override
     public void configureRelations(TechnologyComponent technologyServiceEntity){
 
         AgnosticGraph agnosticGraph=getAgnosticApplication().getAgnosticGraph();
-        AgnosticElement agnosticElementOfBrooklynService=technologyServiceEntity.getAgnosticElement();
-        List<AgnosticElement> incomingVertexList=agnosticGraph.getIncomingVertexOf(agnosticElementOfBrooklynService);
+        AgnosticComponent agnosticComponentOfBrooklynService=technologyServiceEntity.getAgnosticComponent();
+        List<AgnosticComponent> incomingVertexList=agnosticGraph.getIncomingVertexOf(agnosticComponentOfBrooklynService);
         BrooklynVisitorRelationConfiguration visitor;
 
-        for(AgnosticElement incomingVertex : incomingVertexList){
+        for(AgnosticComponent incomingVertex : incomingVertexList){
             visitor=BrooklynVisitorRelationConfigurationProvider.createVisit(incomingVertex);
             technologyServiceEntity.accept(visitor, incomingVertex, agnosticGraph);
         }

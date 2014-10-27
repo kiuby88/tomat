@@ -1,15 +1,15 @@
-package org.tomat.agnostic.elements;
+package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TCapability;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.TRequirement;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
-import org.tomat.agnostic.Agnostic;
+import org.tomat.agnostic.AgnosticElement;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.translate.TechnologyComponent;
-import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,8 +19,8 @@ import java.util.*;
 /**
  * Created by MariaC on 24/09/2014.
  */
-//TODO migrate the name to AgnosticComponent and not AgnosticElement
-public abstract class AgnosticElement implements Agnostic {
+//TODO migrate the name to AgnosticComponent and not AgnosticComponent
+public abstract class AgnosticComponent implements AgnosticElement {
 
 
     private static final String DEFAULT_LOCATION = "localhost";
@@ -36,18 +36,18 @@ public abstract class AgnosticElement implements Agnostic {
     private List<String> requirementsIds;
     private List<AgnosticDeploymentArtifact> agnosticDeploymentArtifacts;
 
-    public AgnosticElement() {
+    public AgnosticComponent() {
         properties = new LinkedList<>();
         capabilitiesIds = new LinkedList<>();
         requirementsIds = new LinkedList<>();
         setAgnosticDeploymentArtifacts(new LinkedList<AgnosticDeploymentArtifact>());
     }
 
-    public AgnosticElement(String id) {
+    public AgnosticComponent(String id) {
         this.id = id;
     }
 
-    public AgnosticElement(TNodeTemplate nodeTemplate) throws AgnosticPropertyException {
+    public AgnosticComponent(TNodeTemplate nodeTemplate) throws AgnosticPropertyException {
         sourceNodeTemplate = nodeTemplate;
         initGenericValues();
         initCapabilitiesIds();
@@ -60,7 +60,7 @@ public abstract class AgnosticElement implements Agnostic {
             id = sourceNodeTemplate.getId();
             name = sourceNodeTemplate.getName();
             //TODO delete the next line because the type is specify
-            //TODO by the AgnosticElementConcreted
+            //TODO by the AgnosticComponentConcreted
             //type = DefinitionUtils.getTypeName(sourceNodeTemplate);
             setLocation(sourceNodeTemplate);
         }
@@ -80,7 +80,7 @@ public abstract class AgnosticElement implements Agnostic {
                 || (nodeTemplate.getLocation().getLocationId().equals("")));
     }
 
-    //TODO could be interesting delete this element of the agnostic Elements
+    //TODO could be interesting delete this component of the agnostic Components
     private void initCapabilitiesIds() {
         List<TCapability> capabilitiesOfSourceNodeTemplate;
         if ((sourceNodeTemplate != null)
@@ -93,7 +93,7 @@ public abstract class AgnosticElement implements Agnostic {
         }
     }
 
-    //TODO could be interesting delete this element of the agnostic Elements
+    //TODO could be interesting delete this component of the agnostic Components
     private void initRequirementsIds() {
         List<TRequirement> requirementsOfSourceNodeTemplate;
         if ((sourceNodeTemplate != null)
@@ -164,11 +164,11 @@ public abstract class AgnosticElement implements Agnostic {
     TODO optimice
      */
     Map<String, String> getNodeTemplateProperties() {
-        return AgnosticElementUtils.putLowerCaseMapKeys(DefinitionUtils.getProperties(this.getNodeTemplate()));
+        return AgnosticComponentUtils.putLowerCaseMapKeys(DefinitionUtils.getProperties(this.getNodeTemplate()));
     }
 
     //TODO esto está feisimo aquí, pero feo feo.
-    public abstract TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory) throws AgnosticComponentTypeNotSupportedbyBrooklyException;
+    public abstract TechnologyComponent buildTechnologyComponent(TechnologyComponentFactory factory) throws AgnosticComponentTypeNotSupportedbyBrooklyException;
 
     // <editor-fold desc="Getters and Setters">
     public List<String> getCapabilitiesIds() {
@@ -191,7 +191,7 @@ public abstract class AgnosticElement implements Agnostic {
         return name;
     }
 
-    //TODO do it is element abstract to will be concret in the subclass
+    //TODO do it is component abstract to will be concreted in the subclass
     public abstract String getType();
 
     public String getLocation() {

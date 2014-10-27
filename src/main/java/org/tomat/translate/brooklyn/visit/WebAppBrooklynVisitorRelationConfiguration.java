@@ -1,10 +1,10 @@
 package org.tomat.translate.brooklyn.visit;
 
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.AgnosticElementUtils;
-import org.tomat.agnostic.elements.MySQLAgnosticElement;
-import org.tomat.agnostic.elements.MySQLDataBaseAgnosticElement;
+import org.tomat.agnostic.components.AgnosticComponent;
+import org.tomat.agnostic.components.AgnosticComponentUtils;
+import org.tomat.agnostic.components.MySQLAgnosticComponent;
+import org.tomat.agnostic.components.MySQLDataBaseAgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.agnostic.properties.*;
 import org.tomat.translate.brooklyn.entity.JBossBrooklynService;
@@ -22,14 +22,14 @@ public class WebAppBrooklynVisitorRelationConfiguration
 
     @Override
     public void visit(JBossBrooklynService jBossService,
-                      AgnosticElement agnosticElement,
+                      AgnosticComponent agnosticComponent,
                       AgnosticGraph agnosticGraph) {
-        configJBossDeploymentArtifacts(jBossService, agnosticElement);
-        configureDatabaseConnection(jBossService, agnosticElement, agnosticGraph);
+        configJBossDeploymentArtifacts(jBossService, agnosticComponent);
+        configureDatabaseConnection(jBossService, agnosticComponent, agnosticGraph);
     }
 
     private void configJBossDeploymentArtifacts(JBossBrooklynService jBossBrooklynService,
-                                                AgnosticElement webAppAgnostic) {
+                                                AgnosticComponent webAppAgnostic) {
         List<AgnosticDeploymentArtifact> deploymentArtifacts =
                 webAppAgnostic.getAgnosticDeploymentArtifacts();
         if (deploymentArtifacts != null) {
@@ -46,13 +46,13 @@ public class WebAppBrooklynVisitorRelationConfiguration
 
 
     private void configureDatabaseConnection(JBossBrooklynService jBossService,
-                                             AgnosticElement webAppAgnostic,
+                                             AgnosticComponent webAppAgnostic,
                                              AgnosticGraph agnosticGraph) {
 
-        if (AgnosticElementUtils
+        if (AgnosticComponentUtils
                 .containsAValidPropertyByType(webAppAgnostic, DbConnectionNameAgnosticProperty.class)
-                || agnosticGraph.containOutcomingRelationByType( webAppAgnostic,
-                        MySQLDataBaseAgnosticElement.class)) {
+                || agnosticGraph.containOutcomingRelationByType(webAppAgnostic,
+                MySQLDataBaseAgnosticComponent.class)) {
 
             Map<String, String> databaseConnectionConfiguration = configureDatabaseConnectionParameters(jBossService, webAppAgnostic, agnosticGraph);
             jBossService.addConfigProperty("java.sysprops", databaseConnectionConfiguration);
@@ -62,14 +62,14 @@ public class WebAppBrooklynVisitorRelationConfiguration
 
 
     private Map<String, String> configureDatabaseConnectionParameters(JBossBrooklynService jBossService,
-                                                                      AgnosticElement webAppAgnostic,
+                                                                      AgnosticComponent webAppAgnostic,
                                                                       AgnosticGraph agnosticGraph) {
 
-        MySQLDataBaseAgnosticElement dataBaseAgnosticElement =
-                (MySQLDataBaseAgnosticElement) agnosticGraph
-                        .findAgnosticElementOutComingByType(
-                        webAppAgnostic,
-                        MySQLDataBaseAgnosticElement.class);
+        MySQLDataBaseAgnosticComponent dataBaseAgnosticComponent =
+                (MySQLDataBaseAgnosticComponent) agnosticGraph
+                        .findAgnosticComponentOutComingByType(
+                                webAppAgnostic,
+                                MySQLDataBaseAgnosticComponent.class);
 
         String dbConnectionName = getPropertyValueOrNotCompleteValue(
                 webAppAgnostic,
@@ -77,21 +77,21 @@ public class WebAppBrooklynVisitorRelationConfiguration
                 "&DB_CONNECTION_NAME");
 
         String dbName = getPropertyValueOrNotCompleteValue(
-                dataBaseAgnosticElement,
+                dataBaseAgnosticComponent,
                 MySQLDbNameAgnosticProperty.class,
                 "&DB_NAME");
 
         String dbUser = getPropertyValueOrNotCompleteValue(
-                dataBaseAgnosticElement,
+                dataBaseAgnosticComponent,
                 MySQLDbUserAgnosticProperty.class,
                 "&DB_USER");
 
         String dbPass = getPropertyValueOrNotCompleteValue(
-                dataBaseAgnosticElement,
+                dataBaseAgnosticComponent,
                 MySQLDbPasswordAgnosticProperty.class,
                 "&DB_PASSWORD");
 
-        String mySQLUrl= getDbURL(dataBaseAgnosticElement, agnosticGraph);
+        String mySQLUrl= getDbURL(dataBaseAgnosticComponent, agnosticGraph);
 
         String connectionConfiguration="$brooklyn:formatString(\"jdbc:%s%s?user=%s\\&password=%s\", "
                 + mySQLUrl+", "
@@ -105,11 +105,11 @@ public class WebAppBrooklynVisitorRelationConfiguration
     }
 
 
-    private String getPropertyValueOrNotCompleteValue(AgnosticElement agnosticElement,
+    private String getPropertyValueOrNotCompleteValue(AgnosticComponent agnosticComponent,
                                                Class<? extends AgnosticProperty>type,
                                                String valueIfNotComplete){
         AgnosticProperty agnosticProperty=
-                AgnosticElementUtils.findPropertyByType(agnosticElement,type);
+                AgnosticComponentUtils.findPropertyByType(agnosticComponent, type);
 
         if(agnosticProperty.isCompleted()){
             return agnosticProperty.getValue();
@@ -119,20 +119,21 @@ public class WebAppBrooklynVisitorRelationConfiguration
         }
     }
 
-    private String getDbURL(MySQLDataBaseAgnosticElement dataBaseAgnosticElement,
+    private String getDbURL(MySQLDataBaseAgnosticComponent dataBaseAgnosticComponent,
             AgnosticGraph agnosticGraph) {
-        MySQLAgnosticElement mySQLAgnosticElement=(MySQLAgnosticElement)
-                agnosticGraph.findAgnosticElementOutComingByType(dataBaseAgnosticElement,
-                        MySQLAgnosticElement.class);
-        return getDbUrlValue(mySQLAgnosticElement);
+        MySQLAgnosticComponent mySQLAgnosticComponent =(MySQLAgnosticComponent)
+                agnosticGraph.findAgnosticComponentOutComingByType(dataBaseAgnosticComponent,
+                        MySQLAgnosticComponent.class);
+        return getDbUrlValue(mySQLAgnosticComponent);
     }
 
-    private String getDbUrlValue(MySQLAgnosticElement mySQLAgnosticElement){
+    private String getDbUrlValue(MySQLAgnosticComponent mySQLAgnosticComponent){
 
         String result=null;
-        if((mySQLAgnosticElement!=null)
-                &&(mySQLAgnosticElement.getId()!=null)){
-            return "component(\""+ mySQLAgnosticElement.getId() +"\").attributeWhenReady(\"datastore.url\")";
+        if((mySQLAgnosticComponent !=null)
+                &&(mySQLAgnosticComponent.getId()!=null)){
+            return "component(\""+ mySQLAgnosticComponent.getId() +
+                    "\").attributeWhenReady(\"datastore.url\")";
         }
         else{
             result= "&URL_DATABASE";
@@ -141,18 +142,9 @@ public class WebAppBrooklynVisitorRelationConfiguration
 
     }
 
-
-
-
-
-
-
-
-
-
     @Override
     public void visit(MySQLBrooklynService mySQLService,
-                      AgnosticElement agnosticElement,
+                      AgnosticComponent agnosticComponent,
                       AgnosticGraph agnosticGraph) {
     }
 }

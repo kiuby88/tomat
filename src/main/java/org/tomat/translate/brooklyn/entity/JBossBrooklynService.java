@@ -1,6 +1,6 @@
 package org.tomat.translate.brooklyn.entity;
 
-import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.agnostic.properties.HttpAgnosticProperty;
@@ -20,8 +20,8 @@ public class JBossBrooklynService extends BrooklynServiceEntity {
     private final static String SERVICE_TYPE="brooklyn.entity.webapp.jboss.JBoss7Server";
 
 
-    public JBossBrooklynService(AgnosticElement agnosticElement) {
-        super(agnosticElement);
+    public JBossBrooklynService(AgnosticComponent agnosticComponent) {
+        super(agnosticComponent);
         setServiceType(SERVICE_TYPE);
     }
 
@@ -36,9 +36,9 @@ public class JBossBrooklynService extends BrooklynServiceEntity {
 
     @Override
     public void accept(TechnologyVisitorRelationConfiguration visit,
-                       AgnosticElement agnosticElement,
+                       AgnosticComponent agnosticComponent,
                        AgnosticGraph agnosticGraph) {
         ((BrooklynVisitorRelationConfiguration)visit)
-                .visit(this, agnosticElement, agnosticGraph);
+                .visit(this, agnosticComponent, agnosticGraph);
     }
 }

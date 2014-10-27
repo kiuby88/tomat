@@ -1,6 +1,6 @@
 package org.tomat.translate;
 
-import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 
 /**
@@ -8,9 +8,9 @@ import org.tomat.agnostic.graphs.AgnosticGraph;
  */
 public interface TechnologyComponent extends TechnologyElement {
 
-    public AgnosticElement getAgnosticElement();
+    public AgnosticComponent getAgnosticComponent();
     public void accept(TechnologyVisitorRelationConfiguration visit,
-                       AgnosticElement agnosticElement,
+                       AgnosticComponent agnosticComponent,
                        AgnosticGraph agnosticGraph);
 
 }

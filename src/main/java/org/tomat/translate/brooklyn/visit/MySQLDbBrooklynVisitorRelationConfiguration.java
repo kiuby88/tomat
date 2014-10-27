@@ -1,7 +1,7 @@
 package org.tomat.translate.brooklyn.visit;
 
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
-import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.translate.brooklyn.entity.JBossBrooklynService;
 import org.tomat.translate.brooklyn.entity.MySQLBrooklynService;
@@ -16,26 +16,23 @@ public class MySQLDbBrooklynVisitorRelationConfiguration extends BrooklynVisitor
 
     @Override
     public void visit(JBossBrooklynService jBossService,
-                      AgnosticElement agnosticElement,
+                      AgnosticComponent agnosticComponent,
                       AgnosticGraph agnosticGraph) {
-
-
-
     }
 
     @Override
     public void visit(MySQLBrooklynService mySQLService,
-                      AgnosticElement agnosticElement,
+                      AgnosticComponent agnosticComponent,
                       AgnosticGraph agnosticGraph) {
 
-        configMySQLDbDeploymentArtifacts(mySQLService,agnosticElement);
+        configMySQLDbDeploymentArtifacts(mySQLService,agnosticComponent);
     }
 
     private void configMySQLDbDeploymentArtifacts(MySQLBrooklynService mySQLBrooklynService,
-                                                AgnosticElement agnosticElement) {
+                                                  AgnosticComponent agnosticComponent) {
 
         List<AgnosticDeploymentArtifact> deploymentArtifacts =
-                agnosticElement.getAgnosticDeploymentArtifacts();
+                agnosticComponent.getAgnosticDeploymentArtifacts();
         if (deploymentArtifacts != null) {
 
             AgnosticDeploymentArtifact sqlApplicationDeploymentArtifact= deploymentArtifacts.get(0);

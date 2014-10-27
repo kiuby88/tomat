@@ -7,7 +7,10 @@ import org.yaml.snakeyaml.introspector.Property;
 import org.yaml.snakeyaml.introspector.PropertyUtils;
 
 import java.beans.IntrospectionException;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by Jose on 23/10/14.
@@ -44,12 +47,9 @@ public class PropertyOrderDefinition extends PropertyUtils {
         Property propertyLocation = null;
         Property propertyServices = null;
 
-
-
         for (Property property : super.createPropertySet(type, bAccess)) {
 
             if (property.getName().equals("id")) {
-
                 propertyId = property;
             }
             if (property.getName().equals("name")) {
@@ -57,8 +57,6 @@ public class PropertyOrderDefinition extends PropertyUtils {
             }
             if (property.getName().equals("location")) {
                 propertyLocation = property;
-
-
             }
             if (property.getName().equals("services")) {
                 propertyServices = property;

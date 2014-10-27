@@ -6,9 +6,9 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.AgnosticElementProvider;
-import org.tomat.agnostic.elements.JBossAgnosticElement;
+import org.tomat.agnostic.components.AgnosticComponent;
+import org.tomat.agnostic.components.AgnosticComponentProvider;
+import org.tomat.agnostic.components.JBossAgnosticComponent;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
@@ -51,21 +51,21 @@ public class ProviderTest {
     @Test
     public void nodeTemplateProviderJBossServer() throws NodeTemplateTypeNotSupportedException,
             AgnosticPropertyException {
-        AgnosticElement nodeTemplateParser = AgnosticElementProvider
-                .createAgnosticElement(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
-        assertEquals((nodeTemplateParser instanceof JBossAgnosticElement), true);
+        AgnosticComponent nodeTemplateParser = AgnosticComponentProvider
+                .createAgnosticComponent(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
+        assertEquals((nodeTemplateParser instanceof JBossAgnosticComponent), true);
     }
 
     @Test
     public void nodeTemplateProviderJBossServerProperties()
             throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        JBossAgnosticElement jBossAgnosticElement =
-                (JBossAgnosticElement) AgnosticElementProvider
-                .createAgnosticElement(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
-        List<AgnosticProperty> jBossProperties= jBossAgnosticElement.getProperties();
+        JBossAgnosticComponent jBossAgnosticComponent =
+                (JBossAgnosticComponent) AgnosticComponentProvider
+                .createAgnosticComponent(nodeTemplateAWS = nodeTemplateListAWSSample.get(0));
+        List<AgnosticProperty> jBossProperties= jBossAgnosticComponent.getProperties();
         assertEquals(jBossProperties.size(), 1);
         assertEquals(jBossProperties.get(0).getValue(), "80");
-        assertNull(jBossAgnosticElement.getAgnosticDeploymentArtifacts());
+        assertNull(jBossAgnosticComponent.getAgnosticDeploymentArtifacts());
     }
 
     @Test(expected = NodeTemplateTypeNotSupportedException.class)

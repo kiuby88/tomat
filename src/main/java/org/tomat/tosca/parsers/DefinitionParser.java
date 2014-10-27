@@ -4,8 +4,8 @@ import org.opentosca.model.tosca.*;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.elements.AgnosticElementProvider;
+import org.tomat.agnostic.components.AgnosticComponent;
+import org.tomat.agnostic.components.AgnosticComponentProvider;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
@@ -30,18 +30,17 @@ public class DefinitionParser {
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
     private TServiceTemplate serviceTemplateOfTopology = null;
     private TDefinitions definitions = null;
-    private List<AgnosticElement> generatedAgnosticElements = null;
-    private Map<AgnosticElement, List<AgnosticElement>> agnosticRelations = null;
+    private List<AgnosticComponent> generatedAgnosticComponents = null;
+    private Map<AgnosticComponent, List<AgnosticComponent>> agnosticRelations = null;
     private ApplicationAgnosticMetadata applicationAgnosticMetadata;
 
     public DefinitionParser() {
         nodeTemplatesOfTopology = new LinkedList<>();
         relationshipTemplatesOfTopology = new LinkedList<>();
 
-        generatedAgnosticElements = new LinkedList<>();
+        generatedAgnosticComponents = new LinkedList<>();
         agnosticRelations = new HashMap<>();
         applicationAgnosticMetadata = new ApplicationAgnosticMetadata();
-
     }
 
     public DefinitionParser parsingApplicationTopology(String definitionFilePath)
@@ -65,32 +64,35 @@ public class DefinitionParser {
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException,
             AgnosticPropertyException {
 
-        buildAgnosticElementsList();
-        buildAgnosticElementsRelations();
+        buildAgnosticComponentList();
+        buildAgnosticComponentRelations();
         buildApplicationAgnosticMetadata();
         return this;
     }
 
-    private void buildAgnosticElementsList()
-            throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException, TopologyTemplateFormatException {
-        generatedAgnosticElements = new LinkedList<>();
+    private void buildAgnosticComponentList()
+            throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException,
+            TopologyTemplateFormatException {
+        generatedAgnosticComponents = new LinkedList<>();
         for (TNodeTemplate nodeTemplate : nodeTemplatesOfTopology) {
-            generatedAgnosticElements
-                    .add(buildAgnosticElement(nodeTemplate));
+            generatedAgnosticComponents
+                    .add(buildAgnosticComponent(nodeTemplate));
         }
     }
 
-    private AgnosticElement buildAgnosticElement(TNodeTemplate nodeTemplate)
+    private AgnosticComponent buildAgnosticComponent(TNodeTemplate nodeTemplate)
             throws AgnosticPropertyException,
             NodeTemplateTypeNotSupportedException,
             TopologyTemplateFormatException {
-        AgnosticElement agnosticElement =
-                AgnosticElementProvider.createAgnosticElement(nodeTemplate);
-        agnosticElement.setAgnosticDeploymentArtifacts(getAgnosticDeploymentArtifacts(nodeTemplate));
-        return agnosticElement;
+        AgnosticComponent agnosticComponent =
+                AgnosticComponentProvider.createAgnosticComponent(nodeTemplate);
+        agnosticComponent
+                .setAgnosticDeploymentArtifacts(getAgnosticDeploymentArtifacts(nodeTemplate));
+        return agnosticComponent;
     }
 
-    private List<AgnosticDeploymentArtifact> getAgnosticDeploymentArtifacts(TNodeTemplate nodeTemplate)
+    private List<AgnosticDeploymentArtifact> getAgnosticDeploymentArtifacts(
+            TNodeTemplate nodeTemplate)
             throws TopologyTemplateFormatException {
 
         List<AgnosticDeploymentArtifact> result;
@@ -100,7 +102,8 @@ public class DefinitionParser {
         return result;
     }
 
-    private List<AgnosticDeploymentArtifact> getAgnosticDeploymentArtifacts(List<TDeploymentArtifact> deploymentArtifacts)
+    private List<AgnosticDeploymentArtifact> getAgnosticDeploymentArtifacts(
+            List<TDeploymentArtifact> deploymentArtifacts)
             throws TopologyTemplateFormatException {
 
         List<AgnosticDeploymentArtifact> result = null;
@@ -115,29 +118,34 @@ public class DefinitionParser {
         return result;
     }
 
-    private AgnosticDeploymentArtifact getAgnosticDeploymentArtifact(TDeploymentArtifact deploymentArtifact)
+    private AgnosticDeploymentArtifact getAgnosticDeploymentArtifact(
+            TDeploymentArtifact deploymentArtifact)
             throws TopologyTemplateFormatException {
 
-        TArtifactTemplate artifactTemplate = DefinitionUtils.getArtifactTemplate(definitions, deploymentArtifact);
+        TArtifactTemplate artifactTemplate = DefinitionUtils
+                .getArtifactTemplate(definitions, deploymentArtifact);
         if (artifactTemplate == null) {
             throwExceptionForNotFoundArtifactTemplate(deploymentArtifact);
         }
         return new AgnosticDeploymentArtifact(artifactTemplate);
     }
 
-    private AgnosticDeploymentArtifact throwExceptionForNotFoundArtifactTemplate(TDeploymentArtifact deploymentArtifact) throws TopologyTemplateFormatException {
+    private AgnosticDeploymentArtifact throwExceptionForNotFoundArtifactTemplate(
+            TDeploymentArtifact deploymentArtifact)
+            throws TopologyTemplateFormatException {
+
         throw new TopologyTemplateFormatException(
                 "ArtifactTemplate " + deploymentArtifact.getArtifactRef().getLocalPart()
                         + " declaration was not found for DeploymentArtifact.");
     }
 
-    private void buildAgnosticElementsRelations()
+    private void buildAgnosticComponentRelations()
             throws TopologyTemplateFormatException {
 
         MatchingDictionary capabilityIdsNodeTemplateIsDictionary =
-                createCapabilityIdsNodeTemplateIdsDictionary(generatedAgnosticElements);
+                createCapabilityIdsNodeTemplateIdsDictionary(generatedAgnosticComponents);
         MatchingDictionary requirementIdsNodeTemplateIsDictionary =
-                createRequirementIdsNodeTemplateIdsDictionary(generatedAgnosticElements);
+                createRequirementIdsNodeTemplateIdsDictionary(generatedAgnosticComponents);
 
         agnosticRelations =
                 new HashMap<>();
@@ -149,17 +157,21 @@ public class DefinitionParser {
         }
     }
 
-    private MatchingDictionary createCapabilityIdsNodeTemplateIdsDictionary(List<AgnosticElement> agnosticElements) {
+    private MatchingDictionary createCapabilityIdsNodeTemplateIdsDictionary(
+            List<AgnosticComponent> agnosticComponents) {
         MatchingDictionary dictionary = new MatchingDictionary();
-        for (AgnosticElement agnosticElement : agnosticElements)
-            dictionary.addDictionaryEntrys(agnosticElement.getCapabilitiesIds(), agnosticElement);
+        for (AgnosticComponent agnosticComponent : agnosticComponents)
+            dictionary
+                    .addDictionaryEntrys(agnosticComponent.getCapabilitiesIds(), agnosticComponent);
         return dictionary;
     }
 
-    private MatchingDictionary createRequirementIdsNodeTemplateIdsDictionary(List<AgnosticElement> agnosticElements) {
+    private MatchingDictionary createRequirementIdsNodeTemplateIdsDictionary(
+            List<AgnosticComponent> agnosticComponents) {
         MatchingDictionary dictionary = new MatchingDictionary();
-        for (AgnosticElement agnosticElement : agnosticElements)
-            dictionary.addDictionaryEntrys(agnosticElement.getRequirementsIds(), agnosticElement);
+        for (AgnosticComponent agnosticComponent : agnosticComponents)
+            dictionary
+                    .addDictionaryEntrys(agnosticComponent.getRequirementsIds(), agnosticComponent);
         return dictionary;
     }
 
@@ -177,18 +189,18 @@ public class DefinitionParser {
                     + relationshipTemplate.getId()
                     + " source or target do not defined correctly");
         } else {
-            AgnosticElement nodeTemplateSourceId = requirementsIdsNodeTemplateIdsDictionary
+            AgnosticComponent nodeTemplateSourceId = requirementsIdsNodeTemplateIdsDictionary
                     .get(source.getId());
-            AgnosticElement nodeTemplateTargetId = capabilitiesIdsNodeTemplateIdsDictionary
+            AgnosticComponent nodeTemplateTargetId = capabilitiesIdsNodeTemplateIdsDictionary
                     .get(target.getId());
             addRelationAgnosticRelation(nodeTemplateSourceId,
                     nodeTemplateTargetId);
         }
     }
 
-    private void addRelationAgnosticRelation(AgnosticElement source,
-                                             AgnosticElement target) {
-        List<AgnosticElement> targetValues;
+    private void addRelationAgnosticRelation(AgnosticComponent source,
+                                             AgnosticComponent target) {
+        List<AgnosticComponent> targetValues;
         if (agnosticRelations.containsKey(source)) {
             targetValues = agnosticRelations.get(source);
         } else {
@@ -208,11 +220,11 @@ public class DefinitionParser {
     }
 
     //<editor-fold desc="Getters and Setters">
-    public List<AgnosticElement> getAgnosticElements() {
-        return generatedAgnosticElements;
+    public List<AgnosticComponent> getAgnosticComponents() {
+        return generatedAgnosticComponents;
     }
 
-    public Map<AgnosticElement, List<AgnosticElement>> getAgnosticRelations() {
+    public Map<AgnosticComponent, List<AgnosticComponent>> getAgnosticRelations() {
         return agnosticRelations;
     }
 
@@ -220,20 +232,21 @@ public class DefinitionParser {
         return applicationAgnosticMetadata;
     }
 
-    public void setApplicationAgnosticMetadata(ApplicationAgnosticMetadata applicationAgnosticMetadata) {
+    public void setApplicationAgnosticMetadata(
+            ApplicationAgnosticMetadata applicationAgnosticMetadata) {
         this.applicationAgnosticMetadata = applicationAgnosticMetadata;
     }
     //</editor-fold>
 
     private class MatchingDictionary {
 
-        Map<String, AgnosticElement> dictionary;
+        Map<String, AgnosticComponent> dictionary;
 
         public MatchingDictionary() {
-            dictionary = new HashMap<String, AgnosticElement>();
+            dictionary = new HashMap<>();
         }
 
-        public void addDictionaryEntrys(List<String> keys, AgnosticElement value) {
+        public void addDictionaryEntrys(List<String> keys, AgnosticComponent value) {
             if ((keys != null) && (value != null)) {
                 for (String key : keys) {
                     dictionary.put(key, value);
@@ -245,14 +258,13 @@ public class DefinitionParser {
             return dictionary.containsKey(key);
         }
 
-        public AgnosticElement get(String key) {
+        public AgnosticComponent get(String key) {
             if (containsKey(key)) {
                 return dictionary.get(key);
             } else {
                 return null;
             }
         }
-
     }
 
 

@@ -1,4 +1,4 @@
-package org.tomat.agnostic.elements;
+package org.tomat.agnostic.components;
 
 import org.tomat.agnostic.properties.AgnosticProperty;
 
@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Created by Jose on 09/10/14.
  */
-public class AgnosticElementUtils {
+public class AgnosticComponentUtils {
 
     public static String findValueMapUsingCollection(Map<String, String> map,
                                                      Collection<String> keysCollection) {
@@ -36,21 +36,21 @@ public class AgnosticElementUtils {
     }
 
     //TODO this method is able to deleted if it is not used.
-    private static boolean isContainsIgnoreCase(Set<String> elementSet, String item){
-        for (String element : elementSet){
-            if(item.equalsIgnoreCase(element)){
+    private static boolean isContainsIgnoreCase(Set<String> componentSet, String item){
+        for (String component : componentSet){
+            if(item.equalsIgnoreCase(component)){
                 return true;
             }
         }
         return false;
     }
 
-    public static AgnosticElement findAgnosticElementById(Collection<AgnosticElement> agnosticElements,
-                                                          String id) {
-        AgnosticElement result = null;
-        for (AgnosticElement agnosticElement : agnosticElements)
-            if (agnosticElement.getId().equalsIgnoreCase(id))
-                result = agnosticElement;
+    public static AgnosticComponent findAgnosticComponentById(Collection<AgnosticComponent> agnosticComponents,
+                                                              String id) {
+        AgnosticComponent result = null;
+        for (AgnosticComponent agnosticComponent : agnosticComponents)
+            if (agnosticComponent.getId().equalsIgnoreCase(id))
+                result = agnosticComponent;
         return result;
     }
 
@@ -65,16 +65,16 @@ public class AgnosticElementUtils {
         return result;
     }
 
-    public static boolean containsAValidPropertyByType(AgnosticElement webApplication,
+    public static boolean containsAValidPropertyByType(AgnosticComponent webApplication,
                                                  Class<? extends AgnosticProperty> type) {
         AgnosticProperty property =
                 findPropertyByType(webApplication, type);
         return property != null && property.isCompleted();
     }
 
-    public static AgnosticProperty findPropertyByType(AgnosticElement agnosticElement,
+    public static AgnosticProperty findPropertyByType(AgnosticComponent agnosticComponent,
                                                 Class<? extends AgnosticProperty> type) {
-        List<AgnosticProperty> properties = agnosticElement.getProperties();
+        List<AgnosticProperty> properties = agnosticComponent.getProperties();
         return findPropertyByType(properties, type);
     }
 

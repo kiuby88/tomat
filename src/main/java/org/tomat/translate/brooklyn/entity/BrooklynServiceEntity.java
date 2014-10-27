@@ -1,13 +1,10 @@
 package org.tomat.translate.brooklyn.entity;
 
-import org.tomat.agnostic.elements.AgnosticElement;
-import org.tomat.agnostic.graphs.AgnosticGraph;
+import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.translate.TechnologyComponent;
-import org.tomat.translate.TechnologyVisitorRelationConfiguration;
 import org.tomat.translate.brooklyn.property.BrooklynProperty;
 import org.tomat.translate.brooklyn.property.BrooklynPropertyProvider;
-import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfiguration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,21 +20,21 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
     private final static String TYPE="IT_IS_NECESSARY_To_SPECIFY_A_TYPE";
 
     private Map<String, Object> brooklynConfigProperties;
-    private AgnosticElement agnosticElement;
+    private AgnosticComponent agnosticComponent;
     private String serviceType;
 
-    public BrooklynServiceEntity(AgnosticElement agnosticElement){
-        super(generateBuilder(agnosticElement));
-        this.agnosticElement=agnosticElement;
+    public BrooklynServiceEntity(AgnosticComponent agnosticComponent){
+        super(generateBuilder(agnosticComponent));
+        this.agnosticComponent = agnosticComponent;
         setServiceType(TYPE);
         initBrooklynConfigProperties();
     }
 
-    private static Builder generateBuilder(AgnosticElement agnosticElement){
+    private static Builder generateBuilder(AgnosticComponent agnosticComponent){
         return new BrooklynEntity.Builder()
-                .id(agnosticElement.getId())
-                .name(agnosticElement.getName())
-                .location(agnosticElement.getLocation());
+                .id(agnosticComponent.getId())
+                .name(agnosticComponent.getName())
+                .location(agnosticComponent.getLocation());
     }
 
     //TODO refactor this name
@@ -47,9 +44,9 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
 
     private void initBrooklynConfigProperties(){
         setBrooklynConfigProperties(new HashMap<String, Object>());
-        List<AgnosticProperty> propertiesOfAgnosticElement=
-                agnosticElement.getProperties();
-        for(AgnosticProperty agnosticProperty : propertiesOfAgnosticElement){
+        List<AgnosticProperty> propertiesOfAgnosticComponent=
+                agnosticComponent.getProperties();
+        for(AgnosticProperty agnosticProperty : propertiesOfAgnosticComponent){
             addSupportedProperty(agnosticProperty);
         }
     }
@@ -83,13 +80,13 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
     //TODO property translation
     private BrooklynProperty buildBrooklynProperty(AgnosticProperty agnosticProperty){
         //TODO Add a fabric of properties, it is important because currently
-        //TODO the elements are created
+        //TODO the component are created
         return BrooklynPropertyProvider.createBrooklynProperty(agnosticProperty);
     }
 
     @Override
-    public AgnosticElement getAgnosticElement(){
-        return agnosticElement;
+    public AgnosticComponent getAgnosticComponent(){
+        return agnosticComponent;
     }
 
     public String getServiceType(){

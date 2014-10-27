@@ -1,11 +1,11 @@
-package org.tomat.agnostic.elements;
+package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.agnostic.properties.MySQLRootPasswordAgnosticPropertyAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.translate.TechnologyComponent;
-import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.util.Map;
@@ -13,27 +13,14 @@ import java.util.Map;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class MySQLAgnosticElement extends AgnosticElement {
+public class MySQLAgnosticComponent extends AgnosticComponent {
 
     public static final String  TYPE="MySQLDB";
 
-    //TODO delete this property comment
-   // private String rootPassword = null;
-
-    public MySQLAgnosticElement(TNodeTemplate nodeTemplateSource)
+    public MySQLAgnosticComponent(TNodeTemplate nodeTemplateSource)
             throws AgnosticPropertyException {
         super(nodeTemplateSource);
     }
-//TODO delete the following commets
-//    private void parsingProperties() {
-//        Map<String, String> propertiesMap = getNodeTemplateProperties();
-//        initRootPassWord(propertiesMap);
-//    }
-//
-//    private void initRootPassWord(Map<String, String> propertiesMap) {
-//        rootPassword = AgnosticElementUtils
-//                .findValueMapUsingCollection(propertiesMap, Arrays.asList(ROOT_PASSWORD));
-//    }
 
     @Override
     public Map<String, Class<? extends AgnosticProperty>> getExpectedProperties() {
@@ -48,7 +35,7 @@ public class MySQLAgnosticElement extends AgnosticElement {
     }
 
     @Override
-    public TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory)
+    public TechnologyComponent buildTechnologyComponent(TechnologyComponentFactory factory)
             throws AgnosticComponentTypeNotSupportedbyBrooklyException {
         return factory.buildTechnologyComponent(this);
     }

@@ -75,7 +75,6 @@ public class BrooklynYamlPrinter {
             throws IOException {
         dumping(o,writer);
         //yaml.dump(o, writer);
-        //return writer.toString();
     }
 
     private void dumping(Object o, Writer writer)
@@ -84,7 +83,6 @@ public class BrooklynYamlPrinter {
         yaml.dump(o,writeForChanging);
         String bufferForChanging=writeForChanging.toString();
         bufferForChanging=bufferForChanging.replace("brooklynConfigProperties:","brooklyn.config:");
-        System.out.println(bufferForChanging);
         writer.write(bufferForChanging);
     }
 

@@ -1,12 +1,12 @@
 package org.tomat.agnostic.application;
 
 import org.opentosca.model.tosca.TServiceTemplate;
-import org.tomat.agnostic.Agnostic;
+import org.tomat.agnostic.AgnosticElement;
 
 /**
  * Created by Jose on 18/10/14.
  */
-public class ApplicationAgnosticMetadata implements Agnostic {
+public class ApplicationAgnosticMetadata implements AgnosticElement {
 
     public final static String APPLICATION_NAME_BY_DEFAULT = "APPLICATION_NAME";
     public final static String APPLICATION_ID_BY_DEFAULT = "APPLICATION_ID";

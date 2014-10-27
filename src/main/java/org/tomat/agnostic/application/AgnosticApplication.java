@@ -1,13 +1,13 @@
 package org.tomat.agnostic.application;
 
+import org.tomat.agnostic.Agnostic;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.tosca.parsers.DefinitionParser;
 
 /**
  * Created by Jose on 18/10/14.
  */
-public class AgnosticApplication {
-
+public class AgnosticApplication implements Agnostic {
 
     private ApplicationAgnosticMetadata metadata;
     private AgnosticGraph agnosticGraph;
@@ -15,7 +15,7 @@ public class AgnosticApplication {
     public AgnosticApplication(DefinitionParser definitionParser) {
         setAgnosticMetadata(definitionParser.getApplicationAgnosticMetadata());
         setAgnosticGraph(new AgnosticGraph(
-                definitionParser.getAgnosticElements(),
+                definitionParser.getAgnosticComponents(),
                 definitionParser.getAgnosticRelations()));
     }
 

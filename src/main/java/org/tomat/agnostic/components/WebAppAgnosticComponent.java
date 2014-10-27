@@ -1,10 +1,11 @@
-package org.tomat.agnostic.elements;
+package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
-import org.tomat.agnostic.properties.*;
+import org.tomat.agnostic.properties.AgnosticProperty;
+import org.tomat.agnostic.properties.DbConnectionNameAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.translate.TechnologyComponent;
-import org.tomat.translate.TechnologyElementsFactory;
+import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.util.Map;
@@ -12,13 +13,12 @@ import java.util.Map;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class WebAppAgnosticElement extends AgnosticElement {
+public class WebAppAgnosticComponent extends AgnosticComponent {
 
     public final static String TYPE="WebApplication";
 
-    public WebAppAgnosticElement(TNodeTemplate nodeTemplateSource)
+    public WebAppAgnosticComponent(TNodeTemplate nodeTemplateSource)
             throws AgnosticPropertyException {
-
         super(nodeTemplateSource);
     }
 
@@ -28,7 +28,7 @@ public class WebAppAgnosticElement extends AgnosticElement {
     }
 
     @Override
-    public TechnologyComponent buildTechnologyComponent(TechnologyElementsFactory factory)
+    public TechnologyComponent buildTechnologyComponent(TechnologyComponentFactory factory)
             throws AgnosticComponentTypeNotSupportedbyBrooklyException {
         return factory.buildTechnologyComponent(this);
     }
