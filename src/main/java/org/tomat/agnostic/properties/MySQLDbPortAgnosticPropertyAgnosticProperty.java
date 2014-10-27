@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public class MySQLDbPortAgnosticPropertyAgnosticProperty extends AgnosticProperty implements MySQLDbConnectionParametersAgnosticProperty {
 
-    private final static String[] DB_PORT = {"DB_PORT", "databasePort", "database_port", "db_port"};
+    private final static String[] DB_PORT = {"DBPORT", "databasePort", "database_port", "db_port"};
     public MySQLDbPortAgnosticPropertyAgnosticProperty(Map<String, String> properties){
         super(properties);
     }

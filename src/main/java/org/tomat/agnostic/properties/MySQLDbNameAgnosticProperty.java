@@ -5,11 +5,11 @@ import java.util.Map;
 /**
  * Created by Jose on 17/10/14.
  */
-public class MySQLDbNameAgnosticPropertyAgnosticProperty extends AgnosticProperty implements MySQLDbConnectionParametersAgnosticProperty {
+public class MySQLDbNameAgnosticProperty extends AgnosticProperty implements MySQLDbConnectionParametersAgnosticProperty {
 
     private final static String[] DB_NAME = {"DBName", "databaseName", "database_name", "db_name"};
 
-    public MySQLDbNameAgnosticPropertyAgnosticProperty(Map<String, String> properties){
+    public MySQLDbNameAgnosticProperty(Map<String, String> properties){
         super(properties);
     }
 

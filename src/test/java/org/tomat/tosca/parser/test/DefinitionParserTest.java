@@ -162,7 +162,8 @@ public class DefinitionParserTest {
 
     @Test(expected = TopologyTemplateFormatException.class)
     public void testAgnosticComponent_NotArtifactTemplate()
-            throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException, AgnosticPropertyException {
+            throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException,
+            AgnosticPropertyException {
         definitionParser
                 .parsingApplicationTopology(AWSDeploymentWithoutTemplate)
                 .buildAgnostics();

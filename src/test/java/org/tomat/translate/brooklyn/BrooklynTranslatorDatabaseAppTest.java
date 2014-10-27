@@ -77,7 +77,7 @@ public class BrooklynTranslatorDatabaseAppTest {
 
         BrooklynServiceEntity jBossBrooklynService = services.get(0);
         assertNotNull(jBossBrooklynService.getBrooklynConfigProperties());
-        assertEquals(jBossBrooklynService.getBrooklynConfigProperties().size(), 2);
+        assertEquals(jBossBrooklynService.getBrooklynConfigProperties().size(), 3);
         assertEquals(jBossBrooklynService.getBrooklynConfigProperties().get("port.http"), "80+");
     }
 

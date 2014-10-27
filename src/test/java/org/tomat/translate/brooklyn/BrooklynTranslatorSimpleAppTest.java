@@ -85,7 +85,6 @@ public class BrooklynTranslatorSimpleAppTest {
         assertNotNull(jBossBrooklynService.getBrooklynConfigProperties());
         assertEquals(jBossBrooklynService.getBrooklynConfigProperties().size(), 1);
         assertEquals(jBossBrooklynService.getBrooklynConfigProperties().get("port.http"), "80+");
-        //assertEquals(jBossBrooklynService.getBrooklynConfigProperties().get("port.https"),null);
     }
 
     @Test

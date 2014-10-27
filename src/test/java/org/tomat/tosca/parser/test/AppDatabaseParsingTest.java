@@ -72,9 +72,12 @@ public class AppDatabaseParsingTest {
 
         List<AgnosticElement> agnosticElements=definitionParser.getAgnosticElements();
         AgnosticElement mySQLDb= agnosticElements.get(3);
-        System.out.println(mySQLDb.getProperties().size());
-        //TODO arregalr esto y cambiar brooklynconfig por brooklyn.config
-        //assertEquals(mySQLDb.getProperties().size(),1000);
+        assertEquals(mySQLDb.getProperties().size(),4);
+
+        assertEquals(mySQLDb.getProperties().get(0).getValue(),"seaclouds");
+        assertEquals(mySQLDb.getProperties().get(1).getValue(),"dbName");
+        assertEquals(mySQLDb.getProperties().get(2).getValue(),"dbUser");
+        assertEquals(mySQLDb.getProperties().get(3).getValue(),"3306");
     }
 
     @Test
@@ -120,7 +123,6 @@ public class AppDatabaseParsingTest {
         AgnosticDeploymentArtifact MySQLDbAgnosticDeploymentArtifact = agnosticDeploymentArtifactMySQLDb.get(0);
         assertEquals(MySQLDbAgnosticDeploymentArtifact.getArtifactReferences().size(), 1);
         assertEquals(MySQLDbAgnosticDeploymentArtifact.getArtifactReferences().get(0), "database.sql");
-
     }
 
     @Test

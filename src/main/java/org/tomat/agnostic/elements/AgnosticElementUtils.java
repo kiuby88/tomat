@@ -26,10 +26,11 @@ public class AgnosticElementUtils {
 
     public static String anyKeyFromCollectionIsAMapKey(String[] keysCollection,
                                                         Map<String, String> map) {
-
+        String keyLowerCase;
         for (String key : keysCollection) {
-            if (map.containsKey(key.toLowerCase())){
-                return key;
+            keyLowerCase=key.toLowerCase();
+            if (map.containsKey(keyLowerCase)){
+                return keyLowerCase;
             }
         }
         return null;

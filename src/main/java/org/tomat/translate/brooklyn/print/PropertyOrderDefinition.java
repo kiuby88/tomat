@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Created by Jose on 23/10/14.
  */
-public class ReversedPropertyUtils extends PropertyUtils {
+public class PropertyOrderDefinition extends PropertyUtils {
     @Override
     protected Set<Property> createPropertySet(Class<? extends Object> type, BeanAccess bAccess)
             throws IntrospectionException {

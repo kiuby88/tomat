@@ -1,4 +1,4 @@
-package org.tomat.translate.brooklyn;
+package org.tomat.translate.brooklyn.entity;
 
 import org.tomat.agnostic.elements.*;
 import org.tomat.translate.TechnologyElementsFactory;
@@ -10,7 +10,7 @@ import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupported
 /**
  * Created by Jose on 23/10/14.
  */
-public class BrooklynElementsFactory implements TechnologyElementsFactory {
+public class BrooklynComponentFactory implements TechnologyElementsFactory {
 
 //    @Override
 //    public BrooklynServiceEntity buildTechnologyComponent(AgnosticElement agnosticElement)

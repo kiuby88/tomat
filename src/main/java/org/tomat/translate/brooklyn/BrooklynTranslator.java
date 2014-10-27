@@ -8,17 +8,13 @@ import org.tomat.translate.TechnologyComponent;
 import org.tomat.translate.TechnologyElementsFactory;
 import org.tomat.translate.TechnologyTranslator;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
+import org.tomat.translate.brooklyn.entity.BrooklynComponentFactory;
 import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
-import org.tomat.translate.brooklyn.print.ReversedPropertyUtils;
-import org.tomat.translate.brooklyn.print.SkipEmptyAndNullRepresenter;
+import org.tomat.translate.brooklyn.print.BrooklynYamlPrinter;
 import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfiguration;
 import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfigurationProvider;
 import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.nodes.Tag;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -29,12 +25,12 @@ import java.util.Set;
 public class BrooklynTranslator extends TechnologyTranslator {
 
     private BrooklynApplicationEntity brooklynApplicationEntity;
-    private BrooklynElementsFactory brooklynElementsFactory;
+    private BrooklynComponentFactory brooklynComponentFactory;
 
     public BrooklynTranslator(AgnosticApplication agnosticApplication){
         super(agnosticApplication);
         initBrooklynApplicationEntity();
-        brooklynElementsFactory =new BrooklynElementsFactory();
+        brooklynComponentFactory =new BrooklynComponentFactory();
     }
 
     private void initBrooklynApplicationEntity() {
@@ -47,7 +43,7 @@ public class BrooklynTranslator extends TechnologyTranslator {
     }
 
     public TechnologyElementsFactory getTechnologyElementFactory(){
-        return brooklynElementsFactory;
+        return brooklynComponentFactory;
     }
 
 
@@ -87,7 +83,7 @@ public class BrooklynTranslator extends TechnologyTranslator {
 
         AgnosticGraph agnosticGraph=getAgnosticApplication().getAgnosticGraph();
         AgnosticElement agnosticElementOfBrooklynService=technologyServiceEntity.getAgnosticElement();
-        List<AgnosticElement> incomingVertexList=agnosticGraph.getIncompongVertexOf(agnosticElementOfBrooklynService);
+        List<AgnosticElement> incomingVertexList=agnosticGraph.getIncomingVertexOf(agnosticElementOfBrooklynService);
         BrooklynVisitorRelationConfiguration visitor;
 
         for(AgnosticElement incomingVertex : incomingVertexList){
@@ -100,37 +96,21 @@ public class BrooklynTranslator extends TechnologyTranslator {
         brooklynApplicationEntity.addService(brooklynServiceEntity);
     }
 
-    @Override
-    public void getTranslation() {
-
-    }
 
     public BrooklynApplicationEntity getBrooklynApplicationEntity(){
         return brooklynApplicationEntity;
     }
 
-    public void print(String file) throws IOException {
-        print(new FileWriter(file));
+    @Override
+    public String  print() throws IOException {
+        BrooklynYamlPrinter printer = new BrooklynYamlPrinter();
+        return printer.print(this.getBrooklynApplicationEntity());
     }
 
-    //TODO refactor
-    public void print(FileWriter file){
-        DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-
-        //options
-        //options.setCanonical(false);
-        options.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
-        SkipEmptyAndNullRepresenter skipEmptyAndNullRepresenter=new SkipEmptyAndNullRepresenter();
-
-        skipEmptyAndNullRepresenter.addClassTag(org.tomat.translate.brooklyn.entity.JBossBrooklynService.class, Tag.MAP);
-        skipEmptyAndNullRepresenter.addClassTag(org.tomat.translate.brooklyn.entity.MySQLBrooklynService.class, Tag.MAP);
-        skipEmptyAndNullRepresenter.addClassTag(BrooklynApplicationEntity.class, Tag.MAP);
-
-        skipEmptyAndNullRepresenter.setPropertyUtils(new ReversedPropertyUtils());
-
-        Yaml yaml=new Yaml(skipEmptyAndNullRepresenter, options);
-        yaml.dump(this.getBrooklynApplicationEntity(), file);
+    @Override
+    public void print(String file) throws IOException {
+        BrooklynYamlPrinter printer = new BrooklynYamlPrinter();
+        printer.print(this.getBrooklynApplicationEntity(), file);
     }
 
 

@@ -6,5 +6,5 @@ services:
   name: JBoss Main Web Server
   location: AWS
   id: JBossMainWebServer
-  brooklynConfigProperties:
+  brooklyn.config:
     port.http: 80+

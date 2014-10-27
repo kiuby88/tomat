@@ -75,20 +75,18 @@ public class DefinitionParser {
             throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException, TopologyTemplateFormatException {
         generatedAgnosticElements = new LinkedList<>();
         for (TNodeTemplate nodeTemplate : nodeTemplatesOfTopology) {
-            AgnosticElementProvider.createAgnosticElement(nodeTemplate);
             generatedAgnosticElements
                     .add(buildAgnosticElement(nodeTemplate));
         }
     }
 
     private AgnosticElement buildAgnosticElement(TNodeTemplate nodeTemplate)
-            throws AgnosticPropertyException, NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
+            throws AgnosticPropertyException,
+            NodeTemplateTypeNotSupportedException,
+            TopologyTemplateFormatException {
         AgnosticElement agnosticElement =
                 AgnosticElementProvider.createAgnosticElement(nodeTemplate);
-
-
         agnosticElement.setAgnosticDeploymentArtifacts(getAgnosticDeploymentArtifacts(nodeTemplate));
-
         return agnosticElement;
     }
 

@@ -16,8 +16,6 @@ public abstract class AgnosticProperty implements Agnostic{
         initProperty(properties);
     }
 
-
-
     private void initProperty(Map<String, String> properties) {
         id=findPropertyIdUsed(properties);
         if(id!=null){
@@ -26,8 +24,9 @@ public abstract class AgnosticProperty implements Agnostic{
     }
 
     private String findPropertyIdUsed(Map<String, String> properties){
+        String[] allowed=getAllowedPropertyIds();
         return AgnosticElementUtils
-                .anyKeyFromCollectionIsAMapKey(getAllowedPropertyIds(), properties);
+                .anyKeyFromCollectionIsAMapKey(allowed, properties);
     }
 
     public abstract String[] getAllowedPropertyIds();

@@ -82,13 +82,38 @@ public class AgnosticGraph implements Agnostic {
     }
 
     //TODO refactor name of agnosticElement to vertex in the parameter of the method
-    public List<AgnosticElement> getIncompongVertexOf(AgnosticElement agnosticElement){
+    public List<AgnosticElement> getIncomingVertexOf(AgnosticElement agnosticElement){
         List<AgnosticElement> result=null;
         Set<DefaultEdge> incomingVertex= getIncomingEdgesOf(agnosticElement);
         if(incomingVertex!=null){
             result=new LinkedList<>();
             for(DefaultEdge edge : incomingVertex){
                 result.add(agnosticGraph.getEdgeSource(edge));
+            }
+        }
+        return result;
+    }
+
+
+
+
+
+
+
+
+    //TODO refactor name of agnosticElement to vertex in the parameter of the method
+    public Set<DefaultEdge> getOutcomingEdgesOf(AgnosticElement agnosticElement){
+        return agnosticGraph.outgoingEdgesOf(agnosticElement);
+    }
+
+    //TODO refactor name of agnosticElement to vertex in the parameter of the method
+    public List<AgnosticElement> getOutcomigngVertexOf(AgnosticElement agnosticElement){
+        List<AgnosticElement> result=null;
+        Set<DefaultEdge> outcomingVertex= getOutcomingEdgesOf(agnosticElement);
+        if(outcomingVertex!=null){
+            result=new LinkedList<>();
+            for(DefaultEdge edge : outcomingVertex){
+                result.add(agnosticGraph.getEdgeTarget(edge));
             }
         }
         return result;

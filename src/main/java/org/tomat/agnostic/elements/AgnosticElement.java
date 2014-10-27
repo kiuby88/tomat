@@ -109,34 +109,40 @@ public abstract class AgnosticElement implements Agnostic {
     private void initProperties()
             throws AgnosticPropertyException {
 
+        AgnosticProperty agnosticProperty;
+        Class expectedPropertySpecification;
         Map<String, Class<? extends AgnosticProperty>> expectedProperties = this.getExpectedProperties();
         Set<String> propertyIdsOfExpectedProperties = expectedProperties.keySet();
-        Class expectedPropertySpecification;
-
         setProperties(new LinkedList<AgnosticProperty>());
+
         for (String expectedPropertyId : propertyIdsOfExpectedProperties) {
             expectedPropertySpecification = expectedProperties.get(expectedPropertyId);
-            addExpectedProperty(expectedPropertyId, expectedPropertySpecification);
+            agnosticProperty=
+                    buildExpectedProperty(expectedPropertyId, expectedPropertySpecification);
+            addPropertyIfIsCompleted(agnosticProperty);
         }
     }
 
-    private void addExpectedProperty(String id, Class<? extends AgnosticProperty> propertyClass)
+    private AgnosticProperty buildExpectedProperty(String id, Class<? extends AgnosticProperty> propertyClass)
             throws AgnosticPropertyException {
+        AgnosticProperty result = null;
         try {
-            AgnosticProperty agnosticProperty = propertyClass
-                    .getConstructor(Map.class)
-                    .newInstance(getNodeTemplateProperties());
-            addPropertyIfIsCompleted(agnosticProperty);
-
+            Map<String, String> nodeTemplatePropertyMap = getNodeTemplateProperties();
+            if (nodeTemplatePropertyMap != null) {
+                result = propertyClass
+                        .getConstructor(Map.class)
+                        .newInstance(nodeTemplatePropertyMap);
+            }
         } catch (InstantiationException | IllegalAccessException
                 | NoSuchMethodException | InvocationTargetException e) {
             throw new AgnosticPropertyException("Problem  instantiation: " + propertyClass.getName()
-                    + ". Original Exception" + e.getMessage());
+                    + ". Original Exception " + e.toString());
         }
+        return result;
     }
 
-    private void addPropertyIfIsCompleted(AgnosticProperty property){
-        if (property.isCompleted()){
+    private void addPropertyIfIsCompleted(AgnosticProperty property) {
+        if ((property!=null)&&(property.isCompleted())) {
             addProperty(property);
         }
     }

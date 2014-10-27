@@ -8,7 +8,7 @@ import java.util.Map;
 public class MySQLRootPasswordAgnosticPropertyAgnosticProperty extends AgnosticProperty implements MySQLDbConnectionParametersAgnosticProperty {
 
     private final static String[] DB_PASSWORD = {"DB_PASSWORD", "databasePassword",
-            "database_password", "db_password"};
+            "database_password", "db_password", "rootpassword"};
 
     public MySQLRootPasswordAgnosticPropertyAgnosticProperty(Map<String, String> properties){
         super(properties);

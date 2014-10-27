@@ -103,6 +103,12 @@
             <!-- Main Web Application -->
             <NodeTemplate id="MainWebApp" name="Main Web App"
                           type="WebApplication">
+
+                <Properties>
+                    <ns2:WebApplicationProperties>
+                        <dbConnectionName>brooklyn.example.db.url</dbConnectionName>
+                    </ns2:WebApplicationProperties>
+                </Properties>
                 <Requirements>
                     <Requirement id="MainWebApp_MainDatabase" name="MainDatabase"
                                  type="MainWebAppConnectToMainWebApp" />
@@ -134,9 +140,9 @@
             <NodeTemplate id="MainDB" name="Main DB" type="MySQLDB">
                 <Properties>
                     <ns3:StockDbProperties>
-                        <DBName>stockdb</DBName>
-                        <DBUser>stockadmin</DBUser>
-                        <DBPassword>stockadmin</DBPassword>
+                        <DBName>dbName</DBName>
+                        <DBUser>dbUser</DBUser>
+                        <DBPassword>seaclouds</DBPassword>
                         <DBPort>3306</DBPort>
                     </ns3:StockDbProperties>
                 </Properties>

@@ -26,23 +26,8 @@ public class JBossAgnosticElement extends AgnosticElement {
     public JBossAgnosticElement(TNodeTemplate nodeTemplateSource)
             throws AgnosticPropertyException {
         super(nodeTemplateSource);
-        //parsingProperties();
-    }
 
-//    private void parsingProperties() {
-//        Map<String, String> propertiesMap = getNodeTemplateProperties();
-//    }
-//TODO delete the following comments
-//    private void initHttpPort(Map<String, String> propertiesMap) {
-//        httpPort = AgnosticElementUtils
-//                .findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTP_PROPERTY));
-//    }
-//
-//    private void initHttpsPort(Map<String, String> propertiesMap) {
-//        httpsPort = AgnosticElementUtils
-//                .findValueMapUsingCollection(propertiesMap, Arrays.asList(HTTPS_PROPERTY));
-//
-//    }
+    }
 
     @Override
     public Map<String, Class<? extends AgnosticProperty>> getExpectedProperties(){
