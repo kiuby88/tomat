@@ -2,6 +2,7 @@ package org.tomat.translate.brooklyn.visit;
 
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.elements.AgnosticElement;
+import org.tomat.agnostic.elements.AgnosticElementUtils;
 import org.tomat.agnostic.elements.MySQLAgnosticElement;
 import org.tomat.agnostic.elements.MySQLDataBaseAgnosticElement;
 import org.tomat.agnostic.graphs.AgnosticGraph;
@@ -48,9 +49,10 @@ public class WebAppBrooklynVisitorRelationConfiguration
                                              AgnosticElement webAppAgnostic,
                                              AgnosticGraph agnosticGraph) {
 
-        if (containsAValidPropertyByType(webAppAgnostic, DbConnectionNameAgnosticProperty.class)
-                || containOutcomingRelationByType( webAppAgnostic,
-                        agnosticGraph, MySQLDataBaseAgnosticElement.class)) {
+        if (AgnosticElementUtils
+                .containsAValidPropertyByType(webAppAgnostic, DbConnectionNameAgnosticProperty.class)
+                || agnosticGraph.containOutcomingRelationByType( webAppAgnostic,
+                        MySQLDataBaseAgnosticElement.class)) {
 
             Map<String, String> databaseConnectionConfiguration = configureDatabaseConnectionParameters(jBossService, webAppAgnostic, agnosticGraph);
             jBossService.addConfigProperty("java.sysprops", databaseConnectionConfiguration);
@@ -64,9 +66,9 @@ public class WebAppBrooklynVisitorRelationConfiguration
                                                                       AgnosticGraph agnosticGraph) {
 
         MySQLDataBaseAgnosticElement dataBaseAgnosticElement =
-                (MySQLDataBaseAgnosticElement) findAgnosticElementOutComingByType(
+                (MySQLDataBaseAgnosticElement) agnosticGraph
+                        .findAgnosticElementOutComingByType(
                         webAppAgnostic,
-                        agnosticGraph,
                         MySQLDataBaseAgnosticElement.class);
 
         String dbConnectionName = getPropertyValueOrNotCompleteValue(
@@ -107,9 +109,7 @@ public class WebAppBrooklynVisitorRelationConfiguration
                                                Class<? extends AgnosticProperty>type,
                                                String valueIfNotComplete){
         AgnosticProperty agnosticProperty=
-                findPropertyByType(
-                        agnosticElement,
-                        type);
+                AgnosticElementUtils.findPropertyByType(agnosticElement,type);
 
         if(agnosticProperty.isCompleted()){
             return agnosticProperty.getValue();
@@ -122,8 +122,7 @@ public class WebAppBrooklynVisitorRelationConfiguration
     private String getDbURL(MySQLDataBaseAgnosticElement dataBaseAgnosticElement,
             AgnosticGraph agnosticGraph) {
         MySQLAgnosticElement mySQLAgnosticElement=(MySQLAgnosticElement)
-                findAgnosticElementOutComingByType(dataBaseAgnosticElement,
-                        agnosticGraph,
+                agnosticGraph.findAgnosticElementOutComingByType(dataBaseAgnosticElement,
                         MySQLAgnosticElement.class);
         return getDbUrlValue(mySQLAgnosticElement);
     }
@@ -143,57 +142,6 @@ public class WebAppBrooklynVisitorRelationConfiguration
     }
 
 
-    private boolean containsAValidPropertyByType(AgnosticElement webApplication,
-                                                 Class<? extends AgnosticProperty> type) {
-        AgnosticProperty property =
-                findPropertyByType(webApplication, type);
-        return property != null && property.isCompleted();
-    }
-
-    private AgnosticProperty findPropertyByType(AgnosticElement agnosticElement,
-                                                Class<? extends AgnosticProperty> type) {
-        List<AgnosticProperty> properties = agnosticElement.getProperties();
-        return findPropertyByType(properties, type);
-    }
-
-    private AgnosticProperty findPropertyByType(List<AgnosticProperty> properties, Class<? extends AgnosticProperty> type) {
-        AgnosticProperty result = null;
-        if ((properties != null) && (!properties.isEmpty())) {
-            for (AgnosticProperty property : properties) {
-                if (type.isAssignableFrom(property.getClass())) {
-                    return property;
-                }
-            }
-        }
-        return result;
-    }
-
-    private boolean containOutcomingRelationByType(AgnosticElement webAppAgnostic,
-                                                   AgnosticGraph agnosticGraph,
-                                                   Class<? extends AgnosticElement> type) {
-        return findAgnosticElementOutComingByType(webAppAgnostic, agnosticGraph, type) != null;
-    }
-
-    private AgnosticElement findAgnosticElementOutComingByType(AgnosticElement agnosticElement,
-                                                              AgnosticGraph agnosticGraph,
-                                                              Class<? extends AgnosticElement> type) {
-        List<AgnosticElement> outcomingVertex = agnosticGraph
-                .getOutcomigngVertexOf(agnosticElement);
-        return findAgnosticElementOutComingByType(outcomingVertex, type);
-    }
-
-    private AgnosticElement findAgnosticElementOutComingByType(List<AgnosticElement> outcomigngVertex,
-                                                              Class<? extends AgnosticElement> type) {
-        AgnosticElement result = null;
-        if ((outcomigngVertex != null) && (!outcomigngVertex.isEmpty())) {
-            for (AgnosticElement agnosticElement : outcomigngVertex) {
-                if (type.isAssignableFrom(agnosticElement.getClass())) {
-                    result =  agnosticElement;
-                }
-            }
-        }
-        return result;
-    }
 
 
 

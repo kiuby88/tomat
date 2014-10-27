@@ -94,13 +94,6 @@ public class AgnosticGraph implements Agnostic {
         return result;
     }
 
-
-
-
-
-
-
-
     //TODO refactor name of agnosticElement to vertex in the parameter of the method
     public Set<DefaultEdge> getOutcomingEdgesOf(AgnosticElement agnosticElement){
         return agnosticGraph.outgoingEdgesOf(agnosticElement);
@@ -114,6 +107,32 @@ public class AgnosticGraph implements Agnostic {
             result=new LinkedList<>();
             for(DefaultEdge edge : outcomingVertex){
                 result.add(agnosticGraph.getEdgeTarget(edge));
+            }
+        }
+        return result;
+    }
+
+
+    public boolean containOutcomingRelationByType(AgnosticElement webAppAgnostic,
+                                                   Class<? extends AgnosticElement> type) {
+        return findAgnosticElementOutComingByType(webAppAgnostic, type) != null;
+    }
+
+    public AgnosticElement findAgnosticElementOutComingByType(AgnosticElement agnosticElement,
+                                                               Class<? extends AgnosticElement> type) {
+        List<AgnosticElement> outcomingVertex = this
+                .getOutcomigngVertexOf(agnosticElement);
+        return findAgnosticElementOutComingByType(outcomingVertex, type);
+    }
+
+    private AgnosticElement findAgnosticElementOutComingByType(List<AgnosticElement> outcomigngVertex,
+                                                               Class<? extends AgnosticElement> type) {
+        AgnosticElement result = null;
+        if ((outcomigngVertex != null) && (!outcomigngVertex.isEmpty())) {
+            for (AgnosticElement agnosticElement : outcomigngVertex) {
+                if (type.isAssignableFrom(agnosticElement.getClass())) {
+                    result =  agnosticElement;
+                }
             }
         }
         return result;

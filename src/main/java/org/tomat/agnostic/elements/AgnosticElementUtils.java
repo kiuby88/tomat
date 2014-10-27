@@ -1,9 +1,8 @@
 package org.tomat.agnostic.elements;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import org.tomat.agnostic.properties.AgnosticProperty;
+
+import java.util.*;
 
 /**
  * Created by Jose on 09/10/14.
@@ -61,6 +60,31 @@ public class AgnosticElementUtils {
             result=new HashMap<>();
             for(String key : map.keySet()){
                 result.put(key.toLowerCase(), map.get(key));
+            }
+        }
+        return result;
+    }
+
+    public static boolean containsAValidPropertyByType(AgnosticElement webApplication,
+                                                 Class<? extends AgnosticProperty> type) {
+        AgnosticProperty property =
+                findPropertyByType(webApplication, type);
+        return property != null && property.isCompleted();
+    }
+
+    public static AgnosticProperty findPropertyByType(AgnosticElement agnosticElement,
+                                                Class<? extends AgnosticProperty> type) {
+        List<AgnosticProperty> properties = agnosticElement.getProperties();
+        return findPropertyByType(properties, type);
+    }
+
+    public static AgnosticProperty findPropertyByType(List<AgnosticProperty> properties, Class<? extends AgnosticProperty> type) {
+        AgnosticProperty result = null;
+        if ((properties != null) && (!properties.isEmpty())) {
+            for (AgnosticProperty property : properties) {
+                if (type.isAssignableFrom(property.getClass())) {
+                    return property;
+                }
             }
         }
         return result;
