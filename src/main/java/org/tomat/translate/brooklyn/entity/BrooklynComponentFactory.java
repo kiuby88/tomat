@@ -1,9 +1,7 @@
 package org.tomat.translate.brooklyn.entity;
 
-import org.tomat.agnostic.components.JBossAgnosticComponent;
-import org.tomat.agnostic.components.MySQLAgnosticComponent;
-import org.tomat.agnostic.components.MySQLDataBaseAgnosticComponent;
-import org.tomat.agnostic.components.WebAppAgnosticComponent;
+import org.tomat.agnostic.components.*;
+import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
@@ -16,6 +14,12 @@ public class BrooklynComponentFactory implements TechnologyComponentFactory {
     public BrooklynServiceEntity buildTechnologyComponent(JBossAgnosticComponent jBossAgnosticComponent)
             throws AgnosticComponentTypeNotSupportedbyBrooklyException {
         return new JBossBrooklynService(jBossAgnosticComponent);
+    }
+
+    @Override
+    public BrooklynServiceEntity buildTechnologyComponent(JettyAgnosticComponent jettyAgnosticComponent)
+            throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+        return new JettyBrooklynService(jettyAgnosticComponent);
     }
 
     @Override

@@ -35,6 +35,9 @@ public class AgnosticComponentProvider {
         if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.JBOSS_WEB_SERVER))
             agnosticComponent = new JBossAgnosticComponent(nodeTemplate);
 
+        else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.JETTY_WEB_SERVER))
+            agnosticComponent = new JettyAgnosticComponent(nodeTemplate);
+
         else if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.WEB_APPLICATION))
             agnosticComponent = new WebAppAgnosticComponent(nodeTemplate);
 

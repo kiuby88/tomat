@@ -2,8 +2,6 @@ package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.AgnosticProperty;
-import org.tomat.agnostic.properties.HttpAgnosticProperty;
-import org.tomat.agnostic.properties.HttpsAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.translate.TechnologyComponent;
 import org.tomat.translate.TechnologyComponentFactory;
@@ -14,14 +12,13 @@ import java.util.Map;
 /**
  * Created by MariaC on 24/09/2014.
  */
-public class JBossAgnosticComponent extends JavaWebApplicationServerAgnosticComponent {
+public class JettyAgnosticComponent extends JavaWebApplicationServerAgnosticComponent {
 
-    public final static String TYPE="JBossWebServer";
+    public final static String TYPE="JettyWebServer";
 
-    public JBossAgnosticComponent(TNodeTemplate nodeTemplateSource)
+    public JettyAgnosticComponent(TNodeTemplate nodeTemplateSource)
             throws AgnosticPropertyException {
         super(nodeTemplateSource);
-
     }
 
     @Override

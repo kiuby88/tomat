@@ -8,6 +8,8 @@ import org.tomat.agnostic.components.MySQLDataBaseAgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.agnostic.properties.*;
 import org.tomat.translate.brooklyn.entity.JBossBrooklynService;
+import org.tomat.translate.brooklyn.entity.JavaWebApplicationServerBrooklynService;
+import org.tomat.translate.brooklyn.entity.JettyBrooklynService;
 import org.tomat.translate.brooklyn.entity.MySQLBrooklynService;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class WebAppBrooklynVisitorRelationConfiguration
         configureDatabaseConnection(jBossService, agnosticComponent, agnosticGraph);
     }
 
-    private void configJBossDeploymentArtifacts(JBossBrooklynService jBossBrooklynService,
+    private void configJBossDeploymentArtifacts(JavaWebApplicationServerBrooklynService jWebAppServerBrooklynService,
                                                 AgnosticComponent webAppAgnostic) {
         List<AgnosticDeploymentArtifact> deploymentArtifacts =
                 webAppAgnostic.getAgnosticDeploymentArtifacts();
@@ -37,15 +39,12 @@ public class WebAppBrooklynVisitorRelationConfiguration
             AgnosticDeploymentArtifact webApplicationDeploymentArtifact = deploymentArtifacts.get(0);
             String webApplicationDeploymentArtifactReference =
                     webApplicationDeploymentArtifact.getArtifactReferences().get(0);
-            jBossBrooklynService.addConfigProperty("wars.root",
+            jWebAppServerBrooklynService.addConfigProperty("wars.root",
                     webApplicationDeploymentArtifactReference);
         }
     }
 
-
-
-
-    private void configureDatabaseConnection(JBossBrooklynService jBossService,
+    private void configureDatabaseConnection(JavaWebApplicationServerBrooklynService jWebAppServerBrooklynService,
                                              AgnosticComponent webAppAgnostic,
                                              AgnosticGraph agnosticGraph) {
 
@@ -54,15 +53,14 @@ public class WebAppBrooklynVisitorRelationConfiguration
                 || agnosticGraph.containOutcomingRelationByType(webAppAgnostic,
                 MySQLDataBaseAgnosticComponent.class)) {
 
-            Map<String, String> databaseConnectionConfiguration = configureDatabaseConnectionParameters(jBossService, webAppAgnostic, agnosticGraph);
-            jBossService.addConfigProperty("java.sysprops", databaseConnectionConfiguration);
+            Map<String, String> databaseConnectionConfiguration = configureDatabaseConnectionParameters(webAppAgnostic, agnosticGraph);
+            jWebAppServerBrooklynService.addConfigProperty("java.sysprops", databaseConnectionConfiguration);
 
         }
     }
 
 
-    private Map<String, String> configureDatabaseConnectionParameters(JBossBrooklynService jBossService,
-                                                                      AgnosticComponent webAppAgnostic,
+    private Map<String, String> configureDatabaseConnectionParameters(AgnosticComponent webAppAgnostic,
                                                                       AgnosticGraph agnosticGraph) {
 
         MySQLDataBaseAgnosticComponent dataBaseAgnosticComponent =
@@ -101,7 +99,6 @@ public class WebAppBrooklynVisitorRelationConfiguration
         Map<String, String> databaseConfiguration=new TreeMap<>();
         databaseConfiguration.put(dbConnectionName, connectionConfiguration);
         return databaseConfiguration;
-
     }
 
 
@@ -139,8 +136,14 @@ public class WebAppBrooklynVisitorRelationConfiguration
             result= "&URL_DATABASE";
         }
         return result;
-
     }
+
+    @Override
+    public void visit(JettyBrooklynService jettyService, AgnosticComponent agnosticComponent, AgnosticGraph agnosticGraph) {
+        configJBossDeploymentArtifacts(jettyService, agnosticComponent);
+        configureDatabaseConnection(jettyService, agnosticComponent, agnosticGraph);
+    }
+
 
     @Override
     public void visit(MySQLBrooklynService mySQLService,

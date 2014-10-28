@@ -13,12 +13,12 @@ import java.util.Map;
  */
 //TODO could be a good idea move this class (and other Services to a new package named services
 // TODO into .entity
-public class JBossBrooklynService extends JavaWebApplicationServerBrooklynService {
+public class JettyBrooklynService extends JavaWebApplicationServerBrooklynService {
 
-    private final static String SERVICE_TYPE="brooklyn.entity.webapp.jboss.JBoss7Server";
+    private final static String SERVICE_TYPE="brooklyn.entity.webapp.jetty.Jetty6Server";
 
 
-    public JBossBrooklynService(AgnosticComponent agnosticComponent) {
+    public JettyBrooklynService(AgnosticComponent agnosticComponent) {
         super(agnosticComponent);
         setServiceType(SERVICE_TYPE);
     }

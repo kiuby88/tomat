@@ -4,6 +4,7 @@ import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.translate.TechnologyVisitorRelationConfiguration;
 import org.tomat.translate.brooklyn.entity.JBossBrooklynService;
+import org.tomat.translate.brooklyn.entity.JettyBrooklynService;
 import org.tomat.translate.brooklyn.entity.MySQLBrooklynService;
 
 /**
@@ -13,6 +14,10 @@ public abstract class BrooklynVisitorRelationConfiguration
         implements TechnologyVisitorRelationConfiguration{
 
     public abstract void visit(JBossBrooklynService jBossService,
+                               AgnosticComponent agnosticComponent,
+                               AgnosticGraph agnosticGraph);
+
+    public abstract void visit(JettyBrooklynService jBossService,
                                AgnosticComponent agnosticComponent,
                                AgnosticGraph agnosticGraph);
 
