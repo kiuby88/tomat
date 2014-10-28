@@ -32,11 +32,12 @@ import static org.junit.Assert.assertNotNull;
 public class BrooklynTranslatorDatabaseAppTest {
 
     DefinitionParser definitionParser;
-    String AWSApplicationDatabaseFile = "resources/AWS-Application-DatabaseSample.xml";
+    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample.xml";
     AgnosticApplication agnosticApplication;
     BrooklynTranslator brooklynTranslator;
     BrooklynApplicationEntity brooklynApplicationEntity;
     List<BrooklynServiceEntity> services;
+    String yamlFile="src/test/resources/yaml/testDbApp.yaml";
 
     //TODO refactor test to init using less code
     public static void main(String[] args) {
@@ -96,6 +97,6 @@ public class BrooklynTranslatorDatabaseAppTest {
             throws AgnosticComponentTypeNotSupportedbyBrooklyException, IOException {
 
         brooklynApplicationEntity = brooklynTranslator.getBrooklynApplicationEntity();
-        brooklynTranslator.print("resources/testDbApp.yaml");
+        brooklynTranslator.print(yamlFile);
     }
 }

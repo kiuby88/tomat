@@ -25,7 +25,7 @@ import static org.junit.Assert.assertNotNull;
 public class AppDatabaseAgnosticApplicationTest {
 
     DefinitionParser definitionParser;
-    String AWSApplicationDatabaseFile = "resources/AWS-Application-DatabaseSample.xml";
+    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample.xml";
     AgnosticApplication agnosticApplication;
     private AgnosticGraph agnosticGraph;
 

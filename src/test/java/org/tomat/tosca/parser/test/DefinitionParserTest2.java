@@ -16,7 +16,7 @@ public class DefinitionParserTest2 {
 
     //TODO rename the methods using the methodology of Google JAva Style
     DefinitionParser definitionParser;
-    String AWSDeploymentWithoutTemplate = "resources/AWS-DeploymentArtifactWithoutArtifactTemplate2.xml";
+    String AWSDeploymentWithoutTemplate = "src/test/resources/toscaTopology/AWS-DeploymentArtifactWithoutArtifactTemplate2.xml";
 
 
     public static void main(String[] args) {

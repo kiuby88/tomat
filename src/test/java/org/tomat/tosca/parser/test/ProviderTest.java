@@ -30,8 +30,8 @@ public class ProviderTest {
     List<TNodeTemplate> nodeTemplateListAWSSample;
     TNodeTemplate nodeTemplateAWS;
     DefinitionParser definitionParser;
-    String AWSFile = "resources/AWS-Location-Sample.xml";
-    String AWSUnsupportedType = "resources/AWS-Location-Sample-Unsupported-Type.xml";
+    String AWSFile = "src/test/resources/toscaTopology/AWS-Location-Sample.xml";
+    String AWSUnsupportedType = "src/test/resources/toscaTopology/AWS-Location-Sample-Unsupported-Type.xml";
 
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(ProviderTest.class);

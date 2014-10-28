@@ -29,7 +29,7 @@ public class AppDatabaseParsingTest {
     //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSDbSample;
     DefinitionParser definitionParser;
-    String AWSApplicationDatabaseFile = "resources/AWS-Application-DatabaseSample.xml";
+    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample.xml";
     Map<AgnosticComponent, List<AgnosticComponent>> relationMaps;
 
     public static void main(String[] args) {

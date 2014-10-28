@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
 public class AppDatabaseGraphGenerationTest {
 
     DefinitionParser definitionParser;
-    String AWSApplicationDatabaseFile = "resources/AWS-Application-DatabaseSample.xml";
+    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample.xml";
     AgnosticGraph agnosticGraph;
     Set<AgnosticComponent> agnosticComponentVertexs;
 

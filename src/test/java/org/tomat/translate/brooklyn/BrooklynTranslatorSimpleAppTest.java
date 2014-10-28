@@ -27,10 +27,11 @@ import static org.junit.Assert.assertNotNull;
 public class BrooklynTranslatorSimpleAppTest {
 
     DefinitionParser definitionParser;
-    String AWSApplicationDatabaseFile = "resources/AWS-Location-Sample.xml";
+    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Location-Sample.xml";
     AgnosticApplication agnosticApplication;
     BrooklynTranslator brooklynTranslator;
     BrooklynApplicationEntity brooklynApplicationEntity;
+    String yamlFile="src/test/resources/yaml/test.yaml";
 
     //TODO refactor test to init using less code
     public static void main(String[] args) {
@@ -92,7 +93,7 @@ public class BrooklynTranslatorSimpleAppTest {
             throws NotSupportedTypeByTechnologyException, IOException {
         brooklynTranslator.translate();
         brooklynApplicationEntity=brooklynTranslator.getBrooklynApplicationEntity();
-        brooklynTranslator.print("resources/test.yaml");
+        brooklynTranslator.print(yamlFile);
     }
 
 

@@ -27,14 +27,14 @@ public class DefinitionParserTest {
 
     //TODO rename the methods using the methodology of Google JAva Style
     DefinitionParser definitionParser;
-    String AWSFileMalFormedRelation = "resources/AWS-Location-Sample-MalFormedRelation.xml";
-    String AWSFile = "resources/AWS-Location-Sample.xml";
-    String AWSFileArtifactTemplate = "resources/AWS-ArtifactTemplateDefinition.xml";
-    String AWSDeploymentWithoutTemplate = "resources/AWS-DeploymentArtifactWithoutArtifactTemplate.xml";
-    String AWSSeveralDeploymentArtifacts = "resources/AWS-SeveralCorrectDeploymentArtifactsDefinition.xml";
-    String AWSNotDeploymentArtifactListDefined = "resources/AWS-NotDeploymentArtifactListDefined.xml";
-    String AWSNotDeploymentArtifactDefined = "resources/AWS-NotDeploymentArtifactsDefined.xml";
-    String AWSNotNodeTypeImplementationDefined = "resources/AWS-NotNodeTypeImplementationDefined.xml";
+    String AWSFileMalFormedRelation = "src/test/resources/toscaTopology/AWS-Location-Sample-MalFormedRelation.xml";
+    String AWSFile = "src/test/resources/toscaTopology/AWS-Location-Sample.xml";
+    String AWSFileArtifactTemplate = "src/test/resources/toscaTopology/AWS-ArtifactTemplateDefinition.xml";
+    String AWSDeploymentWithoutTemplate = "src/test/resources/toscaTopology/AWS-DeploymentArtifactWithoutArtifactTemplate.xml";
+    String AWSSeveralDeploymentArtifacts = "src/test/resources/toscaTopology/AWS-SeveralCorrectDeploymentArtifactsDefinition.xml";
+    String AWSNotDeploymentArtifactListDefined = "src/test/resources/toscaTopology/AWS-NotDeploymentArtifactListDefined.xml";
+    String AWSNotDeploymentArtifactDefined = "src/test/resources/toscaTopology/AWS-NotDeploymentArtifactsDefined.xml";
+    String AWSNotNodeTypeImplementationDefined = "src/test/resources/toscaTopology/AWS-NotNodeTypeImplementationDefined.xml";
     String jBossMainWebServerId ="JBossMainWebServer".toLowerCase();
     String mainWebAppId="MainWebApp".toLowerCase();
 
