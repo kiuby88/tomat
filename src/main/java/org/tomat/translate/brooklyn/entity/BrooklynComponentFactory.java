@@ -23,6 +23,11 @@ public class BrooklynComponentFactory implements TechnologyComponentFactory {
     }
 
     @Override
+    public BrooklynServiceEntity buildTechnologyComponent(TomcatAgnosticComponent tomcatAgnosticComponent) throws AgnosticComponentTypeNotSupportedbyBrooklyException {
+        return new TomcatBrooklynService(tomcatAgnosticComponent);
+    }
+
+    @Override
     public BrooklynServiceEntity buildTechnologyComponent(WebAppAgnosticComponent webAppAgnosticComponent)
             throws AgnosticComponentTypeNotSupportedbyBrooklyException {
         return null;

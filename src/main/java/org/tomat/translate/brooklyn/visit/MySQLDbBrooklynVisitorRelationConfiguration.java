@@ -6,6 +6,7 @@ import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.translate.brooklyn.entity.JBossBrooklynService;
 import org.tomat.translate.brooklyn.entity.JettyBrooklynService;
 import org.tomat.translate.brooklyn.entity.MySQLBrooklynService;
+import org.tomat.translate.brooklyn.entity.TomcatBrooklynService;
 
 import java.util.List;
 
@@ -23,6 +24,11 @@ public class MySQLDbBrooklynVisitorRelationConfiguration extends BrooklynVisitor
 
     @Override
     public void visit(JettyBrooklynService jBossService, AgnosticComponent agnosticComponent, AgnosticGraph agnosticGraph) {
+
+    }
+
+    @Override
+    public void visit(TomcatBrooklynService tomcatService, AgnosticComponent agnosticComponent, AgnosticGraph agnosticGraph) {
 
     }
 

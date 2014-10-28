@@ -7,10 +7,7 @@ import org.tomat.agnostic.components.MySQLAgnosticComponent;
 import org.tomat.agnostic.components.MySQLDataBaseAgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.agnostic.properties.*;
-import org.tomat.translate.brooklyn.entity.JBossBrooklynService;
-import org.tomat.translate.brooklyn.entity.JavaWebApplicationServerBrooklynService;
-import org.tomat.translate.brooklyn.entity.JettyBrooklynService;
-import org.tomat.translate.brooklyn.entity.MySQLBrooklynService;
+import org.tomat.translate.brooklyn.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -142,6 +139,12 @@ public class WebAppBrooklynVisitorRelationConfiguration
     public void visit(JettyBrooklynService jettyService, AgnosticComponent agnosticComponent, AgnosticGraph agnosticGraph) {
         configJBossDeploymentArtifacts(jettyService, agnosticComponent);
         configureDatabaseConnection(jettyService, agnosticComponent, agnosticGraph);
+    }
+
+    @Override
+    public void visit(TomcatBrooklynService tomcatService, AgnosticComponent agnosticComponent, AgnosticGraph agnosticGraph) {
+        configJBossDeploymentArtifacts(tomcatService, agnosticComponent);
+        configureDatabaseConnection(tomcatService, agnosticComponent, agnosticGraph);
     }
 
 

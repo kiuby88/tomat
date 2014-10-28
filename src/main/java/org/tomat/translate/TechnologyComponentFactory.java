@@ -15,6 +15,9 @@ public interface TechnologyComponentFactory {
     public BrooklynServiceEntity buildTechnologyComponent(JettyAgnosticComponent jettyAgnosticComponent)
             throws AgnosticComponentTypeNotSupportedbyBrooklyException;
 
+    public BrooklynServiceEntity buildTechnologyComponent(TomcatAgnosticComponent tomcatAgnosticComponent)
+            throws AgnosticComponentTypeNotSupportedbyBrooklyException;
+
     public BrooklynServiceEntity buildTechnologyComponent(WebAppAgnosticComponent webAppAgnosticComponent)
             throws AgnosticComponentTypeNotSupportedbyBrooklyException;
 
