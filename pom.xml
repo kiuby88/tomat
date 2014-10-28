@@ -18,6 +18,7 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.11</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>jgrapht</groupId>
@@ -28,6 +29,11 @@
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>1.15-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.opentosca</groupId>
+                <artifactId>org.opentosca.model.tosca</artifactId>
+                <version>0.0.3</version>
             </dependency>
         </dependencies>
 
