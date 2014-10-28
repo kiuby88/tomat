@@ -12,7 +12,7 @@ import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.tosca.parsers.DefinitionParser;
+import org.tomat.tosca.parsers.ToscaProcessor;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
@@ -31,7 +31,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class BrooklynTranslatorDatabaseAppJettyTest {
 
-    DefinitionParser definitionParser;
+    ToscaProcessor toscaProcessor;
     String AWSApplicationDatabaseFile =
             "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Jetty.xml";
     AgnosticApplication agnosticApplication;
@@ -50,10 +50,10 @@ public class BrooklynTranslatorDatabaseAppJettyTest {
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException,
             AgnosticPropertyException, NotSupportedTypeByTechnologyException {
 
-        definitionParser=new DefinitionParser();
-        definitionParser
+        toscaProcessor =new ToscaProcessor();
+        toscaProcessor
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
-        agnosticApplication = new AgnosticApplication(definitionParser);
+        agnosticApplication = new AgnosticApplication(toscaProcessor);
         brooklynTranslator = new BrooklynTranslator(agnosticApplication)
                 .translate();
         brooklynApplicationEntity = brooklynTranslator.getBrooklynApplicationEntity();

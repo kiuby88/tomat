@@ -11,7 +11,7 @@ import org.tomat.agnostic.components.*;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.tosca.parsers.DefinitionParser;
+import org.tomat.tosca.parsers.ToscaProcessor;
 import org.tomat.tosca.parsers.ToscaSupportedTypeProvider;
 
 import java.io.File;
@@ -28,8 +28,8 @@ public class AppDatabaseParsingTest {
 
     //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSDbSample;
-    DefinitionParser definitionParser;
-    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample.xml";
+    ToscaProcessor toscaProcessor;
+    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml";
     Map<AgnosticComponent, List<AgnosticComponent>> relationMaps;
 
     public static void main(String[] args) {
@@ -41,12 +41,12 @@ public class AppDatabaseParsingTest {
             NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         nodeTemplateListAWSDbSample = DefinitionUtils
                 .getNodeTemplates(new File(AWSApplicationDatabaseFile));
-        definitionParser = new DefinitionParser();
-        definitionParser
+        toscaProcessor = new ToscaProcessor();
+        toscaProcessor
                 .parsingApplicationTopology(AWSApplicationDatabaseFile)
                 .buildAgnostics();
         relationMaps =
-                definitionParser.getAgnosticRelations();
+                toscaProcessor.getAgnosticRelations();
     }
 
     @Test
@@ -70,7 +70,7 @@ public class AppDatabaseParsingTest {
     @Test
     public void testMySQLDbProperties(){
 
-        List<AgnosticComponent> agnosticComponents=definitionParser.getAgnosticComponents();
+        List<AgnosticComponent> agnosticComponents= toscaProcessor.getAgnosticComponents();
         AgnosticComponent mySQLDb= agnosticComponents.get(3);
         assertEquals(mySQLDb.getProperties().size(),4);
 
@@ -83,7 +83,7 @@ public class AppDatabaseParsingTest {
     @Test
     public void testDeploymentArtifacts_All(){
 
-        List<AgnosticComponent> agnosticComponents=definitionParser.getAgnosticComponents();
+        List<AgnosticComponent> agnosticComponents= toscaProcessor.getAgnosticComponents();
         assertEquals(agnosticComponents.size(),4);
 
         testDeploymentArtifacts_JBoss(agnosticComponents);

@@ -11,7 +11,7 @@ import org.tomat.agnostic.components.AgnosticComponentUtils;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.tosca.parsers.DefinitionParser;
+import org.tomat.tosca.parsers.ToscaProcessor;
 
 import java.util.List;
 import java.util.Map;
@@ -23,10 +23,10 @@ import static org.junit.Assert.*;
  * Created by Jose on 04/10/14.
  */
 
-public class DefinitionParserTest {
+public class ToscaProcessorTest {
 
     //TODO rename the methods using the methodology of Google JAva Style
-    DefinitionParser definitionParser;
+    ToscaProcessor toscaProcessor;
     String AWSFileMalFormedRelation = "src/test/resources/toscaTopology/AWS-Location-Sample-MalFormedRelation.xml";
     String AWSFile = "src/test/resources/toscaTopology/AWS-Location-Sample.xml";
     String AWSFileArtifactTemplate = "src/test/resources/toscaTopology/AWS-ArtifactTemplateDefinition.xml";
@@ -40,18 +40,18 @@ public class DefinitionParserTest {
 
     public static void main(String[] args) {
 
-        Result result = JUnitCore.runClasses(DefinitionParserTest.class);
+        Result result = JUnitCore.runClasses(ToscaProcessorTest.class);
     }
 
     @Before
     public void setUp() throws TopologyTemplateFormatException {
-        definitionParser=new DefinitionParser();
+        toscaProcessor =new ToscaProcessor();
     }
 
     @Test(expected = TopologyTemplateFormatException.class)
     public void definitionThrowExceptionByMalformedRelation()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSFileMalFormedRelation)
                 .buildAgnostics();
     }
@@ -59,10 +59,10 @@ public class DefinitionParserTest {
     @Test
     public void agnosticRelationComponentsGeneration_CorrectTopology()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnostics();
-        Map<AgnosticComponent, List<AgnosticComponent>> agnosticRelations = definitionParser
+        Map<AgnosticComponent, List<AgnosticComponent>> agnosticRelations = toscaProcessor
                 .getAgnosticRelations();
         assertEquals(agnosticRelations.size(),1);
         Set<AgnosticComponent> keySet=agnosticRelations.keySet();
@@ -79,10 +79,10 @@ public class DefinitionParserTest {
     @Test
     public void testAgnosticMetadataDefinition() throws NodeTemplateTypeNotSupportedException,
             TopologyTemplateFormatException, AgnosticPropertyException {
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnostics();
-        ApplicationAgnosticMetadata applicationAgnosticMetadata=definitionParser
+        ApplicationAgnosticMetadata applicationAgnosticMetadata= toscaProcessor
                 .getApplicationAgnosticMetadata();
         assertNotNull(applicationAgnosticMetadata);
         assertEquals(applicationAgnosticMetadata.getId(), "AppOnlineRetailing");
@@ -92,10 +92,10 @@ public class DefinitionParserTest {
     @Test
     public void agnosticComponentsGeneration_CorrectTopology()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSFile)
                 .buildAgnostics();
-        List<AgnosticComponent> agnosticComponents = definitionParser
+        List<AgnosticComponent> agnosticComponents = toscaProcessor
                 .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
     }
@@ -104,19 +104,19 @@ public class DefinitionParserTest {
     public void testBuildComponents_EmptyParsing()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException,
             AgnosticPropertyException {
-        definitionParser.buildAgnostics();
-        assertEquals(definitionParser.getAgnosticComponents().size(), 0);
-        assertEquals(definitionParser.getAgnosticRelations().size(), 0);
-        assertNotNull(definitionParser.getApplicationAgnosticMetadata());
+        toscaProcessor.buildAgnostics();
+        assertEquals(toscaProcessor.getAgnosticComponents().size(), 0);
+        assertEquals(toscaProcessor.getAgnosticRelations().size(), 0);
+        assertNotNull(toscaProcessor.getApplicationAgnosticMetadata());
     }
 
     @Test
     public void testAgnosticComponentGeneration_ArtifactsTemplate()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSFileArtifactTemplate)
                 .buildAgnostics();
-        List<AgnosticComponent> agnosticComponents = definitionParser
+        List<AgnosticComponent> agnosticComponents = toscaProcessor
                 .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 
@@ -133,10 +133,10 @@ public class DefinitionParserTest {
 
     @Test
     public void testAgnosticComponent_SeveralArtifactTemplates() throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException, AgnosticPropertyException {
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSSeveralDeploymentArtifacts)
                 .buildAgnostics();
-        List<AgnosticComponent> agnosticComponents = definitionParser
+        List<AgnosticComponent> agnosticComponents = toscaProcessor
                 .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 
@@ -164,7 +164,7 @@ public class DefinitionParserTest {
     public void testAgnosticComponent_NotArtifactTemplate()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException,
             AgnosticPropertyException {
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSDeploymentWithoutTemplate)
                 .buildAgnostics();
     }
@@ -173,10 +173,10 @@ public class DefinitionParserTest {
     public void testAgnosticComponent_NotDeploymentArtifactListDeclaration()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException, AgnosticPropertyException {
 
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSNotDeploymentArtifactListDefined)
                 .buildAgnostics();
-        List<AgnosticComponent> agnosticComponents = definitionParser
+        List<AgnosticComponent> agnosticComponents = toscaProcessor
                 .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 
@@ -190,10 +190,10 @@ public class DefinitionParserTest {
     public void testAgnosticComponent_NotDeploymentArtifactDeclaration()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException, AgnosticPropertyException {
 
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSNotDeploymentArtifactDefined)
                 .buildAgnostics();
-        List<AgnosticComponent> agnosticComponents = definitionParser
+        List<AgnosticComponent> agnosticComponents = toscaProcessor
                 .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 
@@ -207,10 +207,10 @@ public class DefinitionParserTest {
     public void testAgnosticComponent_NotNodeTypeImplementationDeclaration()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException, AgnosticPropertyException {
 
-        definitionParser
+        toscaProcessor
                 .parsingApplicationTopology(AWSNotNodeTypeImplementationDefined)
                 .buildAgnostics();
-        List<AgnosticComponent> agnosticComponents = definitionParser
+        List<AgnosticComponent> agnosticComponents = toscaProcessor
                 .getAgnosticComponents();
         assertEquals(agnosticComponents.size(), 2);
 

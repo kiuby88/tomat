@@ -10,7 +10,7 @@ import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.tosca.parsers.DefinitionParser;
+import org.tomat.tosca.parsers.ToscaProcessor;
 
 import java.util.List;
 import java.util.Set;
@@ -23,8 +23,8 @@ import static org.junit.Assert.assertNotNull;
  */
 public class AppDatabaseGraphGenerationTest {
 
-    DefinitionParser definitionParser;
-    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample.xml";
+    ToscaProcessor toscaProcessor;
+    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml";
     AgnosticGraph agnosticGraph;
     Set<AgnosticComponent> agnosticComponentVertexs;
 
@@ -35,20 +35,20 @@ public class AppDatabaseGraphGenerationTest {
     @Before
     public void setUp() throws TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        definitionParser = new DefinitionParser();
-        definitionParser
+        toscaProcessor = new ToscaProcessor();
+        toscaProcessor
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
         agnosticGraph = new AgnosticGraph(
-                definitionParser.getAgnosticComponents(),
-                definitionParser.getAgnosticRelations());
+                toscaProcessor.getAgnosticComponents(),
+                toscaProcessor.getAgnosticRelations());
         agnosticComponentVertexs = agnosticGraph.getVertexSet();
     }
 
     @Test
     public void testGraphCreation_DefinitionEmpty(){
-        definitionParser=new DefinitionParser();
-        agnosticGraph=new AgnosticGraph(definitionParser.getAgnosticComponents(),
-                definitionParser.getAgnosticRelations());
+        toscaProcessor =new ToscaProcessor();
+        agnosticGraph=new AgnosticGraph(toscaProcessor.getAgnosticComponents(),
+                toscaProcessor.getAgnosticRelations());
         assertNotNull(agnosticGraph);
     }
 

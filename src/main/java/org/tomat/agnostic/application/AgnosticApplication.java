@@ -2,7 +2,7 @@ package org.tomat.agnostic.application;
 
 import org.tomat.agnostic.Agnostic;
 import org.tomat.agnostic.graphs.AgnosticGraph;
-import org.tomat.tosca.parsers.DefinitionParser;
+import org.tomat.tosca.parsers.ToscaProcessor;
 
 /**
  * Created by Jose on 18/10/14.
@@ -12,11 +12,11 @@ public class AgnosticApplication implements Agnostic {
     private ApplicationAgnosticMetadata metadata;
     private AgnosticGraph agnosticGraph;
 
-    public AgnosticApplication(DefinitionParser definitionParser) {
-        setAgnosticMetadata(definitionParser.getApplicationAgnosticMetadata());
+    public AgnosticApplication(ToscaProcessor toscaProcessor) {
+        setAgnosticMetadata(toscaProcessor.getApplicationAgnosticMetadata());
         setAgnosticGraph(new AgnosticGraph(
-                definitionParser.getAgnosticComponents(),
-                definitionParser.getAgnosticRelations()));
+                toscaProcessor.getAgnosticComponents(),
+                toscaProcessor.getAgnosticRelations()));
     }
 
     public AgnosticApplication(ApplicationAgnosticMetadata metadata, AgnosticGraph agnosticGraph) {

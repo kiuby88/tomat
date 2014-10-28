@@ -13,7 +13,7 @@ import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.tosca.parsers.DefinitionParser;
+import org.tomat.tosca.parsers.ToscaProcessor;
 
 import java.io.File;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ProviderTest {
     //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSSample;
     TNodeTemplate nodeTemplateAWS;
-    DefinitionParser definitionParser;
+    ToscaProcessor toscaProcessor;
     String AWSFile = "src/test/resources/toscaTopology/AWS-Location-Sample.xml";
     String AWSUnsupportedType = "src/test/resources/toscaTopology/AWS-Location-Sample-Unsupported-Type.xml";
 
@@ -40,7 +40,7 @@ public class ProviderTest {
     @Before
     public void setUp() throws TopologyTemplateFormatException {
         nodeTemplateListAWSSample = DefinitionUtils.getNodeTemplates(new File(AWSFile));
-        definitionParser = new DefinitionParser();
+        toscaProcessor = new ToscaProcessor();
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ProviderTest {
     @Test(expected = NodeTemplateTypeNotSupportedException.class)
     public void unsupportedNodeTemplateType()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException, AgnosticPropertyException {
-        definitionParser.parsingApplicationTopology(AWSUnsupportedType).buildAgnostics();
+        toscaProcessor.parsingApplicationTopology(AWSUnsupportedType).buildAgnostics();
     }
 
 }

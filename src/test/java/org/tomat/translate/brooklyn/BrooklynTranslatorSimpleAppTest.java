@@ -9,7 +9,7 @@ import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.tosca.parsers.DefinitionParser;
+import org.tomat.tosca.parsers.ToscaProcessor;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class BrooklynTranslatorSimpleAppTest {
 
-    DefinitionParser definitionParser;
+    ToscaProcessor toscaProcessor;
     String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Location-Sample.xml";
     AgnosticApplication agnosticApplication;
     BrooklynTranslator brooklynTranslator;
@@ -41,16 +41,16 @@ public class BrooklynTranslatorSimpleAppTest {
     @Before
     public void setUp() throws TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        definitionParser = new DefinitionParser();
-        definitionParser
+        toscaProcessor = new ToscaProcessor();
+        toscaProcessor
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
-        agnosticApplication=new AgnosticApplication(definitionParser);
+        agnosticApplication=new AgnosticApplication(toscaProcessor);
         brooklynTranslator=new BrooklynTranslator(agnosticApplication);
     }
 
     @Test
     public void testBrooklynTranslationCreation_Empty(){
-        agnosticApplication=new AgnosticApplication(new DefinitionParser());
+        agnosticApplication=new AgnosticApplication(new ToscaProcessor());
         brooklynTranslator=new BrooklynTranslator(agnosticApplication);
         brooklynApplicationEntity=brooklynTranslator.getBrooklynApplicationEntity();
         assertNotNull(brooklynApplicationEntity);
@@ -71,7 +71,7 @@ public class BrooklynTranslatorSimpleAppTest {
 
     @Test
     public void testBrooklynTranslating_Empty() throws NotSupportedTypeByTechnologyException {
-        agnosticApplication=new AgnosticApplication(new DefinitionParser());
+        agnosticApplication=new AgnosticApplication(new ToscaProcessor());
         brooklynTranslator=new BrooklynTranslator(agnosticApplication);
         brooklynTranslator.translate();
     }

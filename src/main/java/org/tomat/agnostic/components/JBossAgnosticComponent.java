@@ -2,8 +2,6 @@ package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.AgnosticProperty;
-import org.tomat.agnostic.properties.HttpAgnosticProperty;
-import org.tomat.agnostic.properties.HttpsAgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.translate.TechnologyComponent;
 import org.tomat.translate.TechnologyComponentFactory;

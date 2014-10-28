@@ -12,7 +12,7 @@ import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
-import org.tomat.tosca.parsers.DefinitionParser;
+import org.tomat.tosca.parsers.ToscaProcessor;
 
 import java.util.List;
 
@@ -24,8 +24,8 @@ import static org.junit.Assert.assertNotNull;
  */
 public class AppDatabaseAgnosticApplicationTest {
 
-    DefinitionParser definitionParser;
-    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample.xml";
+    ToscaProcessor toscaProcessor;
+    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml";
     AgnosticApplication agnosticApplication;
     private AgnosticGraph agnosticGraph;
 
@@ -36,23 +36,23 @@ public class AppDatabaseAgnosticApplicationTest {
     @Before
     public void setUp() throws TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        definitionParser = new DefinitionParser();
-        definitionParser
+        toscaProcessor = new ToscaProcessor();
+        toscaProcessor
                 .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
-        agnosticApplication=new AgnosticApplication(definitionParser);
+        agnosticApplication=new AgnosticApplication(toscaProcessor);
         agnosticGraph=agnosticApplication.getAgnosticGraph();
     }
 
     @Test
     public void testCreation_definitionEmpty() {
-        agnosticApplication=new AgnosticApplication(new DefinitionParser());
+        agnosticApplication=new AgnosticApplication(new ToscaProcessor());
         assertNotNull(agnosticApplication);
         assertNotNull(agnosticApplication.getAgnosticGraph());
     }
 
     @Test
     public void testMetadata_definitionEmpty() {
-        agnosticApplication=new AgnosticApplication(new DefinitionParser());
+        agnosticApplication=new AgnosticApplication(new ToscaProcessor());
         ApplicationAgnosticMetadata metadata = agnosticApplication.getAgnosticMetadata();
         assertEquals(metadata.getId(), ApplicationAgnosticMetadata.APPLICATION_ID_BY_DEFAULT);
         assertEquals(metadata.getName(), ApplicationAgnosticMetadata.APPLICATION_NAME_BY_DEFAULT);

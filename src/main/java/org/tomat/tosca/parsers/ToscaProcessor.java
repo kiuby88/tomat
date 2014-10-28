@@ -1,7 +1,6 @@
 package org.tomat.tosca.parsers;
 
 import org.opentosca.model.tosca.*;
-import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.components.AgnosticComponent;
@@ -23,44 +22,34 @@ import java.util.Map;
 //TODO El nombre de esta clase debería ser algo refereico con parsear la topología
 //TODO Esta clase contendrá un metodo para parsear el fichero que contiene la topología
 //TODO se podria llamar algo como TopologyProcessor o TopologyManager o TopologyAnalizer
-public class DefinitionParser {
+public class ToscaProcessor {
 
 
-    private List<TNodeTemplate> nodeTemplatesOfTopology = null;
-    private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
-    private TServiceTemplate serviceTemplateOfTopology = null;
-    private TDefinitions definitions = null;
+
     private List<AgnosticComponent> generatedAgnosticComponents = null;
     private Map<AgnosticComponent, List<AgnosticComponent>> agnosticRelations = null;
     private ApplicationAgnosticMetadata applicationAgnosticMetadata;
+    private ToscaParser toscaParser;
 
-    public DefinitionParser() {
-        nodeTemplatesOfTopology = new LinkedList<>();
-        relationshipTemplatesOfTopology = new LinkedList<>();
-
+    public ToscaProcessor() {
         generatedAgnosticComponents = new LinkedList<>();
         agnosticRelations = new HashMap<>();
         applicationAgnosticMetadata = new ApplicationAgnosticMetadata();
+        toscaParser=new ToscaParser();
     }
 
-    public DefinitionParser parsingApplicationTopology(String definitionFilePath)
+    public ToscaProcessor parsingApplicationTopology(String definitionFilePath)
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
         return parsingApplicationTopology(new File(definitionFilePath));
     }
 
-    private DefinitionParser parsingApplicationTopology(File definitionFilePath)
+    private ToscaProcessor parsingApplicationTopology(File definitionFilePath)
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
-        //TODO this could optimiced using TDefinitionTemplate to extract the lists check in a
-        //TODO branch
-        nodeTemplatesOfTopology = DefinitionUtils.getNodeTemplates(definitionFilePath);
-        relationshipTemplatesOfTopology = DefinitionUtils
-                .getRelationshipTemplates(definitionFilePath);
-        serviceTemplateOfTopology = DefinitionUtils.getServiceTemplate(definitionFilePath);
-        definitions = DefinitionUtils.getDefinitions(definitionFilePath);
+        toscaParser.parsingApplicationTopology(definitionFilePath);
         return this;
     }
 
-    public DefinitionParser buildAgnostics()
+    public ToscaProcessor buildAgnostics()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException,
             AgnosticPropertyException {
 
@@ -74,7 +63,7 @@ public class DefinitionParser {
             throws NodeTemplateTypeNotSupportedException, AgnosticPropertyException,
             TopologyTemplateFormatException {
         generatedAgnosticComponents = new LinkedList<>();
-        for (TNodeTemplate nodeTemplate : nodeTemplatesOfTopology) {
+        for (TNodeTemplate nodeTemplate : toscaParser.getNodeTemplatesOfTopology()) {
             generatedAgnosticComponents
                     .add(buildAgnosticComponent(nodeTemplate));
         }
@@ -96,8 +85,7 @@ public class DefinitionParser {
             throws TopologyTemplateFormatException {
 
         List<AgnosticDeploymentArtifact> result;
-        List<TDeploymentArtifact> deploymentArtifacts =
-                DefinitionUtils.getDeploymentArtifact(definitions, nodeTemplate);
+        List<TDeploymentArtifact> deploymentArtifacts =toscaParser.getDeploymentArtifact(nodeTemplate);
         result = getAgnosticDeploymentArtifacts(deploymentArtifacts);
         return result;
     }
@@ -122,8 +110,7 @@ public class DefinitionParser {
             TDeploymentArtifact deploymentArtifact)
             throws TopologyTemplateFormatException {
 
-        TArtifactTemplate artifactTemplate = DefinitionUtils
-                .getArtifactTemplate(definitions, deploymentArtifact);
+        TArtifactTemplate artifactTemplate =toscaParser.getArtifactTemplate(deploymentArtifact);
         if (artifactTemplate == null) {
             throwExceptionForNotFoundArtifactTemplate(deploymentArtifact);
         }
@@ -146,10 +133,8 @@ public class DefinitionParser {
                 createCapabilityIdsNodeTemplateIdsDictionary(generatedAgnosticComponents);
         MatchingDictionary requirementIdsNodeTemplateIsDictionary =
                 createRequirementIdsNodeTemplateIdsDictionary(generatedAgnosticComponents);
-
-        agnosticRelations =
-                new HashMap<>();
-        for (TRelationshipTemplate relationshipTemplate : relationshipTemplatesOfTopology) {
+        agnosticRelations =new HashMap<>();
+        for (TRelationshipTemplate relationshipTemplate : toscaParser.getRelationshipTemplatesOfTopology()) {
             addRelationTemplateToAgnosticRelation(
                     relationshipTemplate,
                     capabilityIdsNodeTemplateIsDictionary,
@@ -211,14 +196,17 @@ public class DefinitionParser {
     }
 
     private void buildApplicationAgnosticMetadata() {
-        if (serviceTemplateOfTopology != null) {
+
+
+        if (toscaParser.getServiceTemplateOfTopology() != null) {
             this.setApplicationAgnosticMetadata(
-                    new ApplicationAgnosticMetadata(this.serviceTemplateOfTopology));
+                    new ApplicationAgnosticMetadata(toscaParser.getServiceTemplateOfTopology()));
         } else {
             this.setApplicationAgnosticMetadata(new ApplicationAgnosticMetadata());
         }
     }
 
+    //TODO using this nomenclature in every file or delete
     //<editor-fold desc="Getters and Setters">
     public List<AgnosticComponent> getAgnosticComponents() {
         return generatedAgnosticComponents;

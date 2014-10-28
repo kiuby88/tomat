@@ -1,7 +1,6 @@
 package org.tomat.translate.brooklyn.entity;
 
 import org.tomat.agnostic.components.*;
-import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
