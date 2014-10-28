@@ -13,6 +13,7 @@ import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
+import org.tomat.tosca.parsers.ToscaParser;
 import org.tomat.tosca.parsers.ToscaProcessor;
 
 import java.io.File;
@@ -24,23 +25,28 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by Jose on 06/10/14.
  */
-public class ProviderTest {
+public class AgnosticComponentProviderTest {
 
     //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSSample;
     TNodeTemplate nodeTemplateAWS;
-    ToscaProcessor toscaProcessor;
     String AWSFile = "src/test/resources/toscaTopology/AWS-Location-Sample.xml";
     String AWSUnsupportedType = "src/test/resources/toscaTopology/AWS-Location-Sample-Unsupported-Type.xml";
+    ToscaParser toscaParser;
 
     public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(ProviderTest.class);
+        Result result = JUnitCore.runClasses(AgnosticComponentProviderTest.class);
     }
 
     @Before
-    public void setUp() throws TopologyTemplateFormatException {
-        nodeTemplateListAWSSample = DefinitionUtils.getNodeTemplates(new File(AWSFile));
-        toscaProcessor = new ToscaProcessor();
+    public void setUp()
+            throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
+
+        toscaParser=new ToscaParser();
+        nodeTemplateListAWSSample =
+                toscaParser
+                .parsingApplicationTopology(AWSFile)
+                .getNodeTemplatesOfTopology();
     }
 
     @Test
@@ -71,6 +77,7 @@ public class ProviderTest {
     @Test(expected = NodeTemplateTypeNotSupportedException.class)
     public void unsupportedNodeTemplateType()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException, AgnosticPropertyException {
+        ToscaProcessor toscaProcessor=new ToscaProcessor();
         toscaProcessor.parsingApplicationTopology(AWSUnsupportedType).buildAgnostics();
     }
 

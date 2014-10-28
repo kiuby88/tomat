@@ -1,6 +1,7 @@
 package org.tomat.tosca.parser.test;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;

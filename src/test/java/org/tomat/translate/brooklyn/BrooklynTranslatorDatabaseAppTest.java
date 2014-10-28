@@ -4,10 +4,11 @@ package org.tomat.translate.brooklyn;
  * Created by Jose on 20/10/14.
  */
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
@@ -20,6 +21,7 @@ import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupported
 import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -29,23 +31,48 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by Jose on 15/10/14.
  */
-public class BrooklynTranslatorDatabaseAppJettyTest {
+@RunWith(value = Parameterized.class)
+public class BrooklynTranslatorDatabaseAppTest {
 
     ToscaProcessor toscaProcessor;
-    String AWSApplicationDatabaseFile =
-            "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Jetty.xml";
+    String AWSApplicationDatabaseFile;
+    String webServerId;
     AgnosticApplication agnosticApplication;
     BrooklynTranslator brooklynTranslator;
     BrooklynApplicationEntity brooklynApplicationEntity;
     List<BrooklynServiceEntity> services;
-    String yamlFile="src/test/resources/yaml/testDbAppJetty.yaml";
+    String yamlFile="src/test/resources/yaml/testDbApp.yaml";
+
+
+    public BrooklynTranslatorDatabaseAppTest(String name, String file, String webServerId)
+            throws AgnosticPropertyException, TopologyTemplateFormatException,
+            NodeTemplateTypeNotSupportedException, NotSupportedTypeByTechnologyException {
+
+        AWSApplicationDatabaseFile=file;
+        this.webServerId=webServerId;
+        setUp();
+    }
+
+
+    //Declares parameters here
+    @Parameterized.Parameters(name = "{index}: {0}")
+    public static Iterable<Object[]> data1() {
+        return Arrays.asList(new Object[][]{
+                {"JBossDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml",
+                        "JBossMainWebServer"},
+                {"JettyDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Jetty.xml",
+                        "JettyMainWebServer"},
+                {"TomcatDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Tomcat.xml",
+                        "TomcatMainWebServer"}
+        });
+    }
+
 
     //TODO refactor test to init using less code
     public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(BrooklynTranslatorDatabaseAppJettyTest.class);
+        Result result = JUnitCore.runClasses(BrooklynTranslatorDatabaseAppTest.class);
     }
 
-    @Before
     public void setUp()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException,
             AgnosticPropertyException, NotSupportedTypeByTechnologyException {
@@ -74,13 +101,13 @@ public class BrooklynTranslatorDatabaseAppJettyTest {
     }
 
     @Test
-    public void testBrooklynTranslating_JBoss()
+    public void testBrooklynTranslating_WebServer()
             throws AgnosticComponentTypeNotSupportedbyBrooklyException {
-
-        BrooklynServiceEntity jBossBrooklynService = services.get(0);
-        assertNotNull(jBossBrooklynService.getBrooklynConfigProperties());
-        assertEquals(jBossBrooklynService.getBrooklynConfigProperties().size(), 3);
-        assertEquals(jBossBrooklynService.getBrooklynConfigProperties().get("port.http"), "80+");
+        BrooklynServiceEntity webServerBrooklynService = services.get(0);
+        assertNotNull(webServerBrooklynService.getBrooklynConfigProperties());
+        assertEquals(webServerBrooklynService.getId(), webServerId);
+        assertEquals(webServerBrooklynService.getBrooklynConfigProperties().size(), 3);
+        assertEquals(webServerBrooklynService.getBrooklynConfigProperties().get("port.http"), "80+");
     }
 
     @Test

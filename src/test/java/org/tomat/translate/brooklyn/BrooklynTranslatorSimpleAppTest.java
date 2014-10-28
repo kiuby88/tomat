@@ -33,12 +33,18 @@ public class BrooklynTranslatorSimpleAppTest {
     BrooklynApplicationEntity brooklynApplicationEntity;
     String yamlFile="src/test/resources/yaml/test.yaml";
 
+    public BrooklynTranslatorSimpleAppTest()
+            throws AgnosticPropertyException, TopologyTemplateFormatException,
+            NodeTemplateTypeNotSupportedException {
+        setUp();
+    }
+
     //TODO refactor test to init using less code
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(BrooklynTranslatorSimpleAppTest.class);
     }
 
-    @Before
+
     public void setUp() throws TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         toscaProcessor = new ToscaProcessor();

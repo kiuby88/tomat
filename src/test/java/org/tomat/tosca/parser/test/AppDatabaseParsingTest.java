@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
@@ -11,10 +13,12 @@ import org.tomat.agnostic.components.*;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
+import org.tomat.tosca.parsers.ToscaParser;
 import org.tomat.tosca.parsers.ToscaProcessor;
 import org.tomat.tosca.parsers.ToscaSupportedTypeProvider;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,23 +28,50 @@ import static org.junit.Assert.*;
 /**
  * Created by Jose on 06/10/14.
  */
+
+@RunWith(value = Parameterized.class)
 public class AppDatabaseParsingTest {
 
     //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSDbSample;
     ToscaProcessor toscaProcessor;
-    String AWSApplicationDatabaseFile = "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml";
+    String AWSApplicationDatabaseFile;
     Map<AgnosticComponent, List<AgnosticComponent>> relationMaps;
+    String webServerType;
+    String webServerAgnosticComponentType;
+
+    public AppDatabaseParsingTest(String name, String  file, String webServerType,
+                                  String webServerAgnosticComponentType)
+            throws AgnosticPropertyException, TopologyTemplateFormatException,
+            NodeTemplateTypeNotSupportedException {
+        AWSApplicationDatabaseFile=file;
+        this.webServerType=webServerType;
+        this.webServerAgnosticComponentType=webServerAgnosticComponentType;
+        setUp();
+    }
 
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(AppDatabaseParsingTest.class);
     }
 
-    @Before
+    @Parameterized.Parameters(name = "{index}: {0}")
+    public static Iterable<Object[]> data1() {
+        return Arrays.asList(new Object[][]{
+                {"JBossDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml",
+                        ToscaSupportedTypeProvider.JBOSS_WEB_SERVER, JBossAgnosticComponent.TYPE},
+                {"JettyDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Jetty.xml",
+                        ToscaSupportedTypeProvider.JETTY_WEB_SERVER, JettyAgnosticComponent.TYPE},
+                {"TomcatDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Tomcat.xml",
+                        ToscaSupportedTypeProvider.TOMCAT_WEB_SERVER, TomcatAgnosticComponent.TYPE}
+        });
+    }
+
     public void setUp() throws TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
-        nodeTemplateListAWSDbSample = DefinitionUtils
-                .getNodeTemplates(new File(AWSApplicationDatabaseFile));
+        ToscaParser toscaParser=new ToscaParser();
+        nodeTemplateListAWSDbSample = toscaParser
+                .parsingApplicationTopology(AWSApplicationDatabaseFile)
+                .getNodeTemplatesOfTopology();
         toscaProcessor = new ToscaProcessor();
         toscaProcessor
                 .parsingApplicationTopology(AWSApplicationDatabaseFile)
@@ -58,7 +89,7 @@ public class AppDatabaseParsingTest {
     @Test
     public void checkTypesTest() {
         assertEquals(DefinitionUtils.getTypeName(nodeTemplateListAWSDbSample.get(0)).toLowerCase(),
-                ToscaSupportedTypeProvider.JBOSS_WEB_SERVER.toLowerCase());
+                webServerType.toLowerCase());
         assertEquals(DefinitionUtils.getTypeName(nodeTemplateListAWSDbSample.get(1)).toLowerCase(),
                 ToscaSupportedTypeProvider.WEB_APPLICATION.toLowerCase());
         assertEquals(DefinitionUtils.getTypeName(nodeTemplateListAWSDbSample.get(2)).toLowerCase(),
@@ -86,14 +117,14 @@ public class AppDatabaseParsingTest {
         List<AgnosticComponent> agnosticComponents= toscaProcessor.getAgnosticComponents();
         assertEquals(agnosticComponents.size(),4);
 
-        testDeploymentArtifacts_JBoss(agnosticComponents);
+        testDeploymentArtifacts_WebServer(agnosticComponents);
         testDeploymentArtifacts_WebApp(agnosticComponents);
         testDeploymentArtifacts_MySQL(agnosticComponents);
         testDeploymentArtifacts_MySQLDb(agnosticComponents);
     }
 
-    public void testDeploymentArtifacts_JBoss(List<AgnosticComponent> agnosticComponents){
-        assertEquals(agnosticComponents.get(0).getType(), JBossAgnosticComponent.TYPE);
+    public void testDeploymentArtifacts_WebServer(List<AgnosticComponent> agnosticComponents){
+        assertEquals(agnosticComponents.get(0).getType(), this.webServerAgnosticComponentType);
         assertNull(agnosticComponents.get(0).getAgnosticDeploymentArtifacts());
     }
 
