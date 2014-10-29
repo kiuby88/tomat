@@ -17,9 +17,9 @@ public abstract class AgnosticProperty implements AgnosticElement {
     }
 
     private void initProperty(Map<String, String> properties) {
-        id=findPropertyIdUsed(properties);
-        if(id!=null){
-            value=properties.get(id);
+        setId(findPropertyIdUsed(properties));
+        if(getId()!=null){
+            setValue(properties.get(id));
         }
     }
 

@@ -84,7 +84,7 @@
 
 			<!-- Tomcat Main Web Server -->
             <NodeTemplate id="TomcatMainWebServer" name="Tomcat Main Web Server"
-                          type="JettyWebServer">
+                          type="TomcatWebServer">
                 <Properties>
                     <ns2:TomcatWebServerProperties>
                         <httpPort>80</httpPort>

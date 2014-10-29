@@ -20,8 +20,8 @@ public class AgnosticApplication implements Agnostic {
     }
 
     public AgnosticApplication(ApplicationAgnosticMetadata metadata, AgnosticGraph agnosticGraph) {
-        this.metadata = metadata;
-        this.agnosticGraph = agnosticGraph;
+        setAgnosticMetadata(metadata);
+        setAgnosticGraph(agnosticGraph);
     }
 
     //<editor-fold desc="Getters and Setters">

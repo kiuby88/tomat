@@ -24,8 +24,6 @@ public class AgnosticComponentProvider {
         AgnosticComponent agnosticComponent;
         String nodeTemplateType = getTypeName(nodeTemplate).toLowerCase();
 
-
-
         //TODO it could be interesting change this method using a switch and using
         //TODO types of the AgnosticComponents. Really, the TOSCA support class
         //TODO it is not used, because the components are specify using the Types

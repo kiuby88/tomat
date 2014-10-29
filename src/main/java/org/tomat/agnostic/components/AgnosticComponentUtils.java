@@ -9,19 +9,20 @@ import java.util.*;
  */
 public class AgnosticComponentUtils {
 
-    public static String findValueMapUsingCollection(Map<String, String> map,
-                                                     Collection<String> keysCollection) {
-        return findValueMapUsingCollection(map, ((String[])keysCollection.toArray()));
-    }
+    //TODO delete the next comment.
+    //public static String findValueMapUsingCollection(Map<String, String> map,
+    //                                                 Collection<String> keysCollection) {
+    //    return findValueMapUsingCollection(map, ((String[])keysCollection.toArray()));
+    //}
 
-    public static String findValueMapUsingCollection(Map<String, String> map,
-                                                    String[] keysCollection) {
-        String key = anyKeyFromCollectionIsAMapKey(keysCollection, map);
-        if (key != null) {
-            return map.get(key);
-        }
-        return null;
-    }
+//    public static String findValueMapUsingCollection(Map<String, String> map,
+//                                                    String[] keysCollection) {
+//        String key = anyKeyFromCollectionIsAMapKey(keysCollection, map);
+//        if (key != null) {
+//            return map.get(key);
+//        }
+//        return null;
+//    }
 
     public static String anyKeyFromCollectionIsAMapKey(String[] keysCollection,
                                                         Map<String, String> map) {
@@ -33,16 +34,6 @@ public class AgnosticComponentUtils {
             }
         }
         return null;
-    }
-
-    //TODO this method is able to deleted if it is not used.
-    private static boolean isContainsIgnoreCase(Set<String> componentSet, String item){
-        for (String component : componentSet){
-            if(item.equalsIgnoreCase(component)){
-                return true;
-            }
-        }
-        return false;
     }
 
     public static AgnosticComponent findAgnosticComponentById(Collection<AgnosticComponent> agnosticComponents,

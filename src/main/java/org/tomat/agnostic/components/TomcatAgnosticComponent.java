@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class TomcatAgnosticComponent extends JavaWebApplicationServerAgnosticComponent {
 
-    public final static String TYPE="JettyWebServer";
+    public final static String TYPE="TomcatWebServer";
 
     public TomcatAgnosticComponent(TNodeTemplate nodeTemplateSource)
             throws AgnosticPropertyException {

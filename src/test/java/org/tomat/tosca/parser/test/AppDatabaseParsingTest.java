@@ -39,14 +39,17 @@ public class AppDatabaseParsingTest {
     Map<AgnosticComponent, List<AgnosticComponent>> relationMaps;
     String webServerType;
     String webServerAgnosticComponentType;
+    private String webServerId;
 
     public AppDatabaseParsingTest(String name, String  file, String webServerType,
-                                  String webServerAgnosticComponentType)
+                                  String webServerAgnosticComponentType,
+                                  String webserverId)
             throws AgnosticPropertyException, TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException {
         AWSApplicationDatabaseFile=file;
         this.webServerType=webServerType;
         this.webServerAgnosticComponentType=webServerAgnosticComponentType;
+        this.webServerId=webserverId;
         setUp();
     }
 
@@ -58,11 +61,14 @@ public class AppDatabaseParsingTest {
     public static Iterable<Object[]> data1() {
         return Arrays.asList(new Object[][]{
                 {"JBossDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml",
-                        ToscaSupportedTypeProvider.JBOSS_WEB_SERVER, JBossAgnosticComponent.TYPE},
+                        ToscaSupportedTypeProvider.JBOSS_WEB_SERVER, JBossAgnosticComponent.TYPE,
+                        "JBossMainWebServer"},
                 {"JettyDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Jetty.xml",
-                        ToscaSupportedTypeProvider.JETTY_WEB_SERVER, JettyAgnosticComponent.TYPE},
+                        ToscaSupportedTypeProvider.JETTY_WEB_SERVER, JettyAgnosticComponent.TYPE,
+                        "JettyMainWebServer"},
                 {"TomcatDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Tomcat.xml",
-                        ToscaSupportedTypeProvider.TOMCAT_WEB_SERVER, TomcatAgnosticComponent.TYPE}
+                        ToscaSupportedTypeProvider.TOMCAT_WEB_SERVER, TomcatAgnosticComponent.TYPE,
+                        "TomcatMainWebServer"}
         });
     }
 
@@ -162,7 +168,7 @@ public class AppDatabaseParsingTest {
         int numberOfRelationShipKeys = 2;
         assertEquals(relationMaps.size(), numberOfRelationShipKeys);
 
-        checkRelation("MainWebApp", "JBossMainWebServer");
+        checkRelation("MainWebApp", webServerId);
         checkRelation("MainWebApp", "MainDB");
         checkRelation("MainDb", "MainMySql");
     }
