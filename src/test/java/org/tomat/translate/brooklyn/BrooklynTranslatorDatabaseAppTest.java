@@ -41,15 +41,17 @@ public class BrooklynTranslatorDatabaseAppTest {
     BrooklynTranslator brooklynTranslator;
     BrooklynApplicationEntity brooklynApplicationEntity;
     List<BrooklynServiceEntity> services;
-    String yamlFile="src/test/resources/yaml/testDbApp.yaml";
+    String yamlFile;//="src/test/resources/yaml/testDbApp.yaml";
 
 
-    public BrooklynTranslatorDatabaseAppTest(String name, String file, String webServerId)
+    public BrooklynTranslatorDatabaseAppTest(String name, String file, String webServerId,
+                                             String yamlFile)
             throws AgnosticPropertyException, TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException, NotSupportedTypeByTechnologyException {
 
         AWSApplicationDatabaseFile=file;
         this.webServerId=webServerId;
+        this.yamlFile=yamlFile;
         setUp();
     }
 
@@ -59,11 +61,11 @@ public class BrooklynTranslatorDatabaseAppTest {
     public static Iterable<Object[]> data1() {
         return Arrays.asList(new Object[][]{
                 {"JBossDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml",
-                        "JBossMainWebServer"},
+                        "JBossMainWebServer", "src/test/resources/yaml/testDbAppJBoss.yaml" },
                 {"JettyDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Jetty.xml",
-                        "JettyMainWebServer"},
+                        "JettyMainWebServer", "src/test/resources/yaml/testDbAppJetty.yaml"},
                 {"TomcatDatabaseApp", "src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Tomcat.xml",
-                        "TomcatMainWebServer"}
+                        "TomcatMainWebServer", "src/test/resources/yaml/testDbAppTomcat.yaml"}
         });
     }
 
