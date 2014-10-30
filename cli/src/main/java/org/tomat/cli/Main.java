@@ -52,26 +52,35 @@ public class Main {
 
         public void run() {
             try {
+                if (verbose){
+                    System.out.println("verbose");
+                }
                 parsin();
                 generateAgnostic();
                 pringGraph();
                 translate();
                 print();
-            } catch (NotSupportedTypeByTechnologyException e) {
+            }
+            catch (NotSupportedTypeByTechnologyException e) {
                 e.printStackTrace();
-            } catch (NodeTemplateTypeNotSupportedException e) {
+            }
+            catch (NodeTemplateTypeNotSupportedException e) {
                 e.printStackTrace();
-            } catch (TopologyTemplateFormatException e) {
+            }
+            catch (TopologyTemplateFormatException e) {
                 e.printStackTrace();
-            } catch (AgnosticPropertyException e) {
+            }
+            catch (AgnosticPropertyException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
         private void parsin()
                 throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException {
+            System.out.println("InputFile: -- "+inputFile);
             toscaProcessor = new ToscaProcessor();
             toscaProcessor
                     .parsingApplicationTopology(inputFile);
@@ -95,8 +104,10 @@ public class Main {
 
         private void pringGraph(){
             if(verbose){
-                System.out.println("print");
+                System.out.println("printing... graph");
             }
+            AgnosticGraphPrinter a=new AgnosticGraphPrinter(agnosticApplication.getAgnosticGraph());
+            a.printGraph();
         }
     }
 

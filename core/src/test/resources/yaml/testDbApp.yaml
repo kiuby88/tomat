@@ -1,0 +1,20 @@
+name: DatabaseApp
+id: dbApp
+location: localhost
+services:
+- !!TomcatBrooklynService
+  serviceType: brooklyn.entity.webapp.tomcat.TomcatServer
+  name: Tomcat Main Web Server
+  location: AWS
+  id: TomcatMainWebServer
+  brooklyn.config:
+    java.sysprops:
+      brooklyn.example.db.url: $brooklyn:formatString("jdbc:%s%s?user=%s\&password=%s", component("MainMySql").attributeWhenReady("datastore.url"), "dbName", "dbUser", "seaclouds")
+    wars.root: webAppArtifactImplementation.war
+    port.http: 80+
+- serviceType: brooklyn.entity.database.mysql.MySqlNode
+  name: MainMySQL
+  location: localhost
+  id: MainMySql
+  brooklyn.config:
+    datastore.creation.script.url: database.sql

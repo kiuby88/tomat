@@ -21,14 +21,14 @@ public class MainTest{
     public void test()
     {
         // simple command parsing example
-        git("translate", "-i", "file");
+        //git("translate", "file");
 
     }
 
     private void git(String... args)
     {
-        System.out.println("$ git " + Joiner.on(' ').join(args));
-        Main.main(args);
-        System.out.println();
+        //System.out.println("$ git " + Joiner.on(' ').join(args));
+        //Main.main(args);
+        //System.out.println();
     }
 }
