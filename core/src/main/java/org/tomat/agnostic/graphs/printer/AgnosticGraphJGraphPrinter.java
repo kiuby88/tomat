@@ -23,7 +23,7 @@ public class AgnosticGraphJGraphPrinter implements AgnosticGraphPrinter {
         applet.init();
         JFrame frame = new JFrame();
         frame.getContentPane().add(applet);
-        frame.setTitle("JGraphT Adapter to JGraph Demo");
+        frame.setTitle("TOMAT -- Agnostic Graph Viewer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
