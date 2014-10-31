@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Jose on 20/10/14.
+ * Created by Kiuby88 on 20/10/14.
  */
 public class AgnosticArtifact implements Agnostic {
 

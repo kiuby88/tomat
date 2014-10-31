@@ -4,7 +4,7 @@ import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 
 /**
- * Created by Jose on 19/10/14.
+ * Created by Kiuby88 on 19/10/14.
  */
 public interface TechnologyComponent extends TechnologyElement {
 

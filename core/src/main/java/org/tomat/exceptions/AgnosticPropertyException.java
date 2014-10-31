@@ -1,7 +1,7 @@
 package org.tomat.exceptions;
 
 /**
- * Created by Jose on 17/10/14.
+ * Created by Kiuby88 on 17/10/14.
  */
 public class AgnosticPropertyException extends Exception {
 

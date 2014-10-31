@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.opentosca.model.tosca.TNodeTemplate;
+import org.tomat.ResourcePathResolver;
 import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.components.AgnosticComponentProvider;
 import org.tomat.agnostic.components.JBossAgnosticComponent;
@@ -19,18 +20,17 @@ import org.tomat.tosca.parsers.ToscaProcessor;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
- * Created by Jose on 06/10/14.
+ * Created by Kiuby88 on 06/10/14.
  */
 public class AgnosticComponentProviderTest {
 
     //TODO rename the methods using the methodology of Google JAva Style
     List<TNodeTemplate> nodeTemplateListAWSSample;
     TNodeTemplate nodeTemplateAWS;
-    String AWSFile = "core/src/test/resources/toscaTopology/AWS-Location-Sample.xml";
-    String AWSUnsupportedType = "core/src/test/resources/toscaTopology/AWS-Location-Sample-Unsupported-Type.xml";
+    String AWSFile;
+    String AWSUnsupportedType;
     ToscaParser toscaParser;
 
     public static void main(String[] args) {
@@ -42,6 +42,12 @@ public class AgnosticComponentProviderTest {
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
 
         toscaParser=new ToscaParser();
+        ResourcePathResolver resourcePathResolver=new ResourcePathResolver();
+
+        AWSFile=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE);
+        AWSUnsupportedType=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE_UNSUPPORTED_TYPE);
         nodeTemplateListAWSSample =
                 toscaParser
                 .parsingApplicationTopology(AWSFile)

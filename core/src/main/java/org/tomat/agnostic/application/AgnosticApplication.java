@@ -5,7 +5,7 @@ import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.tosca.parsers.ToscaProcessor;
 
 /**
- * Created by Jose on 18/10/14.
+ * Created by Kiuby88 on 18/10/14.
  */
 public class AgnosticApplication implements Agnostic {
 

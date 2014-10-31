@@ -6,7 +6,7 @@ import org.tomat.agnostic.components.AgnosticComponentUtils;
 import java.util.Map;
 
 /**
- * Created by Jose on 17/10/14.
+ * Created by Kiuby88 on 17/10/14.
  */
 public abstract class AgnosticProperty implements AgnosticElement {
     private String id;

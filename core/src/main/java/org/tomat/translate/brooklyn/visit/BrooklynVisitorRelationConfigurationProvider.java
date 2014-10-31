@@ -1,11 +1,11 @@
 package org.tomat.translate.brooklyn.visit;
 
 import org.tomat.agnostic.components.AgnosticComponent;
-import org.tomat.agnostic.components.WebAppAgnosticComponent;
 import org.tomat.agnostic.components.MySQLDataBaseAgnosticComponent;
+import org.tomat.agnostic.components.WebAppAgnosticComponent;
 
 /**
- * Created by Jose on 23/10/14.
+ * Created by Kiuby88 on 23/10/14.
  */
 
 //TODO, ask if using the packages name it enough to caled the class.

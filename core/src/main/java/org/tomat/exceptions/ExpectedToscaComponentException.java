@@ -1,7 +1,7 @@
 package org.tomat.exceptions;
 
 /**
- * Created by MariaC on 25/09/2014.
+ * Created by Kiuby88 on 25/09/2014.
  */
 public class ExpectedToscaComponentException extends Exception {
 

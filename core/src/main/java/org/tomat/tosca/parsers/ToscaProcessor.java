@@ -2,12 +2,12 @@ package org.tomat.tosca.parsers;
 
 import org.opentosca.model.tosca.*;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
-import org.tomat.agnostic.components.AgnosticComponent;
-import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
-import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
+import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.components.AgnosticComponentProvider;
 import org.tomat.exceptions.AgnosticPropertyException;
+import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
+import org.tomat.exceptions.TopologyTemplateFormatException;
 
 import java.io.File;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by JoseC on 23/09/2014.
+ * Created by Kiuby88 on 23/09/2014.
  */
 //TODO check the clean code to specify <variableName>List (e.g.).
 //TODO El nombre de esta clase debería ser algo refereico con parsear la topología

@@ -19,7 +19,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 /**
- * Created by Jose on 30/10/14.
+ * Created by Kiuby88 on 30/10/14.
  */
 
 public class JGraphAdapterPrinter

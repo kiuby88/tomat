@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import org.tomat.ResourcePathResolver;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.components.AgnosticComponent;
@@ -18,24 +19,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
- * Created by Jose on 04/10/14.
+ * Created by Kiuby88 on 04/10/14.
  */
 
 public class ToscaProcessorTest {
 
     //TODO rename the methods using the methodology of Google JAva Style
     ToscaProcessor toscaProcessor;
-    String AWSFileMalFormedRelation = "core/src/test/resources/toscaTopology/AWS-Location-Sample-MalFormedRelation.xml";
-    String AWSFile = "core/src/test/resources/toscaTopology/AWS-Location-Sample.xml";
-    String AWSFileArtifactTemplate = "core/src/test/resources/toscaTopology/AWS-ArtifactTemplateDefinition.xml";
-    String AWSDeploymentWithoutTemplate = "core/src/test/resources/toscaTopology/AWS-DeploymentArtifactWithoutArtifactTemplate.xml";
-    String AWSSeveralDeploymentArtifacts = "core/src/test/resources/toscaTopology/AWS-SeveralCorrectDeploymentArtifactsDefinition.xml";
-    String AWSNotDeploymentArtifactListDefined = "core/src/test/resources/toscaTopology/AWS-NotDeploymentArtifactListDefined.xml";
-    String AWSNotDeploymentArtifactDefined = "core/src/test/resources/toscaTopology/AWS-NotDeploymentArtifactsDefined.xml";
-    String AWSNotNodeTypeImplementationDefined = "core/src/test/resources/toscaTopology/AWS-NotNodeTypeImplementationDefined.xml";
+    String AWSFileMalFormedRelation;
+    String AWSFile;
+    String AWSFileArtifactTemplate;
+    String AWSDeploymentWithoutTemplate;
+    String AWSSeveralDeploymentArtifacts;
+    String AWSNotDeploymentArtifactListDefined;
+    String AWSNotDeploymentArtifactDefined;
+    String AWSNotNodeTypeImplementationDefined;
     String jBossMainWebServerId ="JBossMainWebServer".toLowerCase();
     String mainWebAppId="MainWebApp".toLowerCase();
 
@@ -47,6 +48,27 @@ public class ToscaProcessorTest {
     @Before
     public void setUp() throws TopologyTemplateFormatException {
         toscaProcessor =new ToscaProcessor();
+        initFiles();
+    }
+
+    private void initFiles(){
+        ResourcePathResolver resourcePathResolver=new ResourcePathResolver();
+        AWSFileMalFormedRelation=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE_MALFORMED_RELATION);
+        AWSFile=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE);
+        AWSFileArtifactTemplate=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_ARTIFACT_TEMPLATE_DEFINITION);
+        AWSDeploymentWithoutTemplate=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_DEPLOYMENT_ARTIFACT_WITHOUT_ARTIFACT_TEMPLATE);
+        AWSSeveralDeploymentArtifacts=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_SEVERAL_CORRECT_DEPLOYMENT_ARTIFACT_DEFINITION);
+        AWSNotDeploymentArtifactListDefined=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_NOT_DEPLOYMENT_ARTIFACT_LIST_DEFINED);
+        AWSNotDeploymentArtifactDefined=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_NOT_DEPLOYMENT_ARTIFACT_DEFINED);
+        AWSNotNodeTypeImplementationDefined=resourcePathResolver
+                .getPathOfFile(ResourcePathResolver.AWS_NOT_NODE_TYPE_IMPLEMENTATION_DEFINED);
     }
 
     @Test(expected = TopologyTemplateFormatException.class)

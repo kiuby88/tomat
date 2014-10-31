@@ -4,7 +4,7 @@ import org.tomat.translate.TechnologyProperty;
 import org.tomat.translate.brooklyn.BrooklynElement;
 
 /**
- * Created by Jose on 18/10/14.
+ * Created by Kiuby88 on 18/10/14.
  */
 public class BrooklynProperty implements BrooklynElement, TechnologyProperty {
 

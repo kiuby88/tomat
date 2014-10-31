@@ -1,15 +1,15 @@
 package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
+import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.agnostic.properties.HttpAgnosticProperty;
 import org.tomat.agnostic.properties.HttpsAgnosticProperty;
-import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.exceptions.AgnosticPropertyException;
 
 import java.util.Map;
 
 /**
- * Created by MariaC on 24/09/2014.
+ * Created by kiuby88 on 24/09/2014.
  */
 public abstract class JavaWebApplicationServerAgnosticComponent extends AgnosticComponent {
 

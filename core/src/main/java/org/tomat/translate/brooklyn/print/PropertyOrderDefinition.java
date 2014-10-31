@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Created by Jose on 23/10/14.
+ * Created by Kiuby88 on 23/10/14.
  */
 public class PropertyOrderDefinition extends PropertyUtils {
     @Override

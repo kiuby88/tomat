@@ -11,7 +11,7 @@ import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupported
 import java.util.Map;
 
 /**
- * Created by MariaC on 24/09/2014.
+ * Created by Kiuby88 on 24/09/2014.
  */
 public class WebAppAgnosticComponent extends AgnosticComponent {
 

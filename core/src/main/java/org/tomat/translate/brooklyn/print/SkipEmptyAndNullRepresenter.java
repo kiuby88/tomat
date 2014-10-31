@@ -5,7 +5,7 @@ import org.yaml.snakeyaml.nodes.*;
 import org.yaml.snakeyaml.representer.Representer;
 
 /**
- * Created by Jose on 23/10/14.
+ * Created by Kiuby88 on 23/10/14.
  */
 public class SkipEmptyAndNullRepresenter extends Representer{
 

@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
+import org.tomat.ResourcePathResolver;
 import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.components.*;
 import org.tomat.exceptions.AgnosticPropertyException;
@@ -25,7 +26,7 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by Jose on 06/10/14.
+ * Created by Kiuby88 on 06/10/14.
  */
 
 @RunWith(value = Parameterized.class)
@@ -45,7 +46,8 @@ public class AppDatabaseParsingTest {
                                   String webserverId)
             throws AgnosticPropertyException, TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException {
-        AWSApplicationDatabaseFile=file;
+        ResourcePathResolver resourcePathResolver=new ResourcePathResolver();
+        AWSApplicationDatabaseFile=resourcePathResolver.getPathOfFile(file);
         this.webServerType=webServerType;
         this.webServerAgnosticComponentType=webServerAgnosticComponentType;
         this.webServerId=webserverId;
@@ -59,13 +61,13 @@ public class AppDatabaseParsingTest {
     @Parameterized.Parameters(name = "{index}: {0}")
     public static Iterable<Object[]> data1() {
         return Arrays.asList(new Object[][]{
-                {"JBossDatabaseApp", "core/src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml",
+                {"JBossDatabaseApp", ResourcePathResolver.AWS_APPLICATION_DATABASE_SAMPLE_JBOSS,
                         ToscaSupportedTypeProvider.JBOSS_WEB_SERVER, JBossAgnosticComponent.TYPE,
                         "JBossMainWebServer"},
-                {"JettyDatabaseApp", "core/src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Jetty.xml",
+                {"JettyDatabaseApp", ResourcePathResolver.AWS_APPLICATION_DATABASE_SAMPLE_JETTY,
                         ToscaSupportedTypeProvider.JETTY_WEB_SERVER, JettyAgnosticComponent.TYPE,
                         "JettyMainWebServer"},
-                {"TomcatDatabaseApp", "core/src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Tomcat.xml",
+                {"TomcatDatabaseApp", ResourcePathResolver.AWS_APPLICATION_DATABASE_SAMPLE_TOMCAT,
                         ToscaSupportedTypeProvider.TOMCAT_WEB_SERVER, TomcatAgnosticComponent.TYPE,
                         "TomcatMainWebServer"}
         });

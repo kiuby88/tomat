@@ -5,7 +5,7 @@ import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 /**
- * Created by Jose on 23/10/14.
+ * Created by Kiuby88 on 23/10/14.
  */
 public interface TechnologyComponentFactory {
 

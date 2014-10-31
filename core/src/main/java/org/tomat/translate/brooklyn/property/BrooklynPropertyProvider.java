@@ -4,7 +4,7 @@ import org.tomat.agnostic.properties.AgnosticProperty;
 import org.tomat.agnostic.properties.PortAgnosticProperty;
 
 /**
- * Created by Jose on 19/10/14.
+ * Created by Kiuby88 on 19/10/14.
  */
 public class BrooklynPropertyProvider {
 

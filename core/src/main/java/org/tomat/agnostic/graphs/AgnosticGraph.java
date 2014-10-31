@@ -13,7 +13,7 @@ import java.util.Set;
 
 
 /**
- * Created by Jose on 15/10/14.
+ * Created by Kiuby88 on 15/10/14.
  */
 public class AgnosticGraph implements Agnostic {
 

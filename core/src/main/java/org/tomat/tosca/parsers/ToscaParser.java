@@ -2,15 +2,15 @@ package org.tomat.tosca.parsers;
 
 import org.opentosca.model.tosca.*;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
-import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
+import org.tomat.exceptions.TopologyTemplateFormatException;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Jose on 28/10/14.
+ * Created by Kiuby88 on 28/10/14.
  */
 public class ToscaParser {
     //TODO it is necessary add a test to check this class

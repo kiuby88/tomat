@@ -6,7 +6,7 @@ import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 import java.io.IOException;
 
 /**
- * Created by Jose on 18/10/14.
+ * Created by Kiuby88 on 18/10/14.
  */
 //TODO describe it is a abstract fabric client. The fabric is described by
 public abstract class TechnologyTranslator {

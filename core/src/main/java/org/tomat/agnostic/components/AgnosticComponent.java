@@ -17,7 +17,7 @@ import java.util.*;
 
 
 /**
- * Created by MariaC on 24/09/2014.
+ * Created by kiuby88 on 24/09/2014.
  */
 //TODO migrate the name to AgnosticComponent and not AgnosticComponent
 public abstract class AgnosticComponent implements AgnosticElement {

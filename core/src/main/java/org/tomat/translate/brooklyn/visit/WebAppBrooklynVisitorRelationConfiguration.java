@@ -1,20 +1,20 @@
 package org.tomat.translate.brooklyn.visit;
 
+import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
 import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.components.AgnosticComponentUtils;
+import org.tomat.agnostic.components.MySQLAgnosticComponent;
 import org.tomat.agnostic.components.MySQLDataBaseAgnosticComponent;
+import org.tomat.agnostic.graphs.AgnosticGraph;
 import org.tomat.agnostic.properties.*;
 import org.tomat.translate.brooklyn.entity.*;
-import org.tomat.agnostic.artifact.AgnosticDeploymentArtifact;
-import org.tomat.agnostic.components.MySQLAgnosticComponent;
-import org.tomat.agnostic.graphs.AgnosticGraph;
 
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Created by Jose on 23/10/14.
+ * Created by Kiuby88 on 23/10/14.
  */
 public class WebAppBrooklynVisitorRelationConfiguration
         extends BrooklynVisitorRelationConfiguration {

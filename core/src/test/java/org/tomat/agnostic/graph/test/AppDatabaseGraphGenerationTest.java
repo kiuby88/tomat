@@ -6,6 +6,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.tomat.ResourcePathResolver;
 import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.components.AgnosticComponentUtils;
 import org.tomat.agnostic.graphs.AgnosticGraph;
@@ -19,10 +20,9 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
- * Created by Jose on 15/10/14.
+ * Created by Kiuby88 on 15/10/14.
  */
 
 @RunWith(value = Parameterized.class)
@@ -36,7 +36,8 @@ public class AppDatabaseGraphGenerationTest {
 
     public AppDatabaseGraphGenerationTest(String name, String  file, String webServerId)
             throws AgnosticPropertyException, TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
-        AWSApplicationDatabaseFile=file;
+        ResourcePathResolver resourcePathResolver=new ResourcePathResolver();
+        AWSApplicationDatabaseFile=resourcePathResolver.getPathOfFile(file);
         this.webServerId=webServerId;
         setUp();
     }
@@ -44,11 +45,11 @@ public class AppDatabaseGraphGenerationTest {
     @Parameterized.Parameters(name = "{index}: {0}")
     public static Iterable<Object[]> data1() {
         return Arrays.asList(new Object[][]{
-                {"JBossDatabaseApp", "core/src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml",
+                {"JBossDatabaseApp", ResourcePathResolver.AWS_APPLICATION_DATABASE_SAMPLE_JBOSS,
                         "JBossMainWebServer"},
-                {"JettyDatabaseApp", "core/src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Jetty.xml",
+                {"JettyDatabaseApp", ResourcePathResolver.AWS_APPLICATION_DATABASE_SAMPLE_JETTY,
                         "JettyMainWebServer"},
-                {"TomcatDatabaseApp", "core/src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Tomcat.xml",
+                {"TomcatDatabaseApp", ResourcePathResolver.AWS_APPLICATION_DATABASE_SAMPLE_TOMCAT,
                         "TomcatMainWebServer"}
         });
     }

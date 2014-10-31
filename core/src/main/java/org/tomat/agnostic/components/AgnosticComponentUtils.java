@@ -2,10 +2,13 @@ package org.tomat.agnostic.components;
 
 import org.tomat.agnostic.properties.AgnosticProperty;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Jose on 09/10/14.
+ * Created by kiuby88 on 09/10/14.
  */
 public class AgnosticComponentUtils {
 

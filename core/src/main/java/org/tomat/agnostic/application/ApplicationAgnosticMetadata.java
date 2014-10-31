@@ -4,7 +4,7 @@ import org.opentosca.model.tosca.TServiceTemplate;
 import org.tomat.agnostic.AgnosticElement;
 
 /**
- * Created by Jose on 18/10/14.
+ * Created by Kiuby88 on 18/10/14.
  */
 public class ApplicationAgnosticMetadata implements AgnosticElement {
 

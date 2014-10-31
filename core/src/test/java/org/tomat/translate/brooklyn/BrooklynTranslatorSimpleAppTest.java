@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import org.tomat.ResourcePathResolver;
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.agnostic.application.ApplicationAgnosticMetadata;
 import org.tomat.exceptions.AgnosticPropertyException;
@@ -19,19 +20,18 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
- * Created by Jose on 15/10/14.
+ * Created by Kiuby88 on 15/10/14.
  */
 public class BrooklynTranslatorSimpleAppTest {
 
     ToscaProcessor toscaProcessor;
-    String AWSApplicationDatabaseFile = "core/src/test/resources/toscaTopology/AWS-Location-Sample.xml";
+    String file;
     AgnosticApplication agnosticApplication;
     BrooklynTranslator brooklynTranslator;
     BrooklynApplicationEntity brooklynApplicationEntity;
-    String yamlFile="core/src/test/resources/yaml/test.yaml";
+    String yamlFile;
 
     public BrooklynTranslatorSimpleAppTest()
             throws AgnosticPropertyException, TopologyTemplateFormatException,
@@ -44,12 +44,14 @@ public class BrooklynTranslatorSimpleAppTest {
         Result result = JUnitCore.runClasses(BrooklynTranslatorSimpleAppTest.class);
     }
 
-
     public void setUp() throws TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
+        ResourcePathResolver resourcePathResolver= new ResourcePathResolver();
+        file=resourcePathResolver.getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE);
+        yamlFile=resourcePathResolver.getPathOfFile(ResourcePathResolver.SIMPLE_DB_APP_YAML);
         toscaProcessor = new ToscaProcessor();
         toscaProcessor
-                .parsingApplicationTopology(AWSApplicationDatabaseFile).buildAgnostics();
+                .parsingApplicationTopology(file).buildAgnostics();
         agnosticApplication=new AgnosticApplication(toscaProcessor);
         brooklynTranslator=new BrooklynTranslator(agnosticApplication);
     }

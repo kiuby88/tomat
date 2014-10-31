@@ -1,7 +1,7 @@
 package org.tomat.translate.brooklyn.print;
 
-import org.tomat.translate.brooklyn.entity.JBossBrooklynService;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
+import org.tomat.translate.brooklyn.entity.JBossBrooklynService;
 import org.tomat.translate.brooklyn.entity.JettyBrooklynService;
 import org.tomat.translate.brooklyn.entity.MySQLBrooklynService;
 import org.yaml.snakeyaml.DumperOptions;
@@ -15,7 +15,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 /**
- * Created by Jose on 27/10/14.
+ * Created by Kiuby88 on 27/10/14.
  */
 public class BrooklynYamlPrinter {
 

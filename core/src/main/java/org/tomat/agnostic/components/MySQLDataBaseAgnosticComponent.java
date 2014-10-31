@@ -2,15 +2,15 @@ package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.*;
-import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.translate.TechnologyComponent;
+import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
 
 import java.util.Map;
 
 /**
- * Created by MariaC on 24/09/2014.
+ * Created by Kiuby88 on 24/09/2014.
  */
 public class MySQLDataBaseAgnosticComponent extends AgnosticComponent {
 

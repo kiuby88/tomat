@@ -3,12 +3,12 @@ package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.opentosca.model.tosca.utils.DefinitionUtils;
+import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.tosca.parsers.ToscaSupportedTypeProvider;
-import org.tomat.exceptions.AgnosticPropertyException;
 
 /**
- * Created by MariaC on 24/09/2014.
+ * Created by kiuby88 on 24/09/2014.
  */
 public class AgnosticComponentProvider {
 

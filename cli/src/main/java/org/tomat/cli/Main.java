@@ -15,7 +15,7 @@ import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 import java.io.IOException;
 
 /**
- * Created by Jose on 30/10/14.
+ * Created by Kiuby88 on 30/10/14.
  */
 public class Main {
     public static void main(String[] args) {
@@ -107,9 +107,9 @@ public class Main {
         private void pringGraph(){
             if(verbose){
                 System.out.println("printing... graph");
+                AgnosticGraphPrinter a = new AgnosticGraphJGraphPrinter(agnosticApplication.getAgnosticGraph());
+                a.printGraph();
             }
-            AgnosticGraphPrinter a=new AgnosticGraphJGraphPrinter(agnosticApplication.getAgnosticGraph());
-            a.printGraph();
         }
     }
 

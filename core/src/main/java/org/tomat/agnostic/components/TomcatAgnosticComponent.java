@@ -2,10 +2,10 @@ package org.tomat.agnostic.components;
 
 import org.opentosca.model.tosca.TNodeTemplate;
 import org.tomat.agnostic.properties.AgnosticProperty;
+import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.translate.TechnologyComponent;
 import org.tomat.translate.TechnologyComponentFactory;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
-import org.tomat.exceptions.AgnosticPropertyException;
 
 import java.util.Map;
 

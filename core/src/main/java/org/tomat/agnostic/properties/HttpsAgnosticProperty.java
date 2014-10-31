@@ -3,7 +3,7 @@ package org.tomat.agnostic.properties;
 import java.util.Map;
 
 /**
- * Created by Jose on 17/10/14.
+ * Created by Kiuby88 on 17/10/14.
  */
 public class HttpsAgnosticProperty extends AgnosticProperty implements PortAgnosticProperty{
 

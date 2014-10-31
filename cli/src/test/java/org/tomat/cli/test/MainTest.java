@@ -1,14 +1,12 @@
 package org.tomat.cli.test;
 
-import com.google.common.base.Joiner;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
-import org.tomat.cli.Main;
 
 
 /**
- * Unit test for simple App.
+ * Created by Kiuby88 on 30/10/14.
  */
 public class MainTest{
 

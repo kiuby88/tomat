@@ -10,6 +10,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.tomat.ResourcePathResolver;
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
@@ -26,11 +27,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 
 /**
- * Created by Jose on 15/10/14.
+ * Created by Kiuby88 on 15/10/14.
  */
 @RunWith(value = Parameterized.class)
 public class BrooklynTranslatorDatabaseAppTest {
@@ -42,34 +42,31 @@ public class BrooklynTranslatorDatabaseAppTest {
     BrooklynTranslator brooklynTranslator;
     BrooklynApplicationEntity brooklynApplicationEntity;
     List<BrooklynServiceEntity> services;
-    String yamlFile;//="src/test/resources/yaml/testDbApp.yaml";
-
+    String yamlFile;
 
     public BrooklynTranslatorDatabaseAppTest(String name, String file, String webServerId,
                                              String yamlFile)
             throws AgnosticPropertyException, TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException, NotSupportedTypeByTechnologyException {
-
-        AWSApplicationDatabaseFile=file;
+        ResourcePathResolver resourcePathResolver= new ResourcePathResolver();
+        AWSApplicationDatabaseFile=resourcePathResolver.getPathOfFile(file);
         this.webServerId=webServerId;
-        this.yamlFile=yamlFile;
+        this.yamlFile=resourcePathResolver.getPathOfFile(yamlFile);
         setUp();
     }
-
 
     //Declares parameters here
     @Parameterized.Parameters(name = "{index}: {0}")
     public static Iterable<Object[]> data1() {
         return Arrays.asList(new Object[][]{
-                {"JBossDatabaseApp", "core/src/test/resources/toscaTopology/AWS-Application-DatabaseSample-JBoss.xml",
-                        "JBossMainWebServer", "core/src/test/resources/yaml/testDbAppJBoss.yaml" },
-                {"JettyDatabaseApp", "core/src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Jetty.xml",
-                        "JettyMainWebServer", "core/src/test/resources/yaml/testDbAppJetty.yaml"},
-                {"TomcatDatabaseApp", "core/src/test/resources/toscaTopology/AWS-Application-DatabaseSample-Tomcat.xml",
-                        "TomcatMainWebServer", "core/src/test/resources/yaml/testDbAppTomcat.yaml"}
+                {"JBossDatabaseApp", ResourcePathResolver.AWS_APPLICATION_DATABASE_SAMPLE_JBOSS,
+                        "JBossMainWebServer", ResourcePathResolver.APP_DB_JBOSS_YAML},
+                {"JettyDatabaseApp", ResourcePathResolver.AWS_APPLICATION_DATABASE_SAMPLE_JETTY,
+                        "JettyMainWebServer", ResourcePathResolver.APP_DB_JETTY_YAML},
+                {"TomcatDatabaseApp", ResourcePathResolver.AWS_APPLICATION_DATABASE_SAMPLE_TOMCAT,
+                        "TomcatMainWebServer", ResourcePathResolver.APP_DB_TOMCAT_YAML}
         });
     }
-
 
     //TODO refactor test to init using less code
     public static void main(String[] args) {

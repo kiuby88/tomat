@@ -5,7 +5,7 @@ import org.tomat.agnostic.graphs.AgnosticGraph;
 import javax.swing.*;
 
 /**
- * Created by Jose on 30/10/14.
+ * Created by Kiuby88 on 30/10/14.
  */
 public class AgnosticGraphJGraphPrinter implements AgnosticGraphPrinter {
 
