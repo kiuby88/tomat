@@ -2,7 +2,7 @@ name: DatabaseApp
 id: dbApp
 location: localhost
 services:
-- !!org.tomat.translate.brooklyn.entity.TomcatBrooklynService
+- !!TomcatBrooklynService
   serviceType: brooklyn.entity.webapp.tomcat.TomcatServer
   name: Tomcat Main Web Server
   location: AWS

@@ -2,10 +2,11 @@ name: DatabaseApp
 id: dbApp
 location: localhost
 services:
-- serviceType: brooklyn.entity.webapp.jetty.Jetty6Server
-  name: Jetty Main Web Server
+- !!TomcatBrooklynService
+  serviceType: brooklyn.entity.webapp.tomcat.TomcatServer
+  name: Tomcat Main Web Server
   location: AWS
-  id: JettyMainWebServer
+  id: TomcatMainWebServer
   brooklyn.config:
     java.sysprops:
       brooklyn.example.db.url: $brooklyn:formatString("jdbc:%s%s?user=%s\&password=%s", component("MainMySql").attributeWhenReady("datastore.url"), "dbName", "dbUser", "seaclouds")
