@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# TOMAT
+#
+
+
+#set -x # debug
+
+ROOT=$(cd "$(dirname "$0")/.." && pwd -P)
+
+# discover TOMAT_HOME if not set, by attempting to resolve absolute path of this command (tomat)
+if [ -z "$TOMAT_HOME" ] ; then
+    TOMAT_HOME=$(cd "$(dirname "$(readlink -f "$0" 2> /dev/null || readlink "$0" 2> /dev/null || echo "$0")")/.." && pwd)
+fi
+
+
+# set up the classpath
+INITIAL_CLASSPATH=${TOMAT_HOME}/lib/tomat/*
+# specify additional CP args in BROOKLYN_CLASSPATH
+if [ ! -z "${TOMAT_CLASSPATH}" ]; then
+    INITIAL_CLASSPATH=${TOMAT_CLASSPATH}:${INITIAL_CLASSPATH}
+fi
+
+# start Brooklyn
+echo $$ > "$ROOT/pid_java"
+exec java  -cp "${INITIAL_CLASSPATH}" org.tomat.cli.Main "$@"
