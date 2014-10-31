@@ -1,4 +1,4 @@
-package org.tomat.cli;
+package org.tomat.agnostic.graphs.printer;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
@@ -10,21 +10,20 @@ import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultListenableGraph;
 import org.jgrapht.graph.DirectedMultigraph;
-import org.tomat.agnostic.Agnostic;
-import org.tomat.agnostic.AgnosticElement;
 import org.tomat.agnostic.components.AgnosticComponent;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
 /**
  * Created by Jose on 30/10/14.
  */
 
-public class JGraphAdapterDemo
-        extends JApplet {
+public class JGraphAdapterPrinter
+        extends JApplet implements Runnable{
 
     private static final long serialVersionUID = 3256444702936019250L;
     private static final Color DEFAULT_BG_COLOR = Color.decode("#FAFBFF");
@@ -32,92 +31,50 @@ public class JGraphAdapterDemo
 
     private JGraphModelAdapter<String, DefaultEdge> jgAdapter;
 
-    //    /**
-//     * An alternative starting point for this demo, to also allow running this
-//     * applet as an application.
-//     *
-//     * @param args ignored.
-//     */
-//    public static void main(String [] args)
-//    {
-//        JGraphAdapterDemo applet = new JGraphAdapterDemo();
-//        applet.init();
-//
-//        JFrame frame = new JFrame();
-//        frame.getContentPane().add(applet);
-//        frame.setTitle("JGraphT Adapter to JGraph Demo");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.pack();
-//        frame.setVisible(true);
-//    }
     private AgnosticGraph agnosticGraph;
-
-    public JGraphAdapterDemo(AgnosticGraph agnosticGraph) {
+    Thread t;
+    public JGraphAdapterPrinter(AgnosticGraph agnosticGraph) {
         this.agnosticGraph = agnosticGraph;
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     public void init() {
-        // create a JGraphT graph
         ListenableGraph<String, DefaultEdge> g =
-                new ListenableDirectedMultigraph<String, DefaultEdge>(
+                new ListenableDirectedMultigraph<>(
                         DefaultEdge.class);
 
-        // create a visualization using JGraph, via an adapter
-        jgAdapter = new JGraphModelAdapter<String, DefaultEdge>(g);
-
+        jgAdapter = new JGraphModelAdapter<>(g);
         JGraph jgraph = new JGraph(jgAdapter);
 
         adjustDisplaySettings(jgraph);
         getContentPane().add(jgraph);
         resize(DEFAULT_SIZE);
+        this.setName("TOMAT. Agnostic Graph Viewer");
+        addVertex(g);
+        addEdges(g);
+        randomizeLocations();
+        t=new Thread(this);
+        t.start();
+    }
 
-//        String v1 = "v1";
-//        String v2 = "v2";
-//        String v3 = "v3";
-//        String v4 = "v4";
-//
-//        // add some sample data (graph manipulated via JGraphT)
-//        g.addVertex(v1);
-//        g.addVertex(v2);
-//        g.addVertex(v3);
-//        g.addVertex(v4);
-
+    private void addVertex(ListenableGraph<String, DefaultEdge>  g){
         for (AgnosticComponent agnosticComponentSource : agnosticGraph.getVertexSet()) {
             g.addVertex(agnosticComponentSource.getId());
-
-
         }
+    }
 
+    private void addEdges(ListenableGraph<String, DefaultEdge> g){
         for (AgnosticComponent agnosticComponentSource : agnosticGraph.getVertexSet()) {
-            
-            //Add edges
-            if (agnosticGraph.getOutcomigngVertexOf(agnosticComponentSource) != null) {
-                for (AgnosticComponent target : agnosticGraph.getOutcomigngVertexOf(agnosticComponentSource)) {
-
-                    g.addEdge(agnosticComponentSource.getId(), target.getId());
-                }
-            }
-
+            addOutcomingEdgesOfAVertex(g, agnosticComponentSource);
         }
+    }
 
-
-        //g.addEdge(v1, v2);
-        //g.addEdge(v2, v3);
-        //g.addEdge(v3, v1);
-        //g.addEdge(v4, v3);
-
-
-        // position vertices nicely within JGraph component
-        //positionVertexAt(v1, 130, 40);
-        //positionVertexAt(v2, 60, 200);
-        //positionVertexAt(v3, 310, 230);
-        //positionVertexAt(v4, 380, 70);
-
-        // that's all there is to it!...
+    private void addOutcomingEdgesOfAVertex(ListenableGraph<String, DefaultEdge> g, AgnosticComponent agnosticComponentSource) {
+        if (agnosticGraph.getOutcomigngVertexOf(agnosticComponentSource) != null) {
+            for (AgnosticComponent target : agnosticGraph.getOutcomigngVertexOf(agnosticComponentSource)) {
+                g.addEdge(agnosticComponentSource.getId(), target.getId());
+            }
+        }
     }
 
     private void adjustDisplaySettings(JGraph jg) {
@@ -136,6 +93,17 @@ public class JGraphAdapterDemo
         }
 
         jg.setBackground(c);
+    }
+
+    public void randomizeLocations() {
+        int H,W;
+        Random r = new Random();
+        H=this.getHeight();
+        W=this.getWidth();
+
+        for(AgnosticComponent agnosticComponentSource : agnosticGraph.getVertexSet()){
+            positionVertexAt(agnosticComponentSource.getId(),r.nextInt(W),r.nextInt(H));
+        }
     }
 
     @SuppressWarnings("unchecked") // FIXME hb 28-nov-05: See FIXME below
@@ -159,6 +127,10 @@ public class JGraphAdapterDemo
         jgAdapter.edit(cellAttr, null, null, null);
     }
 
+    @Override
+    public void run() {
+
+    }
 
     /**
      * a listenable directed multigraph that allows loops and parallel edges.
@@ -173,5 +145,3 @@ public class JGraphAdapterDemo
         }
     }
 }
-
-// End JGraphAdapterDemo.java

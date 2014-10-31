@@ -2,6 +2,8 @@ package org.tomat.cli;
 
 import io.airlift.command.*;
 import org.tomat.agnostic.application.AgnosticApplication;
+import org.tomat.agnostic.graphs.printer.AgnosticGraphJGraphPrinter;
+import org.tomat.agnostic.graphs.printer.AgnosticGraphPrinter;
 import org.tomat.exceptions.AgnosticPropertyException;
 import org.tomat.exceptions.NodeTemplateTypeNotSupportedException;
 import org.tomat.exceptions.TopologyTemplateFormatException;
@@ -106,7 +108,7 @@ public class Main {
             if(verbose){
                 System.out.println("printing... graph");
             }
-            AgnosticGraphPrinter a=new AgnosticGraphPrinter(agnosticApplication.getAgnosticGraph());
+            AgnosticGraphPrinter a=new AgnosticGraphJGraphPrinter(agnosticApplication.getAgnosticGraph());
             a.printGraph();
         }
     }

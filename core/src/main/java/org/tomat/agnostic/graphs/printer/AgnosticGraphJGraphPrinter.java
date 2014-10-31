@@ -1,6 +1,5 @@
-package org.tomat.cli;
+package org.tomat.agnostic.graphs.printer;
 
-import org.tomat.agnostic.Agnostic;
 import org.tomat.agnostic.graphs.AgnosticGraph;
 
 import javax.swing.*;
@@ -8,18 +7,19 @@ import javax.swing.*;
 /**
  * Created by Jose on 30/10/14.
  */
-public class AgnosticGraphPrinter {
+public class AgnosticGraphJGraphPrinter implements AgnosticGraphPrinter {
 
     AgnosticGraph agnosticGraph;
 
-    public AgnosticGraphPrinter(AgnosticGraph agnosticGraph){
+    public AgnosticGraphJGraphPrinter(AgnosticGraph agnosticGraph){
 
         this.agnosticGraph=agnosticGraph;
 
     }
 
+    @Override
     public void printGraph(){
-        JGraphAdapterDemo applet = new JGraphAdapterDemo(agnosticGraph);
+        JGraphAdapterPrinter applet = new JGraphAdapterPrinter(agnosticGraph);
         applet.init();
         JFrame frame = new JFrame();
         frame.getContentPane().add(applet);
