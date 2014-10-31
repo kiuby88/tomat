@@ -1,6 +1,7 @@
 package org.tomat.cli;
 
 import io.airlift.command.*;
+import org.tomat.TomatVersion;
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.agnostic.graphs.printer.AgnosticGraphJGraphPrinter;
 import org.tomat.agnostic.graphs.printer.AgnosticGraphPrinter;
@@ -23,12 +24,11 @@ public class Main {
         Cli.CliBuilder<Runnable> builder = Cli.<Runnable>builder("tomat")
                 .withDescription("the stupid content tracker")
                 .withDefaultCommand(Help.class)
-                .withCommands(Help.class, Translate.class);
+                .withCommands(Help.class, Translate.class, Info.class);
 
         Cli<Runnable> gitParser = builder.build();
         gitParser.parse(args).run();
     }
-
 
     public static class TomatCommand implements Runnable {
         @Option(type = OptionType.GLOBAL, name = {"-v", "--verbose"}, description = "Verbose mode")
@@ -112,6 +112,21 @@ public class Main {
             }
         }
     }
+
+    @Command(name = "info", description = "Show tomat information")
+    public static class Info extends TomatCommand {
+
+        private TomatVersion tomatVersion=new TomatVersion();
+
+        public void run() {
+            System.out.println(tomatVersion.getVersion());
+        }
+    }
+
+
+
+
+
 
 }
 
