@@ -19,6 +19,14 @@ import java.io.IOException;
  * Created by Kiuby88 on 30/10/14.
  */
 public class Main {
+
+   final static private  String TOMAT_BANNER=
+            " _______                        _______          \n" +
+                    "|__   __|___  __  __  ___   ___|__   __|         \n"+
+                    "   | |  / _ \\|  |/  \\/   \\ / _ \\  | |        \n"+
+                    "   | | | (_) |   /|   /\\  | (_) | | |           \n"+
+                    "   |_|  \\___/|__| |__| |__|\\__/\\_\\|_|"+(new TomatVersion()).getVersion();
+
     public static void main(String[] args) {
 
         Cli.CliBuilder<Runnable> builder = Cli.<Runnable>builder("tomat")
@@ -119,7 +127,9 @@ public class Main {
         private TomatVersion tomatVersion=new TomatVersion();
 
         public void run() {
-            System.out.println(tomatVersion.getVersion());
+
+            System.out.println(TOMAT_BANNER+"\n\n");
+
         }
     }
 
