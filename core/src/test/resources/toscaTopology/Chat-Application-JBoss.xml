@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definitions id="OnlineRetailingDefinitions" name="OnlineRetailing Definitions"
+             targetNamespace="http://www.example.com/tosca/ServiceTemplates/OnlineRetailing"
+             xmlns="http://docs.oasis-open.org/tosca/ns/2011/12"
+             xmlns:ns2="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaSpecificTypes"
+             xmlns:ns3="http://www.example.com/tosca/Types/OnlineRetailing"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://docs.oasis-open.org/tosca/ns/2011/12 TOSCA-v1.0-cs02.xsd">
+
+	<Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+		location="Definitions/TOSCA-v1.0-BaseTypes-Definitions.xml" 
+		namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" />
+	<Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+		location="Definitions/TOSCA-v2.0-SpecificTypes-Definitions.xml"
+		namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaSpecificTypes" />
+	<Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+		location="Definitions/OnlineRetailingTypes-Definitions-v3.0.xml" 
+		namespace="http://www.example.com/tosca/Types/Moodle" />
+	<Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+		location="Definitions/OnlineRetailing-opentosca-implementations.xml" 
+		namespace="http://tempuri.org" />
+
+	<Import importType="http://www.w3.org/2001/XMLSchema" 
+		location="types/TOSCA-v1.0-BaseTypes.xsd"
+		namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" />
+	<Import importType="http://www.w3.org/2001/XMLSchema" 
+		location="types/TOSCA-v2.0-SpecificTypes.xsd"
+		namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaSpecificTypes" />
+	<Import importType="http://www.w3.org/2001/XMLSchema" 
+		location="types/OnlineRetailing.xsd"
+		namespace="http://www.example.com/tosca/Types/OnlineRetailing" />
+
+	<Import namespace="http://ec2linux.aws.ia.opentosca.org"
+		importType="http://schemas.xmlsoap.org/wsdl/" 
+		location="Imports/EC2LinuxIAService.wsdl" />
+	<Import namespace="http://ec2vm.aws.ia.opentosca.org"
+		importType="http://schemas.xmlsoap.org/wsdl/" 
+		location="Imports/EC2VMIAService.wsdl" />
+	<Import namespace="http:///www.opentosca.org/examples/Moodle/BuildPlan"
+		importType="http://schemas.xmlsoap.org/wsdl/" 
+		location="Imports/MoodleBuildPlanArtifacts.wsdl" />
+
+    <!-- NodeTypeImplementation WebApplication -->
+    <NodeTypeImplementation name="ChatWebAppNodeTypeImplementation"
+                            nodeType="WebApplication">
+        <DeploymentArtifacts>
+            <DeploymentArtifact artifactRef="ChatWebAppArtifactTemplate"
+                                artifactType="ns2:ArchiveArtifact" name="ChatWebAppImplementation-archive">
+            </DeploymentArtifact>
+        </DeploymentArtifacts>
+    </NodeTypeImplementation>
+
+    <ArtifactTemplate id="ChatWebAppArtifactTemplate"
+                      name="ChatWebAppArtifactTemplate-archive" type="ns2:ArchiveArtifact">
+        <ArtifactReferences>
+            <ArtifactReference reference="chatWebAppArtifactImplementation.war" />
+        </ArtifactReferences>
+    </ArtifactTemplate>
+    <!-- __END__ NodeTypeImplementation WebApplication -->
+
+    <!-- NodeTypeImplementation MySQLDatabase -->
+    <NodeTypeImplementation name="Message Database"
+                            nodeType="MySQLDB">
+        <DeploymentArtifacts>
+            <DeploymentArtifact artifactRef="MessageDataBaseArtifactTemplate"
+                                artifactType="ns2:ArchiveArtifact" name="MessageDatabaseImplementation-archive">
+            </DeploymentArtifact>
+        </DeploymentArtifacts>
+    </NodeTypeImplementation>
+
+    <ArtifactTemplate id="MessageDataBaseArtifactTemplate"
+                      name="MessageDatabaseArtifactTemplate-archive" type="ns2:ArchiveArtifact">
+        <ArtifactReferences>
+            <ArtifactReference reference="database.sql" />
+        </ArtifactReferences>
+    </ArtifactTemplate>
+    <!-- __END__ NodeTypeImplementation MySQLDatabase -->
+
+
+
+	<ServiceTemplate id="chatWebApp" name="Chat Web Application">
+
+		<TopologyTemplate>
+
+			<!-- JBoss Main Web Server -->
+            <NodeTemplate id="JBossChatWebServer" name="JBoss Chat Web Server"
+                          type="JBossWebServer">
+                <Properties>
+                    <ns2:JBossWebServerProperties>
+                        <httpPort>80</httpPort>
+                    </ns2:JBossWebServerProperties>
+                </Properties>
+                <Location locationId="AWS"/>
+                <Capabilities>
+                    <Capability id="JBossChatWebServer_webapps" name="webapps"
+                                type="JBossChatApplicationContainerCapability" />
+                    <Capability id="JBossChatWebServer_clients" name="clients"
+                                type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+		    <!-- __END__ JBoss MAin Web Server -->
+
+            <!-- Main Web Application -->
+            <NodeTemplate id="ChatWebApp" name="Chat Web App"
+                          type="WebApplication">
+
+                <Properties>
+                    <ns2:WebApplicationProperties>
+                        <dbConnectionName>brooklyn.example.db.url</dbConnectionName>
+                    </ns2:WebApplicationProperties>
+                </Properties>
+                <Requirements>
+                    <Requirement id="ChatWebApp_MessageDatabase" name="MessageDatabase"
+                                 type="ChatWebAppConnectToMessageWebApp" />
+                    <Requirement id="ChatWebApp_container" name="container"
+                                 type="JBossChatWebApplicationContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="ChatWebServices" name="clients"
+                                type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Main Web Application -->
+
+            <!-- Main DBMS -->
+            <NodeTemplate id="MessageMySql" name="MessageMySQL" type="MySQL">
+                <Properties>
+                    <ns2:MySQLProperties>
+                        <RootPassword>admin</RootPassword>
+                    </ns2:MySQLProperties>
+                </Properties>
+                <Capabilities>
+                    <Capability id="MessageMySql_databases" name="databases"
+                                type="MySQLDatabaseContainerCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Main DBMS -->
+
+            <!-- Main DataBase -->
+            <NodeTemplate id="MessageDB" name="Message DB" type="MySQLDB">
+                <Properties>
+                    <ns3:StockDbProperties>
+                        <DBName>dbName</DBName>
+                        <DBUser>dbUser</DBUser>
+                        <DBPassword>seaclouds</DBPassword>
+                        <DBPort>3306</DBPort>
+                    </ns3:StockDbProperties>
+                </Properties>
+                <Requirements>
+                    <Requirement id="MessageDB_container" name="container"
+                                 type="MySQLDatabaseContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="MessageDB_clients" name="clients"
+                                type="MySQLDatabaseEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Main DBMS -->
+
+            <!-- RelationShip_Templates -->
+
+            <!-- MainWebApp DeployOn JBossWebServer-->
+            <RelationshipTemplate id="ChatWebApp_HostedOn_WebServer"
+                                  name="Chat web app hosted on web server"
+                                  type="ChatWebAppWebAppHostedOnWebServer">
+                <SourceElement ref="ChatWebApp_container" />
+                <TargetElement ref="JBossChatWebServer_webapps" />
+            </RelationshipTemplate>
+            <!-- __END__ UserDB HostedOn StockMySQL-->
+
+            <!--  MainDB HostedOn MainMySQL-->
+            <RelationshipTemplate id="MessageDB_HostedOn_MessageMySQL"
+                                  name="message database hosted on message mysql" type="MessageDBHostedOnMySQL">
+                <SourceElement ref="MessageDB_container" />
+                <TargetElement ref="MessageMySql_databases" />
+            </RelationshipTemplate>
+            <!-- __END__ MainDB HostedOn StockMySQL ______________-->
+
+            <!--  MainWebApp_Connect_TO_Database-->
+            <RelationshipTemplate id="ChatWebApp_ConectTo_MessageDB"
+                                  name="Chat webapp connect to Message db" type="ChatWebAppConnectToMessageWebApp">
+                <SourceElement ref="ChatWebApp_MessageDatabase" />
+                <TargetElement ref="MessageDB_clients" />
+            </RelationshipTemplate>
+            <!-- __END__MainWebApp_Connect_TO_Database-->
+		</TopologyTemplate>
+
+
+	</ServiceTemplate>
+</Definitions>

@@ -47,9 +47,9 @@ public class Main {
         }
     }
 
-    @Command(name = "translate", description = "Add file contents to the index")
+    @Command(name = "translate", description = "Translate a TOSCA topology to CAMP using the Brooklyn API")
     public static class Translate extends TomatCommand {
-        @Option(name = {"-o", "--out"}, description = "outputfile")
+        @Option(name = {"-o", "--out"}, description = "Output CAMP (Brooklyn) yaml file ")
         public String output;
 
         @Arguments(description = "Patterns of files to be added")
@@ -62,9 +62,6 @@ public class Main {
 
         public void run() {
             try {
-                if (verbose){
-                    System.out.println("verbose");
-                }
                 parsin();
                 generateAgnostic();
                 pringGraph();
@@ -114,7 +111,7 @@ public class Main {
 
         private void pringGraph(){
             if(verbose){
-                System.out.println("printing... graph");
+                System.out.println("printing graph...");
                 AgnosticGraphPrinter a = new AgnosticGraphJGraphPrinter(agnosticApplication.getAgnosticGraph());
                 a.printGraph();
             }
