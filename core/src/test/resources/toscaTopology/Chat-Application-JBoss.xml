@@ -53,7 +53,7 @@
     <ArtifactTemplate id="ChatWebAppArtifactTemplate"
                       name="ChatWebAppArtifactTemplate-archive" type="ns2:ArchiveArtifact">
         <ArtifactReferences>
-            <ArtifactReference reference="chatWebAppArtifactImplementation.war" />
+            <ArtifactReference reference="http://search.maven.org/remotecontent?filepath=io/brooklyn/example/brooklyn-example-hello-world-sql-webapp/0.6.0-M2/brooklyn-example-hello-world-sql-webapp-0.6.0-M2.war" />
         </ArtifactReferences>
     </ArtifactTemplate>
     <!-- __END__ NodeTypeImplementation WebApplication -->
@@ -71,18 +71,15 @@
     <ArtifactTemplate id="MessageDataBaseArtifactTemplate"
                       name="MessageDatabaseArtifactTemplate-archive" type="ns2:ArchiveArtifact">
         <ArtifactReferences>
-            <ArtifactReference reference="database.sql" />
+            <ArtifactReference reference="classpath://visitors-creation-script.sql" />
         </ArtifactReferences>
     </ArtifactTemplate>
     <!-- __END__ NodeTypeImplementation MySQLDatabase -->
 
+    <ServiceTemplate id="chatWebApp" name="Chat Web Application">
+        <TopologyTemplate>
 
-
-	<ServiceTemplate id="chatWebApp" name="Chat Web Application">
-
-		<TopologyTemplate>
-
-			<!-- JBoss Main Web Server -->
+            <!-- JBoss Chat Web Server -->
             <NodeTemplate id="JBossChatWebServer" name="JBoss Chat Web Server"
                           type="JBossWebServer">
                 <Properties>
@@ -90,7 +87,7 @@
                         <httpPort>80</httpPort>
                     </ns2:JBossWebServerProperties>
                 </Properties>
-                <Location locationId="AWS"/>
+                <Location locationId="aws-ec2:us-west-2"/>
                 <Capabilities>
                     <Capability id="JBossChatWebServer_webapps" name="webapps"
                                 type="JBossChatApplicationContainerCapability" />
@@ -98,9 +95,9 @@
                                 type="HTTPEndpointCapability" />
                 </Capabilities>
             </NodeTemplate>
-		    <!-- __END__ JBoss MAin Web Server -->
+            <!-- __END__ JBoss Chat Web Server -->
 
-            <!-- Main Web Application -->
+            <!-- Chat Web Application -->
             <NodeTemplate id="ChatWebApp" name="Chat Web App"
                           type="WebApplication">
 
@@ -109,6 +106,7 @@
                         <dbConnectionName>brooklyn.example.db.url</dbConnectionName>
                     </ns2:WebApplicationProperties>
                 </Properties>
+                <Location locationId="aws-ec2:us-west-2"/>
                 <Requirements>
                     <Requirement id="ChatWebApp_MessageDatabase" name="MessageDatabase"
                                  type="ChatWebAppConnectToMessageWebApp" />
@@ -120,23 +118,24 @@
                                 type="HTTPEndpointCapability" />
                 </Capabilities>
             </NodeTemplate>
-            <!-- __END__ Main Web Application -->
+            <!-- __END__ Chat Web Application -->
 
-            <!-- Main DBMS -->
+            <!-- Message DBMS -->
             <NodeTemplate id="MessageMySql" name="MessageMySQL" type="MySQL">
                 <Properties>
                     <ns2:MySQLProperties>
                         <RootPassword>admin</RootPassword>
                     </ns2:MySQLProperties>
                 </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
                 <Capabilities>
                     <Capability id="MessageMySql_databases" name="databases"
                                 type="MySQLDatabaseContainerCapability" />
                 </Capabilities>
             </NodeTemplate>
-            <!-- __END__ Main DBMS -->
+            <!-- __END__ Message DBMS -->
 
-            <!-- Main DataBase -->
+            <!-- Message DataBase -->
             <NodeTemplate id="MessageDB" name="Message DB" type="MySQLDB">
                 <Properties>
                     <ns3:StockDbProperties>
@@ -146,6 +145,7 @@
                         <DBPort>3306</DBPort>
                     </ns3:StockDbProperties>
                 </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
                 <Requirements>
                     <Requirement id="MessageDB_container" name="container"
                                  type="MySQLDatabaseContainerRequirement" />
@@ -155,36 +155,34 @@
                                 type="MySQLDatabaseEndpointCapability" />
                 </Capabilities>
             </NodeTemplate>
-            <!-- __END__ Main DBMS -->
+            <!-- __END__ Message DBMS -->
 
-            <!-- RelationShip_Templates -->
+            <!-- ### RelationShip_Templates ### -->
 
-            <!-- MainWebApp DeployOn JBossWebServer-->
+            <!-- Chat WebApp DeployOn JBossWebServer-->
             <RelationshipTemplate id="ChatWebApp_HostedOn_WebServer"
                                   name="Chat web app hosted on web server"
                                   type="ChatWebAppWebAppHostedOnWebServer">
                 <SourceElement ref="ChatWebApp_container" />
                 <TargetElement ref="JBossChatWebServer_webapps" />
             </RelationshipTemplate>
-            <!-- __END__ UserDB HostedOn StockMySQL-->
+            <!-- __END__ Chat WebApp DeployOn JBossWebServer-->
 
-            <!--  MainDB HostedOn MainMySQL-->
+            <!--  MessageDB HostedOn MySQL-->
             <RelationshipTemplate id="MessageDB_HostedOn_MessageMySQL"
                                   name="message database hosted on message mysql" type="MessageDBHostedOnMySQL">
                 <SourceElement ref="MessageDB_container" />
                 <TargetElement ref="MessageMySql_databases" />
             </RelationshipTemplate>
-            <!-- __END__ MainDB HostedOn StockMySQL ______________-->
+            <!--  MessageDB HostedOn MySQL-->
 
-            <!--  MainWebApp_Connect_TO_Database-->
+            <!--  ChatWebApp_Connect_TO_MessageDb-->
             <RelationshipTemplate id="ChatWebApp_ConectTo_MessageDB"
                                   name="Chat webapp connect to Message db" type="ChatWebAppConnectToMessageWebApp">
                 <SourceElement ref="ChatWebApp_MessageDatabase" />
                 <TargetElement ref="MessageDB_clients" />
             </RelationshipTemplate>
-            <!-- __END__MainWebApp_Connect_TO_Database-->
-		</TopologyTemplate>
-
-
-	</ServiceTemplate>
+            <!-- __END__ ChatWebApp_Connect_TO_MessageDb-->
+        </TopologyTemplate>
+    </ServiceTemplate>
 </Definitions>
