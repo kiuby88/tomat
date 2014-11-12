@@ -1,6 +1,8 @@
 package org.tomat.cli;
 
 import io.airlift.command.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tomat.TomatVersion;
 import org.tomat.agnostic.application.AgnosticApplication;
 import org.tomat.agnostic.graphs.printer.AgnosticGraphJGraphPrinter;
@@ -19,6 +21,8 @@ import java.io.IOException;
  * Created by Kiuby88 on 30/10/14.
  */
 public class Main {
+
+   static Logger logger = LoggerFactory.getLogger(Main.class);
 
    final static private  String TOMAT_BANNER=
             " _______                        _______          \n" +
@@ -68,20 +72,8 @@ public class Main {
                 translate();
                 print();
             }
-            catch (NotSupportedTypeByTechnologyException e) {
-                e.printStackTrace();
-            }
-            catch (NodeTemplateTypeNotSupportedException e) {
-                e.printStackTrace();
-            }
-            catch (TopologyTemplateFormatException e) {
-                e.printStackTrace();
-            }
-            catch (AgnosticPropertyException e) {
-                e.printStackTrace();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
+            catch (Exception e){
+                logger.error(e.getMessage());
             }
         }
 
