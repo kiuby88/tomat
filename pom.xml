@@ -14,8 +14,14 @@
         <module>dist</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>java.net</id>
+            <url>https://nexus.scenic.uma.es/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+
     <properties>
-        <!-- <install-dir>${build.directory}</install-dir> -->
         <maven-jar-plugin-version>2.5</maven-jar-plugin-version>
     </properties>
 
@@ -38,7 +44,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.15-SNAPSHOT</version>
+            <version>1.14</version>
         </dependency>
         <dependency>
             <groupId>org.opentosca</groupId>
