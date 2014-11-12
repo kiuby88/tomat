@@ -73,7 +73,7 @@ public class Main {
                 print();
             }
             catch (Exception e){
-                logger.error(e.getMessage());
+                logger.error("Translating error: \n",e);
             }
         }
 
@@ -118,6 +118,7 @@ public class Main {
         public void run() {
 
             System.out.println(TOMAT_BANNER+"\n\n");
+
 
         }
     }
