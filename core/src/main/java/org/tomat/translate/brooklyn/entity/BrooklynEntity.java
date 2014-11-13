@@ -12,10 +12,6 @@ public class BrooklynEntity implements BrooklynElement {
 
     private String id;
     private String name;
-    //TODO moving location to serviceType because the
-    //TODO application does not specify the location and this
-    //TODO it could be worst because the location by default will be
-    //TODO localhost like it is specify in the AgnosticComponent.
     private String location;
 
     protected BrooklynEntity(Builder builder){

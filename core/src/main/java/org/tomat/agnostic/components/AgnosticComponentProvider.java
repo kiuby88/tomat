@@ -24,12 +24,7 @@ public class AgnosticComponentProvider {
         AgnosticComponent agnosticComponent;
         String nodeTemplateType = getTypeName(nodeTemplate).toLowerCase();
 
-        //TODO it could be interesting change this method using a switch and using
-        //TODO types of the AgnosticComponents. Really, the TOSCA support class
-        //TODO it is not used, because the components are specify using the Types
-        //TODO And in any moments is necessary check if it is supported because,
-        //TODO it are managed using the default method.
-        //TODO In any case or use switch or using Google code style.
+        //TODO Using fabric ot another pattert to delete this "SWITCH".
         if (nodeTemplateType.equalsIgnoreCase(ToscaSupportedTypeProvider.JBOSS_WEB_SERVER))
             agnosticComponent = new JBossAgnosticComponent(nodeTemplate);
 

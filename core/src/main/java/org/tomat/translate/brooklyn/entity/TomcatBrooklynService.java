@@ -24,9 +24,9 @@ public class TomcatBrooklynService extends JavaWebApplicationServerBrooklynServi
     }
 
     @Override
-    public Map<Class<? extends AgnosticProperty>, String > getSupportedAgnosticPropertiesAndBrooklynPropertyId(){
+    public Map<Class<? extends AgnosticProperty>, String > getSupportedAgnosticAndBrooklynPropertyId(){
         Map<Class<? extends AgnosticProperty>, String > result=
-                super.getSupportedAgnosticPropertiesAndBrooklynPropertyId();
+                super.getSupportedAgnosticAndBrooklynPropertyId();
         //Here we could add new
         return result;
     }

@@ -10,11 +10,4 @@ public class ToscaSupportedTypeProvider {
     public final static String MySQL_DB = "MySQLDB";
     public final static String JETTY_WEB_SERVER="JettyWebServer";
     public final static String TOMCAT_WEB_SERVER="TomcatWebServer";
-
-    //TODO add logic to this method using java reflection
-    public static boolean getSupportedType(String type) {
-        return true;
-    }
-
-
 }

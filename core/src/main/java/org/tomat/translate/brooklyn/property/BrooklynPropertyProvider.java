@@ -8,9 +8,7 @@ import org.tomat.agnostic.properties.PortAgnosticProperty;
  */
 public class BrooklynPropertyProvider {
 
-    //TODO rename the class using Translator if the ServiceProvider is renamedToo
     public static BrooklynProperty createBrooklynProperty(AgnosticProperty agnosticProperty){
-
 
         String propertyId=agnosticProperty.getId();
         String propertyValue=agnosticProperty.getValue();
@@ -18,9 +16,6 @@ public class BrooklynPropertyProvider {
 
         if(agnosticProperty instanceof PortAgnosticProperty){
             brooklynProperty= new PortBrooklynProperty(propertyId, propertyValue);
-        }
-        else{
-
         }
         return brooklynProperty;
     }

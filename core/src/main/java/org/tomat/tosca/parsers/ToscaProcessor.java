@@ -19,9 +19,7 @@ import java.util.Map;
  * Created by Kiuby88 on 23/09/2014.
  */
 //TODO check the clean code to specify <variableName>List (e.g.).
-//TODO El nombre de esta clase debería ser algo refereico con parsear la topología
-//TODO Esta clase contendrá un metodo para parsear el fichero que contiene la topología
-//TODO se podria llamar algo como TopologyProcessor o TopologyManager o TopologyAnalizer
+//TODO Consider to change the name TopologyManager or TopologyAnalizer.
 public class ToscaProcessor {
 
 

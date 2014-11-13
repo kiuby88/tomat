@@ -18,4 +18,33 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <instrumentation>
+                        <excludes>
+                            <exclude>org/tomat/exceptions/*.class</exclude>
+                            <exclude>org/tomat/translate/exceptions/*.class</exclude>
+                            <exclude>org/tomat/translate/brooklyn/exceptions/*.class</exclude>
+                            <exclude>org/tomat/TomatVersion.class</exclude>
+                            <exclude>org/tomat/agnostic/graphs/printer/*.class</exclude>
+                        </excludes>
+                    </instrumentation>
+                    <check/>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

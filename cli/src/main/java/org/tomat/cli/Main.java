@@ -13,6 +13,7 @@ import org.tomat.exceptions.TopologyTemplateFormatException;
 import org.tomat.tosca.parsers.ToscaProcessor;
 import org.tomat.translate.brooklyn.BrooklynTranslator;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
+import org.tomat.translate.brooklyn.exceptions.BrooklynVisitorRelationConfigurationNotSupportedType;
 import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 
 import java.io.IOException;
@@ -91,7 +92,8 @@ public class Main {
             agnosticApplication = new AgnosticApplication(toscaProcessor);
         }
 
-        private void translate() throws NotSupportedTypeByTechnologyException {
+        private void translate() throws NotSupportedTypeByTechnologyException,
+                BrooklynVisitorRelationConfigurationNotSupportedType {
             brooklynTranslator = new BrooklynTranslator(agnosticApplication)
                     .translate();
             brooklynApplicationEntity = brooklynTranslator.getBrooklynApplicationEntity();

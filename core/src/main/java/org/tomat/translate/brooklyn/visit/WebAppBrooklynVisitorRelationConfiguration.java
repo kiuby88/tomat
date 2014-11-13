@@ -88,7 +88,7 @@ public class WebAppBrooklynVisitorRelationConfiguration
 
         String mySQLUrl= getDbURL(dataBaseAgnosticComponent, agnosticGraph);
 
-        String connectionConfiguration="$brooklyn:formatString(\"jdbc:%s%s?user=%s\\&password=%s\", "
+        String connectionConfiguration="$brooklyn:formatString(\"jdbc:%s%s?user=%s\\\\&password=%s\", "
                 + mySQLUrl+", "
                 +"\""+dbName+"\", "
                 +"\""+dbUser+"\", "

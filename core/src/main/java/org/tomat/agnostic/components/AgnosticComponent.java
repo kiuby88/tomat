@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * Created by kiuby88 on 24/09/2014.
  */
-//TODO migrate the name to AgnosticComponent and not AgnosticComponent
+
 public abstract class AgnosticComponent implements AgnosticElement {
 
 
@@ -59,9 +59,6 @@ public abstract class AgnosticComponent implements AgnosticElement {
         if (sourceNodeTemplate != null) {
             id = sourceNodeTemplate.getId();
             name = sourceNodeTemplate.getName();
-            //TODO delete the next line because the type is specify
-            //TODO by the AgnosticComponentConcreted
-            //type = DefinitionUtils.getTypeName(sourceNodeTemplate);
             setLocation(sourceNodeTemplate);
         }
     }
@@ -168,7 +165,8 @@ public abstract class AgnosticComponent implements AgnosticElement {
     }
 
     //TODO esto está feisimo aquí, pero feo feo.
-    public abstract TechnologyComponent buildTechnologyComponent(TechnologyComponentFactory factory) throws AgnosticComponentTypeNotSupportedbyBrooklyException;
+    public abstract TechnologyComponent buildTechnologyComponent(TechnologyComponentFactory factory)
+            throws AgnosticComponentTypeNotSupportedbyBrooklyException;
 
     // <editor-fold desc="Getters and Setters">
     public List<String> getCapabilitiesIds() {

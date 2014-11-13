@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definitions id="OnlineRetailingDefinitions" name="OnlineRetailing Definitions"
+    targetNamespace="http://www.example.com/tosca/ServiceTemplates/OnlineRetailing"
+    xmlns="http://docs.oasis-open.org/tosca/ns/2011/12"
+    xmlns:ns2="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaSpecificTypes"
+    xmlns:ns3="http://www.example.com/tosca/Types/OnlineRetailing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://docs.oasis-open.org/tosca/ns/2011/12 TOSCA-v1.0-cs02.xsd">
+    
+    <Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+    location="Definitions/TOSCA-v1.0-BaseTypes-Definitions.xml"
+    namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" />
+    <Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+    location="Definitions/TOSCA-v2.0-SpecificTypes-Definitions.xml"
+    namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaSpecificTypes" />
+    <Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+    location="Definitions/OnlineRetailingTypes-Definitions-v3.0.xml"
+    namespace="http://www.example.com/tosca/Types/Moodle" />
+    <Import importType="http://docs.oasis-open.org/tosca/ns/2011/12"
+    location="Definitions/OnlineRetailing-opentosca-implementations.xml"
+    namespace="http://tempuri.org" />
+    
+    <Import importType="http://www.w3.org/2001/XMLSchema"
+    location="types/TOSCA-v1.0-BaseTypes.xsd"
+    namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaBaseTypes" />
+    <Import importType="http://www.w3.org/2001/XMLSchema"
+    location="types/TOSCA-v2.0-SpecificTypes.xsd"
+    namespace="http://docs.oasis-open.org/tosca/ns/2011/12/ToscaSpecificTypes" />
+    <Import importType="http://www.w3.org/2001/XMLSchema"
+    location="types/OnlineRetailing.xsd"
+    namespace="http://www.example.com/tosca/Types/OnlineRetailing" />
+    
+    <Import namespace="http://ec2linux.aws.ia.opentosca.org"
+    importType="http://schemas.xmlsoap.org/wsdl/"
+    location="Imports/EC2LinuxIAService.wsdl" />
+    <Import namespace="http://ec2vm.aws.ia.opentosca.org"
+    importType="http://schemas.xmlsoap.org/wsdl/"
+    location="Imports/EC2VMIAService.wsdl" />
+    <Import namespace="http:///www.opentosca.org/examples/Moodle/BuildPlan"
+    importType="http://schemas.xmlsoap.org/wsdl/"
+    location="Imports/MoodleBuildPlanArtifacts.wsdl" />
+    
+    <!-- NodeTypeImplementation WebApplication -->
+    <NodeTypeImplementation name="BU-WebAppNodeTypeImplementation"
+        nodeType="WebApplication">
+        <DeploymentArtifacts>
+            <DeploymentArtifact artifactRef="BU-WebAppArtifactTemplate"
+                artifactType="ns2:ArchiveArtifact" name="BU-WebAppImplementation-archive">
+            </DeploymentArtifact>
+        </DeploymentArtifacts>
+    </NodeTypeImplementation>
+    
+    <ArtifactTemplate id="BU-WebAppArtifactTemplate"
+        name="BU-WebAppArtifactTemplate-archive" type="ns2:ArchiveArtifact">
+        <ArtifactReferences>
+            <ArtifactReference reference="http://search.maven.org/remotecontent?filepath=io/brooklyn/example/brooklyn-example-hello-world-sql-webapp/0.6.0-M2/brooklyn-example-hello-world-sql-webapp-0.6.0-M2.war" />
+        </ArtifactReferences>
+    </ArtifactTemplate>
+    <!-- __END__ NodeTypeImplementation WebApplication -->
+    
+    <!-- NodeTypeImplementation MySQLDatabase -->
+    <NodeTypeImplementation name="Message Database"
+        nodeType="MySQLDB">
+        <DeploymentArtifacts>
+            <DeploymentArtifact artifactRef="MessageDataBaseArtifactTemplate"
+                artifactType="ns2:ArchiveArtifact" name="MessageDatabaseImplementation-archive">
+            </DeploymentArtifact>
+        </DeploymentArtifacts>
+    </NodeTypeImplementation>
+    
+    <ArtifactTemplate id="MessageDataBaseArtifactTemplate"
+        name="MessageDatabaseArtifactTemplate-archive" type="ns2:ArchiveArtifact">
+        <ArtifactReferences>
+            <ArtifactReference reference="classpath://visitors-creation-script.sql" />
+        </ArtifactReferences>
+    </ArtifactTemplate>
+    <!-- __END__ NodeTypeImplementation MySQLDatabase -->
+    
+    <ServiceTemplate id="BU-WebApp" name="BU- Web Application">
+        <TopologyTemplate>
+            
+            <!-- Tomcat BU- Web Server -->
+            <NodeTemplate id="TomcatBU-WebServer" name="Tomcat BU- Web Server"
+                type="TomcatWebServer">
+                <Properties>
+                    <ns2:TomcatWebServerProperties>
+                        <httpPort>80</httpPort>
+                    </ns2:TomcatWebServerProperties>
+                </Properties>
+                <Location locationId="aws-ec2:us-west-2"/>
+                <Capabilities>
+                    <Capability id="TomcatBU-WebServer_webapps" name="webapps"
+                    type="TomcatBU-ApplicationContainerCapability" />
+                    <Capability id="TomcatBU-WebServer_clients" name="clients"
+                    type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Tomcat BU- Web Server -->
+            
+            <!-- BU- Web Application -->
+            <NodeTemplate id="BU-WebApp" name="BU- Web App"
+                type="WebApplication">
+                
+                <Properties>
+                    <ns2:WebApplicationProperties>
+                        <dbConnectionName>brooklyn.example.db.url</dbConnectionName>
+                    </ns2:WebApplicationProperties>
+                </Properties>
+                <Location locationId="aws-ec2:us-west-2"/>
+                <Requirements>
+                    <Requirement id="BU-WebApp_MessageDatabase" name="MessageDatabase"
+                    type="BU-WebAppConnectToMessageWebApp" />
+                    <Requirement id="BU-WebApp_container" name="container"
+                    type="TomcatBU-WebApplicationContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="BU-WebServices" name="clients"
+                    type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ BU- Web Application -->
+            
+            <!-- Message DBMS -->
+            <NodeTemplate id="MessageMySql" name="MessageMySQL" type="MySQL">
+                <Properties>
+                    <ns2:MySQLProperties>
+                        <RootPassword>admin</RootPassword>
+                    </ns2:MySQLProperties>
+                </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
+                <Capabilities>
+                    <Capability id="MessageMySql_databases" name="databases"
+                    type="MySQLDatabaseContainerCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Message DBMS -->
+            
+            <!-- Message DataBase -->
+            <NodeTemplate id="MessageDB" name="Message DB" type="MySQLDB">
+                <Properties>
+                    <ns3:StockDbProperties>
+                        <DBName>dbName</DBName>
+                        <DBUser>dbUser</DBUser>
+                        <DBPassword>seaclouds</DBPassword>
+                        <DBPort>3306</DBPort>
+                    </ns3:StockDbProperties>
+                </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
+                <Requirements>
+                    <Requirement id="MessageDB_container" name="container"
+                    type="MySQLDatabaseContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="MessageDB_clients" name="clients"
+                    type="MySQLDatabaseEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Message DBMS -->
+            
+            <!-- ### RelationShip_Templates ### -->
+            
+            <!-- BU- WebApp DeployOn TomcatWebServer-->
+            <RelationshipTemplate id="BU-WebApp_HostedOn_WebServer"
+                name="BU- web app hosted on web server"
+                type="BU-WebAppWebAppHostedOnWebServer">
+                <SourceElement ref="BU-WebApp_container" />
+                <TargetElement ref="TomcatBU-WebServer_webapps" />
+            </RelationshipTemplate>
+            <!-- __END__ BU- WebApp DeployOn TomcatWebServer-->
+            
+            <!--  MessageDB HostedOn MySQL-->
+            <RelationshipTemplate id="MessageDB_HostedOn_MessageMySQL"
+                name="message database hosted on message mysql" type="MessageDBHostedOnMySQL">
+                <SourceElement ref="MessageDB_container" />
+                <TargetElement ref="MessageMySql_databases" />
+            </RelationshipTemplate>
+            <!--  MessageDB HostedOn MySQL-->
+            
+            <!--  BU-WebApp_Connect_TO_MessageDb-->
+            <RelationshipTemplate id="BU-WebApp_ConectTo_MessageDB"
+                name="BU- webapp connect to Message db" type="BU-WebAppConnectToMessageWebApp">
+                <SourceElement ref="BU-WebApp_MessageDatabase" />
+                <TargetElement ref="MessageDB_clients" />
+            </RelationshipTemplate>
+            <!-- __END__ BU-WebApp_Connect_TO_MessageDb-->
+            
+            
+            
+            <!-- Jetty Msg Web Server -->
+            <NodeTemplate id="JettyMsgWebServer" name="Jetty Msg Web Server"
+                type="JettyWebServer">
+                <Properties>
+                    <ns2:JettyWebServerProperties>
+                        <httpPort>80</httpPort>
+                    </ns2:JettyWebServerProperties>
+                </Properties>
+                <Location locationId="aws-ec2:us-west-2"/>
+                <Capabilities>
+                    <Capability id="JettyMsgWebServer_webapps" name="webapps"
+                    type="JettyMsgApplicationContainerCapability" />
+                    <Capability id="JettyMsgWebServer_clients" name="clients"
+                    type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Jetty Msg Web Server -->
+            
+            <!-- Msg Web Application -->
+            <NodeTemplate id="MsgWebApp" name="Msg Web App"
+                type="WebApplication">
+                
+                <Properties>
+                    <ns2:WebApplicationProperties>
+                        <dbConnectionName>brooklyn.example.db.url</dbConnectionName>
+                    </ns2:WebApplicationProperties>
+                </Properties>
+                <Location locationId="aws-ec2:us-west-2"/>
+                <Requirements>
+                    <Requirement id="MsgWebApp_MessageDatabase" name="MessageDatabase"
+                    type="MsgWebAppConnectToMessageWebApp" />
+                    <Requirement id="MsgWebApp_container" name="container"
+                    type="JettyMsgWebApplicationContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="MsgWebServices" name="clients"
+                    type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Msg Web Application -->
+            
+            <!-- Message DBMS -->
+            <NodeTemplate id="MessageMySql" name="MessageMySQL" type="MySQL">
+                <Properties>
+                    <ns2:MySQLProperties>
+                        <RootPassword>admin</RootPassword>
+                    </ns2:MySQLProperties>
+                </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
+                <Capabilities>
+                    <Capability id="MessageMySql_databases" name="databases"
+                    type="MySQLDatabaseContainerCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Message DBMS -->
+            
+            <!-- Message DataBase -->
+            <NodeTemplate id="MessageDB" name="Message DB" type="MySQLDB">
+                <Properties>
+                    <ns3:StockDbProperties>
+                        <DBName>dbName</DBName>
+                        <DBUser>dbUser</DBUser>
+                        <DBPassword>seaclouds</DBPassword>
+                        <DBPort>3306</DBPort>
+                    </ns3:StockDbProperties>
+                </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
+                <Requirements>
+                    <Requirement id="MessageDB_container" name="container"
+                    type="MySQLDatabaseContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="MessageDB_clients" name="clients"
+                    type="MySQLDatabaseEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Message DBMS -->
+            
+            <!-- ### RelationShip_Templates ### -->
+            
+            <!-- Msg WebApp DeployOn JettyWebServer-->
+            <RelationshipTemplate id="MsgWebApp_HostedOn_WebServer"
+                name="Msg web app hosted on web server"
+                type="MsgWebAppWebAppHostedOnWebServer">
+                <SourceElement ref="MsgWebApp_container" />
+                <TargetElement ref="JettyMsgWebServer_webapps" />
+            </RelationshipTemplate>
+            <!-- __END__ Msg WebApp DeployOn JettyWebServer-->
+            
+            <!--  MessageDB HostedOn MySQL-->
+            <RelationshipTemplate id="MessageDB_HostedOn_MessageMySQL"
+                name="message database hosted on message mysql" type="MessageDBHostedOnMySQL">
+                <SourceElement ref="MessageDB_container" />
+                <TargetElement ref="MessageMySql_databases" />
+            </RelationshipTemplate>
+            <!--  MessageDB HostedOn MySQL-->
+            
+            <!--  MsgWebApp_Connect_TO_MessageDb-->
+            <RelationshipTemplate id="MsgWebApp_ConectTo_MessageDB"
+                name="Msg webapp connect to Message db" type="MsgWebAppConnectToMessageWebApp">
+                <SourceElement ref="MsgWebApp_MessageDatabase" />
+                <TargetElement ref="MessageDB_clients" />
+            </RelationshipTemplate>
+            <!-- __END__ MsgWebApp_Connect_TO_MessageDb-->
+            
+            
+            
+            
+            
+            
+            <!-- JBoss Chat Web Server -->
+            <NodeTemplate id="JBossChatWebServer" name="JBoss Chat Web Server"
+                type="JBossWebServer">
+                <Properties>
+                    <ns2:JBossWebServerProperties>
+                        <httpPort>80</httpPort>
+                    </ns2:JBossWebServerProperties>
+                </Properties>
+                <Location locationId="aws-ec2:us-west-2"/>
+                <Capabilities>
+                    <Capability id="JBossChatWebServer_webapps" name="webapps"
+                    type="JBossChatApplicationContainerCapability" />
+                    <Capability id="JBossChatWebServer_clients" name="clients"
+                    type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ JBoss Chat Web Server -->
+            
+            <!-- Chat Web Application -->
+            <NodeTemplate id="ChatWebApp" name="Chat Web App"
+                type="WebApplication">
+                
+                <Properties>
+                    <ns2:WebApplicationProperties>
+                        <dbConnectionName>brooklyn.example.db.url</dbConnectionName>
+                    </ns2:WebApplicationProperties>
+                </Properties>
+                <Location locationId="aws-ec2:us-west-2"/>
+                <Requirements>
+                    <Requirement id="ChatWebApp_MessageDatabase" name="MessageDatabase"
+                    type="ChatWebAppConnectToMessageWebApp" />
+                    <Requirement id="ChatWebApp_container" name="container"
+                    type="JBossChatWebApplicationContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="ChatWebServices" name="clients"
+                    type="HTTPEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Chat Web Application -->
+            
+            <!-- Message DBMS -->
+            <NodeTemplate id="MessageMySql" name="MessageMySQL" type="MySQL">
+                <Properties>
+                    <ns2:MySQLProperties>
+                        <RootPassword>admin</RootPassword>
+                    </ns2:MySQLProperties>
+                </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
+                <Capabilities>
+                    <Capability id="MessageMySql_databases" name="databases"
+                    type="MySQLDatabaseContainerCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Message DBMS -->
+            
+            <!-- Message DataBase -->
+            <NodeTemplate id="MessageDB" name="Message DB" type="MySQLDB">
+                <Properties>
+                    <ns3:StockDbProperties>
+                        <DBName>dbName</DBName>
+                        <DBUser>dbUser</DBUser>
+                        <DBPassword>seaclouds</DBPassword>
+                        <DBPort>3306</DBPort>
+                    </ns3:StockDbProperties>
+                </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
+                <Requirements>
+                    <Requirement id="MessageDB_container" name="container"
+                    type="MySQLDatabaseContainerRequirement" />
+                </Requirements>
+                <Capabilities>
+                    <Capability id="MessageDB_clients" name="clients"
+                    type="MySQLDatabaseEndpointCapability" />
+                </Capabilities>
+            </NodeTemplate>
+            <!-- __END__ Message DBMS -->
+            
+            <!-- ### RelationShip_Templates ### -->
+            
+            <!-- Chat WebApp DeployOn JBossWebServer-->
+            <RelationshipTemplate id="ChatWebApp_HostedOn_WebServer"
+                name="Chat web app hosted on web server"
+                type="ChatWebAppWebAppHostedOnWebServer">
+                <SourceElement ref="ChatWebApp_container" />
+                <TargetElement ref="JBossChatWebServer_webapps" />
+            </RelationshipTemplate>
+            <!-- __END__ Chat WebApp DeployOn JBossWebServer-->
+            
+            <!--  MessageDB HostedOn MySQL-->
+            <RelationshipTemplate id="MessageDB_HostedOn_MessageMySQL"
+                name="message database hosted on message mysql" type="MessageDBHostedOnMySQL">
+                <SourceElement ref="MessageDB_container" />
+                <TargetElement ref="MessageMySql_databases" />
+            </RelationshipTemplate>
+            <!--  MessageDB HostedOn MySQL-->
+            
+            <!--  ChatWebApp_Connect_TO_MessageDb-->
+            <RelationshipTemplate id="ChatWebApp_ConectTo_MessageDB"
+                name="Chat webapp connect to Message db" type="ChatWebAppConnectToMessageWebApp">
+                <SourceElement ref="ChatWebApp_MessageDatabase" />
+                <TargetElement ref="MessageDB_clients" />
+            </RelationshipTemplate>
+            <!-- __END__ ChatWebApp_Connect_TO_MessageDb-->
+            
+            
+            
+            
+            
+            
+            
+            
+        </TopologyTemplate>
+    </ServiceTemplate>
+</Definitions>

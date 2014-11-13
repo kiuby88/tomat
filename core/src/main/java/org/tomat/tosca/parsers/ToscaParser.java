@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Kiuby88 on 28/10/14.
  */
 public class ToscaParser {
-    //TODO it is necessary add a test to check this class
+
     private List<TNodeTemplate> nodeTemplatesOfTopology = null;
     private List<TRelationshipTemplate> relationshipTemplatesOfTopology = null;
     private TServiceTemplate serviceTemplateOfTopology = null;
@@ -31,13 +31,12 @@ public class ToscaParser {
 
     public ToscaParser parsingApplicationTopology(File definitionFilePath)
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
-        //TODO this could optimiced using TDefinitionTemplate to extract the lists check in a
-        //TODO branch
-        nodeTemplatesOfTopology = DefinitionUtils.getNodeTemplates(definitionFilePath);
-        relationshipTemplatesOfTopology = DefinitionUtils
-                .getRelationshipTemplates(definitionFilePath);
-        serviceTemplateOfTopology = DefinitionUtils.getServiceTemplate(definitionFilePath);
+
         definitions = DefinitionUtils.getDefinitions(definitionFilePath);
+        nodeTemplatesOfTopology = DefinitionUtils.getNodeTemplates(definitions);
+        relationshipTemplatesOfTopology = DefinitionUtils
+                .getRelationshipTemplates(definitions);
+        serviceTemplateOfTopology = DefinitionUtils.getServiceTemplate(definitions);
         return this;
     }
 

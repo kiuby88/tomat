@@ -1,6 +1,7 @@
 package org.tomat.translate;
 
 import org.tomat.agnostic.application.AgnosticApplication;
+import org.tomat.translate.brooklyn.exceptions.BrooklynVisitorRelationConfigurationNotSupportedType;
 import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.io.IOException;
 /**
  * Created by Kiuby88 on 18/10/14.
  */
-//TODO describe it is a abstract fabric client. The fabric is described by
+
 public abstract class TechnologyTranslator {
 
     private AgnosticApplication agnosticApplication;
@@ -17,11 +18,11 @@ public abstract class TechnologyTranslator {
         this.setAgnosticApplication(agnosticApplication);
     }
 
-    public abstract TechnologyTranslator translate() throws NotSupportedTypeByTechnologyException;
+    public abstract TechnologyTranslator translate() throws NotSupportedTypeByTechnologyException, BrooklynVisitorRelationConfigurationNotSupportedType;
 
     public abstract TechnologyComponentFactory getTechnologyComponentFactory();
 
-    public abstract void configureRelations(TechnologyComponent technologyComponent);
+    public abstract void configureRelations(TechnologyComponent technologyComponent) throws BrooklynVisitorRelationConfigurationNotSupportedType;
 
     public abstract String  print() throws IOException;
 

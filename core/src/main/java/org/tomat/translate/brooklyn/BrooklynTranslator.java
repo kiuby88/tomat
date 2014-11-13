@@ -10,6 +10,7 @@ import org.tomat.translate.TechnologyTranslator;
 import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynComponentFactory;
 import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
+import org.tomat.translate.brooklyn.exceptions.BrooklynVisitorRelationConfigurationNotSupportedType;
 import org.tomat.translate.brooklyn.print.BrooklynYamlPrinter;
 import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfiguration;
 import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfigurationProvider;
@@ -49,13 +50,15 @@ public class BrooklynTranslator extends TechnologyTranslator {
 
     @Override
     public BrooklynTranslator translate()
-            throws NotSupportedTypeByTechnologyException {
+            throws NotSupportedTypeByTechnologyException,
+            BrooklynVisitorRelationConfigurationNotSupportedType {
         translateAgnosticComponents();
         return this;
     }
 
     private void translateAgnosticComponents()
-            throws NotSupportedTypeByTechnologyException {
+            throws NotSupportedTypeByTechnologyException,
+            BrooklynVisitorRelationConfigurationNotSupportedType {
         Set<AgnosticComponent> agnosticComponents = getAgnosticApplication()
                 .getAgnosticGraph()
                 .getVertexSet();
@@ -79,7 +82,8 @@ public class BrooklynTranslator extends TechnologyTranslator {
     }
 
     @Override
-    public void configureRelations(TechnologyComponent technologyServiceEntity){
+    public void configureRelations(TechnologyComponent technologyServiceEntity)
+            throws BrooklynVisitorRelationConfigurationNotSupportedType {
 
         AgnosticGraph agnosticGraph=getAgnosticApplication().getAgnosticGraph();
         AgnosticComponent agnosticComponentOfBrooklynService=technologyServiceEntity.getAgnosticComponent();

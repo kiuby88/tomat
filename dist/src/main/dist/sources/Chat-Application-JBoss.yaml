@@ -1,0 +1,19 @@
+name: Chat Web Application
+id: chatWebApp
+location: localhost
+services:
+- serviceType: brooklyn.entity.webapp.jboss.JBoss7Server
+  name: JBoss Chat Web Server
+  location: aws-ec2:us-west-2
+  id: JBossChatWebServer
+  brooklyn.config:
+    java.sysprops:
+      brooklyn.example.db.url: $brooklyn:formatString("jdbc:%s%s?user=%s\\&password=%s", component("MessageMySql").attributeWhenReady("datastore.url"), "dbName", "dbUser", "seaclouds")
+    wars.root: http://search.maven.org/remotecontent?filepath=io/brooklyn/example/brooklyn-example-hello-world-sql-webapp/0.6.0-M2/brooklyn-example-hello-world-sql-webapp-0.6.0-M2.war
+    port.http: 80+
+- serviceType: brooklyn.entity.database.mysql.MySqlNode
+  name: MessageMySQL
+  location: hpcloud-compute:az-1.region-a.geo-1
+  id: MessageMySql
+  brooklyn.config:
+    datastore.creation.script.url: classpath://visitors-creation-script.sql

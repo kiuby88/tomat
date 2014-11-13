@@ -1,9 +1,6 @@
 package org.tomat.translate.brooklyn.print;
 
-import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
-import org.tomat.translate.brooklyn.entity.JBossBrooklynService;
-import org.tomat.translate.brooklyn.entity.JettyBrooklynService;
-import org.tomat.translate.brooklyn.entity.MySQLBrooklynService;
+import org.tomat.translate.brooklyn.entity.*;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.nodes.Tag;
@@ -55,6 +52,7 @@ public class BrooklynYamlPrinter {
         representer.addClassTag(MySQLBrooklynService.class, Tag.MAP);
         representer.addClassTag(BrooklynApplicationEntity.class, Tag.MAP);
         representer.addClassTag(JettyBrooklynService.class, Tag.MAP);
+        representer.addClassTag(TomcatBrooklynService.class, Tag.MAP);
         return representer;
     }
 

@@ -20,6 +20,7 @@ import org.tomat.translate.brooklyn.entity.BrooklynApplicationEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynEntity;
 import org.tomat.translate.brooklyn.entity.BrooklynServiceEntity;
 import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupportedbyBrooklyException;
+import org.tomat.translate.brooklyn.exceptions.BrooklynVisitorRelationConfigurationNotSupportedType;
 import org.tomat.translate.exceptions.NotSupportedTypeByTechnologyException;
 
 import java.io.IOException;
@@ -47,7 +48,8 @@ public class BrooklynTranslatorDatabaseAppTest {
     public BrooklynTranslatorDatabaseAppTest(String name, String file, String webServerId,
                                              String yamlFile)
             throws AgnosticPropertyException, TopologyTemplateFormatException,
-            NodeTemplateTypeNotSupportedException, NotSupportedTypeByTechnologyException {
+            NodeTemplateTypeNotSupportedException, NotSupportedTypeByTechnologyException,
+            BrooklynVisitorRelationConfigurationNotSupportedType {
         ResourcePathResolver resourcePathResolver= new ResourcePathResolver();
         AWSApplicationDatabaseFile=resourcePathResolver.getPathOfFile(file);
         this.webServerId=webServerId;
@@ -68,14 +70,14 @@ public class BrooklynTranslatorDatabaseAppTest {
         });
     }
 
-    //TODO refactor test to init using less code
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(BrooklynTranslatorDatabaseAppTest.class);
     }
 
     public void setUp()
             throws NodeTemplateTypeNotSupportedException, TopologyTemplateFormatException,
-            AgnosticPropertyException, NotSupportedTypeByTechnologyException {
+            AgnosticPropertyException, NotSupportedTypeByTechnologyException,
+            BrooklynVisitorRelationConfigurationNotSupportedType {
 
         toscaProcessor =new ToscaProcessor();
         toscaProcessor

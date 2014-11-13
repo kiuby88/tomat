@@ -41,67 +41,64 @@
 		location="Imports/MoodleBuildPlanArtifacts.wsdl" />
 
     <!-- NodeTypeImplementation WebApplication -->
-    <NodeTypeImplementation name="WebAppNodeTypeImplementation"
+    <NodeTypeImplementation name="MsgWebAppNodeTypeImplementation"
                             nodeType="WebApplication">
         <DeploymentArtifacts>
-            <DeploymentArtifact artifactRef="WebAppArtifactTemplate"
-                                artifactType="ns2:ArchiveArtifact" name="WebAppImplementation-archive">
+            <DeploymentArtifact artifactRef="MsgWebAppArtifactTemplate"
+                                artifactType="ns2:ArchiveArtifact" name="MsgWebAppImplementation-archive">
             </DeploymentArtifact>
         </DeploymentArtifacts>
     </NodeTypeImplementation>
 
-    <ArtifactTemplate id="WebAppArtifactTemplate"
-                      name="WebAppArtifactTemplate-archive" type="ns2:ArchiveArtifact">
+    <ArtifactTemplate id="MsgWebAppArtifactTemplate"
+                      name="MsgWebAppArtifactTemplate-archive" type="ns2:ArchiveArtifact">
         <ArtifactReferences>
-            <ArtifactReference reference="webAppArtifactImplementation.war" />
+            <ArtifactReference reference="http://search.maven.org/remotecontent?filepath=io/brooklyn/example/brooklyn-example-hello-world-sql-webapp/0.6.0-M2/brooklyn-example-hello-world-sql-webapp-0.6.0-M2.war" />
         </ArtifactReferences>
     </ArtifactTemplate>
     <!-- __END__ NodeTypeImplementation WebApplication -->
 
     <!-- NodeTypeImplementation MySQLDatabase -->
-    <NodeTypeImplementation name="Main Database"
+    <NodeTypeImplementation name="Message Database"
                             nodeType="MySQLDB">
         <DeploymentArtifacts>
-            <DeploymentArtifact artifactRef="DataBaseArtifactTemplate"
-                                artifactType="ns2:ArchiveArtifact" name="DatabaseImplementation-archive">
+            <DeploymentArtifact artifactRef="MessageDataBaseArtifactTemplate"
+                                artifactType="ns2:ArchiveArtifact" name="MessageDatabaseImplementation-archive">
             </DeploymentArtifact>
         </DeploymentArtifacts>
     </NodeTypeImplementation>
 
-    <ArtifactTemplate id="DataBaseArtifactTemplate"
-                      name="DatabaseArtifactTemplate-archive" type="ns2:ArchiveArtifact">
+    <ArtifactTemplate id="MessageDataBaseArtifactTemplate"
+                      name="MessageDatabaseArtifactTemplate-archive" type="ns2:ArchiveArtifact">
         <ArtifactReferences>
-            <ArtifactReference reference="database.sql" />
+            <ArtifactReference reference="classpath://visitors-creation-script.sql" />
         </ArtifactReferences>
     </ArtifactTemplate>
     <!-- __END__ NodeTypeImplementation MySQLDatabase -->
 
+    <ServiceTemplate id="MsgWebApp" name="Msg Web Application">
+        <TopologyTemplate>
 
-
-	<ServiceTemplate id="dbApp" name="DatabaseApp">
-
-		<TopologyTemplate>
-
-			<!-- Jetty Main Web Server -->
-            <NodeTemplate id="JettyMainWebServer" name="Jetty Main Web Server"
+            <!-- Jetty Msg Web Server -->
+            <NodeTemplate id="JettyMsgWebServer" name="Jetty Msg Web Server"
                           type="JettyWebServer">
                 <Properties>
                     <ns2:JettyWebServerProperties>
                         <httpPort>80</httpPort>
                     </ns2:JettyWebServerProperties>
                 </Properties>
-                <Location locationId="AWS"/>
+                <Location locationId="aws-ec2:us-west-2"/>
                 <Capabilities>
-                    <Capability id="JettyMainWebServer_webapps" name="webapps"
-                                type="JettyWebApplicationContainerCapability" />
-                    <Capability id="JettyMainWebServer_clients" name="clients"
+                    <Capability id="JettyMsgWebServer_webapps" name="webapps"
+                                type="JettyMsgApplicationContainerCapability" />
+                    <Capability id="JettyMsgWebServer_clients" name="clients"
                                 type="HTTPEndpointCapability" />
                 </Capabilities>
             </NodeTemplate>
-		    <!-- __END__ Jetty MAin Web Server -->
+            <!-- __END__ Jetty Msg Web Server -->
 
-            <!-- Main Web Application -->
-            <NodeTemplate id="MainWebApp" name="Main Web App"
+            <!-- Msg Web Application -->
+            <NodeTemplate id="MsgWebApp" name="Msg Web App"
                           type="WebApplication">
 
                 <Properties>
@@ -109,35 +106,37 @@
                         <dbConnectionName>brooklyn.example.db.url</dbConnectionName>
                     </ns2:WebApplicationProperties>
                 </Properties>
+                <Location locationId="aws-ec2:us-west-2"/>
                 <Requirements>
-                    <Requirement id="MainWebApp_MainDatabase" name="MainDatabase"
-                                 type="MainWebAppConnectToMainWebApp" />
-                    <Requirement id="MainWebApp_container" name="container"
-                                 type="JettyWebApplicationContainerRequirement" />
+                    <Requirement id="MsgWebApp_MessageDatabase" name="MessageDatabase"
+                                 type="MsgWebAppConnectToMessageWebApp" />
+                    <Requirement id="MsgWebApp_container" name="container"
+                                 type="JettyMsgWebApplicationContainerRequirement" />
                 </Requirements>
                 <Capabilities>
-                    <Capability id="MainwebServices" name="clients"
+                    <Capability id="MsgWebServices" name="clients"
                                 type="HTTPEndpointCapability" />
                 </Capabilities>
             </NodeTemplate>
-            <!-- __END__ Main Web Application -->
+            <!-- __END__ Msg Web Application -->
 
-            <!-- Main DBMS -->
-            <NodeTemplate id="MainMySql" name="MainMySQL" type="MySQL">
+            <!-- Message DBMS -->
+            <NodeTemplate id="MessageMySql" name="MessageMySQL" type="MySQL">
                 <Properties>
                     <ns2:MySQLProperties>
                         <RootPassword>admin</RootPassword>
                     </ns2:MySQLProperties>
                 </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
                 <Capabilities>
-                    <Capability id="MainMySql_databases" name="databases"
+                    <Capability id="MessageMySql_databases" name="databases"
                                 type="MySQLDatabaseContainerCapability" />
                 </Capabilities>
             </NodeTemplate>
-            <!-- __END__ Main DBMS -->
+            <!-- __END__ Message DBMS -->
 
-            <!-- Main DataBase -->
-            <NodeTemplate id="MainDB" name="Main DB" type="MySQLDB">
+            <!-- Message DataBase -->
+            <NodeTemplate id="MessageDB" name="Message DB" type="MySQLDB">
                 <Properties>
                     <ns3:StockDbProperties>
                         <DBName>dbName</DBName>
@@ -146,44 +145,44 @@
                         <DBPort>3306</DBPort>
                     </ns3:StockDbProperties>
                 </Properties>
+                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
                 <Requirements>
-                    <Requirement id="MainDB_container" name="container"
+                    <Requirement id="MessageDB_container" name="container"
                                  type="MySQLDatabaseContainerRequirement" />
                 </Requirements>
                 <Capabilities>
-                    <Capability id="MainDB_clients" name="clients"
+                    <Capability id="MessageDB_clients" name="clients"
                                 type="MySQLDatabaseEndpointCapability" />
                 </Capabilities>
             </NodeTemplate>
-            <!-- __END__ Main DBMS -->
+            <!-- __END__ Message DBMS -->
 
-            <!-- RelationShip_Templates -->
+            <!-- ### RelationShip_Templates ### -->
 
-            <!-- MainWebApp DeployOn JettyWebServer-->
-            <RelationshipTemplate id="Main_HostedOn_WebServer"
-                                  name="main hosted on web server" type="MainWebAppHostedOnWebServer">
-                <SourceElement ref="MainWebApp_container" />
-                <TargetElement ref="JettyMainWebServer_webapps" />
+            <!-- Msg WebApp DeployOn JettyWebServer-->
+            <RelationshipTemplate id="MsgWebApp_HostedOn_WebServer"
+                                  name="Msg web app hosted on web server"
+                                  type="MsgWebAppWebAppHostedOnWebServer">
+                <SourceElement ref="MsgWebApp_container" />
+                <TargetElement ref="JettyMsgWebServer_webapps" />
             </RelationshipTemplate>
-            <!-- __END__ UserDB HostedOn StockMySQL-->
+            <!-- __END__ Msg WebApp DeployOn JettyWebServer-->
 
-            <!--  MainDB HostedOn MainMySQL-->
-            <RelationshipTemplate id="MainDB_HostedOn_MainMySQL"
-                                  name="main database hosted on main mysql" type="MainDBHostedOnMySQL">
-                <SourceElement ref="MainDB_container" />
-                <TargetElement ref="MainMySql_databases" />
+            <!--  MessageDB HostedOn MySQL-->
+            <RelationshipTemplate id="MessageDB_HostedOn_MessageMySQL"
+                                  name="message database hosted on message mysql" type="MessageDBHostedOnMySQL">
+                <SourceElement ref="MessageDB_container" />
+                <TargetElement ref="MessageMySql_databases" />
             </RelationshipTemplate>
-            <!-- __END__ MainDB HostedOn StockMySQL ______________-->
+            <!--  MessageDB HostedOn MySQL-->
 
-            <!--  MainWebApp_Connect_TO_Database-->
-            <RelationshipTemplate id="MainWebApp_ConectTo_MainDB"
-                                  name="Main webapp connect to main db" type="MainWebAppConnectToMainWebApp">
-                <SourceElement ref="MainWebApp_MainDatabase" />
-                <TargetElement ref="MainDB_clients" />
+            <!--  MsgWebApp_Connect_TO_MessageDb-->
+            <RelationshipTemplate id="MsgWebApp_ConectTo_MessageDB"
+                                  name="Msg webapp connect to Message db" type="MsgWebAppConnectToMessageWebApp">
+                <SourceElement ref="MsgWebApp_MessageDatabase" />
+                <TargetElement ref="MessageDB_clients" />
             </RelationshipTemplate>
-            <!-- __END__MainWebApp_Connect_TO_Database-->
-		</TopologyTemplate>
-
-
-	</ServiceTemplate>
+            <!-- __END__ MsgWebApp_Connect_TO_MessageDb-->
+        </TopologyTemplate>
+    </ServiceTemplate>
 </Definitions>

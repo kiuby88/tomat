@@ -23,9 +23,9 @@ public abstract class JavaWebApplicationServerBrooklynService extends BrooklynSe
     }
 
     @Override
-    public Map<Class<? extends AgnosticProperty>, String > getSupportedAgnosticPropertiesAndBrooklynPropertyId(){
+    public Map<Class<? extends AgnosticProperty>, String > getSupportedAgnosticAndBrooklynPropertyId(){
         Map<Class<? extends AgnosticProperty>, String > result=
-                super.getSupportedAgnosticPropertiesAndBrooklynPropertyId();
+                super.getSupportedAgnosticAndBrooklynPropertyId();
         result.put(HttpAgnosticProperty.class, "port.http");
         result.put(HttpsAgnosticProperty.class, "port.https");
         return result;

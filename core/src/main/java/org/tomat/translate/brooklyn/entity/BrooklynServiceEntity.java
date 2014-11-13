@@ -37,8 +37,8 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
                 .location(agnosticComponent.getLocation());
     }
 
-    //TODO refactor this name
-    public Map<Class<? extends AgnosticProperty>, String> getSupportedAgnosticPropertiesAndBrooklynPropertyId(){
+
+    public Map<Class<? extends AgnosticProperty>, String> getSupportedAgnosticAndBrooklynPropertyId(){
         return new HashMap<>();
     }
 
@@ -55,7 +55,7 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
         if(checkIsSupported(agnosticProperty)){
             BrooklynProperty brooklynProperty= buildBrooklynProperty(agnosticProperty);
             String technologyComponentPropertyId=
-                    getSupportedAgnosticPropertiesAndBrooklynPropertyId()
+                    getSupportedAgnosticAndBrooklynPropertyId()
                             .get(agnosticProperty.getClass());
 
             this.addConfigProperty(technologyComponentPropertyId, brooklynProperty.getValue());
@@ -63,7 +63,7 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
     }
 
     private boolean checkIsSupported(AgnosticProperty agnosticProperty){
-        return getSupportedAgnosticPropertiesAndBrooklynPropertyId()
+        return getSupportedAgnosticAndBrooklynPropertyId()
                 .keySet()
                 .contains(agnosticProperty.getClass());
     }
