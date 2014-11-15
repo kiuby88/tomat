@@ -45,6 +45,9 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Construir jar con dependencias -->
+
         </plugins>
     </build>
 </project>

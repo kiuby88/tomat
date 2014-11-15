@@ -8,7 +8,7 @@ services:
   id: JBossChatWebServer
   brooklyn.config:
     java.sysprops:
-      brooklyn.example.db.url: $brooklyn:formatString("jdbc:%s%s?user=%s\\&password=%s", component("MessageMySql").attributeWhenReady("datastore.url"), "dbName", "dbUser", "seaclouds")
+      brooklyn.example.db.url: $brooklyn:formatString("jdbc:%s%s?user=%s\\&password=%s", component("MessageMySql").attributeWhenReady("datastore.url"), "visitors", "brooklyn", "br00k11n")
     wars.root: http://search.maven.org/remotecontent?filepath=io/brooklyn/example/brooklyn-example-hello-world-sql-webapp/0.6.0-M2/brooklyn-example-hello-world-sql-webapp-0.6.0-M2.war
     port.http: 80+
 - serviceType: brooklyn.entity.database.mysql.MySqlNode
@@ -16,4 +16,4 @@ services:
   location: hpcloud-compute:az-1.region-a.geo-1
   id: MessageMySql
   brooklyn.config:
-    datastore.creation.script.url: classpath://visitors-creation-script.sql
+    datastore.creation.script.url: https://bit.ly/brooklyn-visitors-creation-script

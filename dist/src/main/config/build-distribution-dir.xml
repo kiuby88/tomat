@@ -28,26 +28,6 @@
                 <include>README*</include>
             </includes>
         </fileSet>
-
-        <!--<fileSet>
-            <directory>${project.basedir}/src/main/dist/lib</directory>
-            <outputDirectory>/lib/dropins</outputDirectory>
-            <fileMode>0755</fileMode>
-            <directoryMode>0755</directoryMode>
-            <excludes>
-                <exclude>**/*</exclude>
-            </excludes>
-        </fileSet> -->
-
-        <!--<fileSet>
-            <directory>${project.basedir}/src/main/dist/lib</directory>
-            <outputDirectory>/lib/patch</outputDirectory>
-            <fileMode>0755</fileMode>
-            <directoryMode>0755</directoryMode>
-            <excludes>
-                <exclude>**/*</exclude>
-            </excludes>
-        </fileSet>-->
         <fileSet>
             <directory>${project.basedir}/src/main/dist</directory>
             <outputDirectory>/</outputDirectory>
@@ -56,8 +36,15 @@
             </excludes>
         </fileSet>
     </fileSets>
-    <!-- TODO include documentation -->
-    <!-- TODO include examples -->
+    <files>
+        <file>
+            <source>${project.basedir}/../cli/target/cli-1.0-SNAPSHOT-jar-with-dependencies.jar</source>
+            <outputDirectory>/</outputDirectory>
+            <!--<destName>tomat${version}-jar-with-dependencies.jar</destName>-->
+            <destName>tomat-jar-with-dependencies.jar</destName>
+        </file>
+    </files>
+
     <dependencySets>
         <dependencySet>
             <outputDirectory>/lib/tomat</outputDirectory>

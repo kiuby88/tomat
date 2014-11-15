@@ -71,7 +71,7 @@
     <ArtifactTemplate id="MessageDataBaseArtifactTemplate"
                       name="MessageDatabaseArtifactTemplate-archive" type="ns2:ArchiveArtifact">
         <ArtifactReferences>
-            <ArtifactReference reference="classpath://visitors-creation-script.sql" />
+            <ArtifactReference reference="https://bit.ly/brooklyn-visitors-creation-script" />
         </ArtifactReferences>
     </ArtifactTemplate>
     <!-- __END__ NodeTypeImplementation MySQLDatabase -->
@@ -139,9 +139,9 @@
             <NodeTemplate id="MessageDB" name="Message DB" type="MySQLDB">
                 <Properties>
                     <ns3:StockDbProperties>
-                        <DBName>dbName</DBName>
-                        <DBUser>dbUser</DBUser>
-                        <DBPassword>seaclouds</DBPassword>
+                        <DBName>visitors</DBName>
+                        <DBUser>brooklyn</DBUser>
+                        <DBPassword>br00k11n</DBPassword>
                         <DBPort>3306</DBPort>
                     </ns3:StockDbProperties>
                 </Properties>
