@@ -15,7 +15,7 @@ import java.util.Map;
 // TODO into .entity
 public class JettyBrooklynService extends JavaWebApplicationServerBrooklynService {
 
-    private final static String SERVICE_TYPE="brooklyn.entity.webapp.jetty.Jetty6Server";
+    private final static String SERVICE_TYPE = "org.apache.brooklyn.entity.webapp.jetty.Jetty6Server";
 
 
     public JettyBrooklynService(AgnosticComponent agnosticComponent) {
@@ -24,8 +24,8 @@ public class JettyBrooklynService extends JavaWebApplicationServerBrooklynServic
     }
 
     @Override
-    public Map<Class<? extends AgnosticProperty>, String > getSupportedAgnosticAndBrooklynPropertyId(){
-        Map<Class<? extends AgnosticProperty>, String > result=
+    public Map<Class<? extends AgnosticProperty>, String> getSupportedAgnosticAndBrooklynPropertyId() {
+        Map<Class<? extends AgnosticProperty>, String> result =
                 super.getSupportedAgnosticAndBrooklynPropertyId();
         //Here we could add new
         return result;
@@ -35,7 +35,7 @@ public class JettyBrooklynService extends JavaWebApplicationServerBrooklynServic
     public void accept(TechnologyVisitorRelationConfiguration visit,
                        AgnosticComponent agnosticComponent,
                        AgnosticGraph agnosticGraph) {
-        ((BrooklynVisitorRelationConfiguration)visit)
+        ((BrooklynVisitorRelationConfiguration) visit)
                 .visit(this, agnosticComponent, agnosticGraph);
     }
 }

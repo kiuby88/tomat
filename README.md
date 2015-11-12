@@ -83,6 +83,15 @@ You can find the returned generation [plan in][8]:
 > tomat/dist/target/tomat-dist/resources/Chat-Application-JBoss.yaml
 
 
+Launch Brooklyn BluePrints
+---------------------------
+Generated CAMP plan, can be launched using Brooklyn project.
+Please, check [Brooklyn documentation][9] to download, configure and start Brooklyn.
+
+* CAMP plans are focused on Brooklyn 0.9.0 version or newer.
+
+
+
 Limitations
 -------------------
 Currently, TOMAt is an alpha version and supports only:
@@ -106,3 +115,4 @@ TODO
 [6]: https://brooklyn.incubator.apache.org/v/latest/start/index.html
 [7]: https://gitlab.scenic.uma.es/josec/tomat/blob/master/dist/src/main/dist/resources/Chat-Application-JBoss.xml
 [8]: https://gitlab.scenic.uma.es/josec/tomat/blob/master/dist/src/main/dist/resources/Chat-Application-JBoss.yaml
+[9]: https://brooklyn.io

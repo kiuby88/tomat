@@ -15,7 +15,7 @@ public class BrooklynApplicationEntity extends BrooklynEntity {
         this.setServices(builder.services);
     }
 
-    public void addService(BrooklynServiceEntity brooklynServiceEntity){
+    public void addService(BrooklynServiceEntity brooklynServiceEntity) {
         services.add(brooklynServiceEntity);
     }
 

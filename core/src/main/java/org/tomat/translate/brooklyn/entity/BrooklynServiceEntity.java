@@ -17,20 +17,20 @@ import java.util.Map;
 //TODO o en singular
 public abstract class BrooklynServiceEntity extends BrooklynEntity implements TechnologyComponent {
 
-    private final static String TYPE="IT_IS_NECESSARY_To_SPECIFY_A_TYPE";
+    private final static String TYPE = "IT_IS_NECESSARY_To_SPECIFY_A_TYPE";
 
     private Map<String, Object> brooklynConfigProperties;
     private AgnosticComponent agnosticComponent;
     private String serviceType;
 
-    public BrooklynServiceEntity(AgnosticComponent agnosticComponent){
+    public BrooklynServiceEntity(AgnosticComponent agnosticComponent) {
         super(generateBuilder(agnosticComponent));
         this.agnosticComponent = agnosticComponent;
         setServiceType(TYPE);
         initBrooklynConfigProperties();
     }
 
-    private static Builder generateBuilder(AgnosticComponent agnosticComponent){
+    private static Builder generateBuilder(AgnosticComponent agnosticComponent) {
         return new BrooklynEntity.Builder()
                 .id(agnosticComponent.getId())
                 .name(agnosticComponent.getName())
@@ -38,23 +38,23 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
     }
 
 
-    public Map<Class<? extends AgnosticProperty>, String> getSupportedAgnosticAndBrooklynPropertyId(){
+    public Map<Class<? extends AgnosticProperty>, String> getSupportedAgnosticAndBrooklynPropertyId() {
         return new HashMap<>();
     }
 
-    private void initBrooklynConfigProperties(){
+    private void initBrooklynConfigProperties() {
         setBrooklynConfigProperties(new HashMap<String, Object>());
-        List<AgnosticProperty> propertiesOfAgnosticComponent=
+        List<AgnosticProperty> propertiesOfAgnosticComponent =
                 agnosticComponent.getProperties();
-        for(AgnosticProperty agnosticProperty : propertiesOfAgnosticComponent){
+        for (AgnosticProperty agnosticProperty : propertiesOfAgnosticComponent) {
             addSupportedProperty(agnosticProperty);
         }
     }
 
-    private void addSupportedProperty(AgnosticProperty agnosticProperty){
-        if(checkIsSupported(agnosticProperty)){
-            BrooklynProperty brooklynProperty= buildBrooklynProperty(agnosticProperty);
-            String technologyComponentPropertyId=
+    private void addSupportedProperty(AgnosticProperty agnosticProperty) {
+        if (checkIsSupported(agnosticProperty)) {
+            BrooklynProperty brooklynProperty = buildBrooklynProperty(agnosticProperty);
+            String technologyComponentPropertyId =
                     getSupportedAgnosticAndBrooklynPropertyId()
                             .get(agnosticProperty.getClass());
 
@@ -62,7 +62,7 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
         }
     }
 
-    private boolean checkIsSupported(AgnosticProperty agnosticProperty){
+    private boolean checkIsSupported(AgnosticProperty agnosticProperty) {
         return getSupportedAgnosticAndBrooklynPropertyId()
                 .keySet()
                 .contains(agnosticProperty.getClass());
@@ -70,31 +70,31 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
 
     //TODO this asume only a level, if we have more level we could add an recursive method based
     //TODOin the iterable property
-    public void addConfigProperty(String agnosticProperty, Object value){
-        if(value!=null){
-            this.getBrooklynConfigProperties().put(agnosticProperty,value);
+    public void addConfigProperty(String agnosticProperty, Object value) {
+        if (value != null) {
+            this.getBrooklynConfigProperties().put(agnosticProperty, value);
         }
     }
 
     //TODO rename this method because we do not need the fabric, we need a
     //TODO property translation
-    private BrooklynProperty buildBrooklynProperty(AgnosticProperty agnosticProperty){
+    private BrooklynProperty buildBrooklynProperty(AgnosticProperty agnosticProperty) {
         //TODO Add a fabric of properties, it is important because currently
         //TODO the component are created
         return BrooklynPropertyProvider.createBrooklynProperty(agnosticProperty);
     }
 
     @Override
-    public AgnosticComponent getAgnosticComponent(){
+    public AgnosticComponent getAgnosticComponent() {
         return agnosticComponent;
     }
 
-    public String getServiceType(){
+    public String getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(String serviceType){
-        this.serviceType=serviceType;
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
     }
 
     public Map<String, Object> getBrooklynConfigProperties() {
@@ -102,10 +102,10 @@ public abstract class BrooklynServiceEntity extends BrooklynEntity implements Te
     }
 
     public void setBrooklynConfigProperties(Map<String, Object> brooklynConfigProperties) {
-        this.brooklynConfigProperties =new HashMap<>();
+        this.brooklynConfigProperties = new HashMap<>();
 
-        if(brooklynConfigProperties !=null){
-            for(String propertyId : brooklynConfigProperties.keySet()){
+        if (brooklynConfigProperties != null) {
+            for (String propertyId : brooklynConfigProperties.keySet()) {
                 addConfigProperty(propertyId, brooklynConfigProperties.get(propertyId));
             }
         }

@@ -14,7 +14,7 @@ import java.util.Map;
 // TODO into .entity
 public abstract class JavaWebApplicationServerBrooklynService extends BrooklynServiceEntity {
 
-    private final static String SERVICE_TYPE="brooklyn.entity.webapp.WebApp";
+    private final static String SERVICE_TYPE = "brooklyn.entity.webapp.WebApp";
 
 
     public JavaWebApplicationServerBrooklynService(AgnosticComponent agnosticComponent) {
@@ -23,8 +23,8 @@ public abstract class JavaWebApplicationServerBrooklynService extends BrooklynSe
     }
 
     @Override
-    public Map<Class<? extends AgnosticProperty>, String > getSupportedAgnosticAndBrooklynPropertyId(){
-        Map<Class<? extends AgnosticProperty>, String > result=
+    public Map<Class<? extends AgnosticProperty>, String> getSupportedAgnosticAndBrooklynPropertyId() {
+        Map<Class<? extends AgnosticProperty>, String> result =
                 super.getSupportedAgnosticAndBrooklynPropertyId();
         result.put(HttpAgnosticProperty.class, "port.http");
         result.put(HttpsAgnosticProperty.class, "port.https");

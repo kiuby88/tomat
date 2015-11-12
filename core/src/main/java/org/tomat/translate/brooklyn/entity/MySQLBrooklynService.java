@@ -12,7 +12,7 @@ import org.tomat.translate.brooklyn.visit.BrooklynVisitorRelationConfiguration;
 // TODO into .entity
 public class MySQLBrooklynService extends BrooklynServiceEntity {
 
-    private final static String SERVICE_TYPE="brooklyn.entity.database.mysql.MySqlNode";
+    private final static String SERVICE_TYPE = "org.apache.brooklyn.entity.database.mysql.MySqlNode";
 
     public MySQLBrooklynService(AgnosticComponent agnosticComponent) {
         super(agnosticComponent);
@@ -23,7 +23,7 @@ public class MySQLBrooklynService extends BrooklynServiceEntity {
     public void accept(TechnologyVisitorRelationConfiguration visit,
                        AgnosticComponent agnosticComponent,
                        AgnosticGraph agnosticGraph) {
-        ((BrooklynVisitorRelationConfiguration)visit)
+        ((BrooklynVisitorRelationConfiguration) visit)
                 .visit(this, agnosticComponent, agnosticGraph);
     }
 

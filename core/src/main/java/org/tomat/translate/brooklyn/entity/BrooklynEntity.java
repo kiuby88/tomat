@@ -8,13 +8,13 @@ import org.tomat.translate.brooklyn.BrooklynElement;
 
 public class BrooklynEntity implements BrooklynElement {
 
-    public static String LOCATION_BY_DEFAULT="localhost";
+    public static String LOCATION_BY_DEFAULT = "localhost";
 
     private String id;
     private String name;
     private String location;
 
-    protected BrooklynEntity(Builder builder){
+    protected BrooklynEntity(Builder builder) {
         this.setId(builder.id);
         this.setName(builder.name);
         this.setLocation(builder.location);
@@ -46,37 +46,36 @@ public class BrooklynEntity implements BrooklynElement {
     }
     //</editor-fold>
 
-    public static class Builder{
+    public static class Builder {
         private String id;
         private String name;
         private String location;
 
-        public Builder(){
-            this.name=null;
-            id=null;
-            location=LOCATION_BY_DEFAULT;
+        public Builder() {
+            this.name = null;
+            id = null;
+            location = LOCATION_BY_DEFAULT;
         }
 
-        public Builder id(String id){
-            this.id=id;
+        public Builder id(String id) {
+            this.id = id;
             return this;
         }
 
-        public Builder name(String name){
-            this.name=name;
-            return this;
-        }
-        public Builder location(String location){
-            this.location=location;
+        public Builder name(String name) {
+            this.name = name;
             return this;
         }
 
-        public BrooklynEntity build(){
-             return new BrooklynEntity(this);
+        public Builder location(String location) {
+            this.location = location;
+            return this;
+        }
+
+        public BrooklynEntity build() {
+            return new BrooklynEntity(this);
         }
     }
-
-
 
 
 }
