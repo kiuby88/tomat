@@ -13,7 +13,7 @@ services:
     port.http: 80+
 - serviceType: brooklyn.entity.database.mysql.MySqlNode
   name: MessageMySQL
-  location: hpcloud-compute:az-1.region-a.geo-1
+  location: softlayer:18171
   id: MessageMySql
   brooklyn.config:
     datastore.creation.script.url: https://bit.ly/brooklyn-visitors-creation-script

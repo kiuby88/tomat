@@ -125,7 +125,7 @@
                 <Properties>
                     <ns2:MySQLProperties>
                         <RootPassword>admin</RootPassword>
-                        <location>hpcloud-compute:az-1.region-a.geo-1</location>
+                        <location>softlayer:18171</location>
                     </ns2:MySQLProperties>
                 </Properties>
                 <Capabilities>
@@ -143,7 +143,7 @@
                         <DBUser>brooklyn</DBUser>
                         <DBPassword>br00k11n</DBPassword>
                         <DBPort>3306</DBPort>
-                        <location>hpcloud-compute:az-1.region-a.geo-1</location>
+                        <location>softlayer:18171</location>
                     </ns3:StockDbProperties>
                 </Properties>
                 <Requirements>

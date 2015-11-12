@@ -51,7 +51,7 @@
 				<Properties>
 					<ns2:JBossWebServerProperties>
 						<httpdport>80</httpdport>
-						<location>hpcloud-compute:az-1.region-a.geo-1</location>
+						<location>softlayer:18171</location>
 					</ns2:JBossWebServerProperties>
 				</Properties>
 				<Capabilities>
@@ -69,7 +69,7 @@
 				<Properties>
 					<ns2:JBossWebServerProperties>
 						<httpdport>80</httpdport>
-						<location>hpcloud-compute:az-1.region-a.geo-1</location>
+						<location>softlayer:18171</location>
 					</ns2:JBossWebServerProperties>
 				</Properties>
 				<Capabilities>
@@ -128,7 +128,7 @@
 				type="PayWebApplication">
 				<Properties>
 					<ns3:PayWebApplicationProperties>
-						<location>hpcloud-compute:az-1.region-a.geo-1</location>
+						<location>softlayer:18171</location>
 					</ns3:PayWebApplicationProperties>
 				</Properties>
 				<Requirements>
@@ -149,7 +149,7 @@
 				type="MainWebApplication">
 				<Properties>
 					<ns3:MainWebApplicationProperties>
-						<location>hpcloud-compute:az-1.region-a.geo-1</location>
+						<location>softlayer:18171</location>
 					</ns3:MainWebApplicationProperties>
 				</Properties>
 				<Requirements>
