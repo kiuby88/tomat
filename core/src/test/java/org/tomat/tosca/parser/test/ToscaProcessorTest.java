@@ -41,7 +41,6 @@ public class ToscaProcessorTest {
     String mainWebAppId="MainWebApp".toLowerCase();
 
     public static void main(String[] args) {
-
         Result result = JUnitCore.runClasses(ToscaProcessorTest.class);
     }
 
@@ -72,7 +71,7 @@ public class ToscaProcessorTest {
     }
 
     @Test(expected = TopologyTemplateFormatException.class)
-    public void definitionThrowExceptionByMalformedRelation()
+    public void testDefinitionThrowsExceptionByMalformedRelation()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         toscaProcessor
                 .parsingApplicationTopology(AWSFileMalFormedRelation)
@@ -80,7 +79,7 @@ public class ToscaProcessorTest {
     }
 
     @Test
-    public void agnosticRelationComponentsGeneration_CorrectTopology()
+    public void testAgnosticRelationComponentsGeneration_CorrectTopology()
             throws TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         toscaProcessor
                 .parsingApplicationTopology(AWSFile)

@@ -15,7 +15,6 @@ import org.tomat.translate.brooklyn.exceptions.AgnosticComponentTypeNotSupported
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-
 /**
  * Created by kiuby88 on 24/09/2014.
  */
@@ -24,13 +23,13 @@ public abstract class AgnosticComponent implements AgnosticElement {
 
 
     private static final String DEFAULT_LOCATION = "localhost";
-    //private static final Class<?> ROOT_AGNOSTIC_PROPERTY_CLASS = AgnosticProperty.class;
+    private static final String LOCATION_PROPERTY_NAME = "location";
 
     private String id;
     private String name;
-    //private String type;
     private String location;
     private TNodeTemplate sourceNodeTemplate;
+    private Map<String, String> sourceTemplateProperties;
     private List<AgnosticProperty> properties;
     private List<String> capabilitiesIds;
     private List<String> requirementsIds;
@@ -49,6 +48,8 @@ public abstract class AgnosticComponent implements AgnosticElement {
 
     public AgnosticComponent(TNodeTemplate nodeTemplate) throws AgnosticPropertyException {
         sourceNodeTemplate = nodeTemplate;
+        sourceTemplateProperties = AgnosticComponentUtils
+                .putLowerCaseMapKeys(DefinitionUtils.getProperties(nodeTemplate));
         initGenericValues();
         initCapabilitiesIds();
         initRequirementsIds();
@@ -63,18 +64,26 @@ public abstract class AgnosticComponent implements AgnosticElement {
         }
     }
 
+    private String getSourceTemplateLocation() {
+        String result = null;
+        if (!sourceLocationIsEmpty()) {
+            result = getSourceNodeTemplateProperties().get(LOCATION_PROPERTY_NAME);
+        }
+        return result;
+    }
+
     private void setLocation(TNodeTemplate nodeTemplate) {
-        if (locationIsEmpty(nodeTemplate)) {
+        if (sourceLocationIsEmpty()) {
             location = DEFAULT_LOCATION;
         } else {
-            location = nodeTemplate.getLocation().getLocationId();
+            location = getSourceTemplateLocation();
         }
     }
 
-    private boolean locationIsEmpty(TNodeTemplate nodeTemplate) {
-        return ((nodeTemplate.getLocation() == null)
-                || (nodeTemplate.getLocation().getLocationId() == null)
-                || (nodeTemplate.getLocation().getLocationId().equals("")));
+    //TODO: Properties should be gotten from nodeTemplate
+    private boolean sourceLocationIsEmpty() {
+        return (getSourceNodeTemplateProperties() == null)
+                || (!getSourceNodeTemplateProperties().containsKey(LOCATION_PROPERTY_NAME));
     }
 
     //TODO could be interesting delete this component of the agnostic Components
@@ -114,17 +123,19 @@ public abstract class AgnosticComponent implements AgnosticElement {
 
         for (String expectedPropertyId : propertyIdsOfExpectedProperties) {
             expectedPropertySpecification = expectedProperties.get(expectedPropertyId);
-            agnosticProperty=
-                    buildExpectedProperty(expectedPropertyId, expectedPropertySpecification);
+            agnosticProperty =
+                    buildExpectedProperty(expectedPropertySpecification);
             addPropertyIfIsCompleted(agnosticProperty);
         }
     }
 
-    private AgnosticProperty buildExpectedProperty(String id, Class<? extends AgnosticProperty> propertyClass)
+    private AgnosticProperty buildExpectedProperty(Class<? extends AgnosticProperty> propertyClass)
             throws AgnosticPropertyException {
         AgnosticProperty result = null;
         try {
-            Map<String, String> nodeTemplatePropertyMap = getNodeTemplateProperties();
+            Map<String, String> nodeTemplatePropertyMap =
+                    getSourceNodeTemplateProperties();
+
             if (nodeTemplatePropertyMap != null) {
                 result = propertyClass
                         .getConstructor(Map.class)
@@ -139,7 +150,7 @@ public abstract class AgnosticComponent implements AgnosticElement {
     }
 
     private void addPropertyIfIsCompleted(AgnosticProperty property) {
-        if ((property!=null)&&(property.isCompleted())) {
+        if ((property != null) && (property.isCompleted())) {
             addProperty(property);
         }
     }
@@ -154,17 +165,12 @@ public abstract class AgnosticComponent implements AgnosticElement {
         return new HashMap<>();
     }
 
-    /*
-    TODO este metodo es demasiado pesado, habría que cambiarlo para que no siempre se tenga que llamar al metodo que
-    TODO construye el mapa en lowercase, el test tarda medio segundo x culpa de este metodo. cuando denria de tardar solo
-    TODO medio segundo maximo
-    TODO optimice
-     */
-    Map<String, String> getNodeTemplateProperties() {
-        return AgnosticComponentUtils.putLowerCaseMapKeys(DefinitionUtils.getProperties(this.getNodeTemplate()));
+
+    Map<String, String> getSourceNodeTemplateProperties() {
+        return sourceTemplateProperties;
     }
 
-    //TODO esto está feisimo aquí, pero feo feo.
+    //TODO esto está feisimo aquí.
     public abstract TechnologyComponent buildTechnologyComponent(TechnologyComponentFactory factory)
             throws AgnosticComponentTypeNotSupportedbyBrooklyException;
 

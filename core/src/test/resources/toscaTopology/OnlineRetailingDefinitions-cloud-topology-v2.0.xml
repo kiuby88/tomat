@@ -54,7 +54,6 @@
 						<location>hpcloud-compute:az-1.region-a.geo-1</location>
 					</ns2:JBossWebServerProperties>
 				</Properties>
-                <Location locationId="AWS"/>
 				<Capabilities>
 					<Capability id="JBossPayWebServer_webapps" name="webapps"
 						type="JBossWebApplicationContainerCapability" />

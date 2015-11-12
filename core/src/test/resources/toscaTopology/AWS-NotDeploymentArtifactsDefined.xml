@@ -53,9 +53,9 @@
                 <Properties>
                     <ns2:JBossWebServerProperties>
                         <httpPort>80</httpPort>
+                        <location>"AWS"</location>
                     </ns2:JBossWebServerProperties>
                 </Properties>
-                <Location locationId="AWS"/>
                 <Capabilities>
                     <Capability id="JBossMainWebServer_webapps" name="webapps"
                                 type="JBossWebApplicationContainerCapability" />

@@ -85,9 +85,9 @@
                 <Properties>
                     <ns2:JBossWebServerProperties>
                         <httpPort>80</httpPort>
+                        <location>aws-ec2:us-west-2</location>
                     </ns2:JBossWebServerProperties>
                 </Properties>
-                <Location locationId="aws-ec2:us-west-2"/>
                 <Capabilities>
                     <Capability id="JBossChatWebServer_webapps" name="webapps"
                                 type="JBossChatApplicationContainerCapability" />
@@ -104,9 +104,9 @@
                 <Properties>
                     <ns2:WebApplicationProperties>
                         <dbConnectionName>brooklyn.example.db.url</dbConnectionName>
+                        <location>aws-ec2:us-west-2</location>
                     </ns2:WebApplicationProperties>
                 </Properties>
-                <Location locationId="aws-ec2:us-west-2"/>
                 <Requirements>
                     <Requirement id="ChatWebApp_MessageDatabase" name="MessageDatabase"
                                  type="ChatWebAppConnectToMessageWebApp" />
@@ -125,9 +125,9 @@
                 <Properties>
                     <ns2:MySQLProperties>
                         <RootPassword>admin</RootPassword>
+                        <location>hpcloud-compute:az-1.region-a.geo-1</location>
                     </ns2:MySQLProperties>
                 </Properties>
-                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
                 <Capabilities>
                     <Capability id="MessageMySql_databases" name="databases"
                                 type="MySQLDatabaseContainerCapability" />
@@ -143,9 +143,9 @@
                         <DBUser>brooklyn</DBUser>
                         <DBPassword>br00k11n</DBPassword>
                         <DBPort>3306</DBPort>
+                        <location>hpcloud-compute:az-1.region-a.geo-1</location>
                     </ns3:StockDbProperties>
                 </Properties>
-                <Location locationId="hpcloud-compute:az-1.region-a.geo-1"/>
                 <Requirements>
                     <Requirement id="MessageDB_container" name="container"
                                  type="MySQLDatabaseContainerRequirement" />

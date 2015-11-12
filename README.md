@@ -72,7 +72,11 @@ You can find a TOSCA topology [example in][7]:
 
 This topology could be translated with:
 ```
-tomat Chat-Application-JBoss.xml -o Chat-Application-JBoss.yaml
+tomat translate Chat-Application-JBoss.xml -o Chat-Application-JBoss.yaml
+```
+**Agnostic Graph** is available on verbose mode:
+```
+tomat --verbose translate Chat-Application-JBoss.xml -o Chat-Application-JBoss.yaml
 ```
 
 You can find the returned generation [plan in][8]:

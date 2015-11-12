@@ -88,9 +88,9 @@
                 <Properties>
                     <ns2:JettyWebServerProperties>
                         <httpPort>80</httpPort>
+                        <location>"AWS"</location>
                     </ns2:JettyWebServerProperties>
                 </Properties>
-                <Location locationId="AWS"/>
                 <Capabilities>
                     <Capability id="JettyMainWebServer_webapps" name="webapps"
                                 type="JettyWebApplicationContainerCapability" />

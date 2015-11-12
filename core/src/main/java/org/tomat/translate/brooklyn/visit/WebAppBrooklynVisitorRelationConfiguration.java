@@ -98,7 +98,6 @@ public class WebAppBrooklynVisitorRelationConfiguration
         return databaseConfiguration;
     }
 
-
     private String getPropertyValueOrNotCompleteValue(AgnosticComponent agnosticComponent,
                                                Class<? extends AgnosticProperty>type,
                                                String valueIfNotComplete){

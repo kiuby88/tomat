@@ -88,9 +88,9 @@
                 <Properties>
                     <ns2:TomcatWebServerProperties>
                         <httpPort>80</httpPort>
+                        <location>"AWS"</location>
                     </ns2:TomcatWebServerProperties>
                 </Properties>
-                <Location locationId="AWS"/>
                 <Capabilities>
                     <Capability id="TomcatMainWebServer_webapps" name="webapps"
                                 type="TomcatWebApplicationContainerCapability" />
