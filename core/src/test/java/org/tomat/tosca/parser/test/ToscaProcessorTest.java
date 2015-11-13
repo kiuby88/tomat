@@ -53,21 +53,21 @@ public class ToscaProcessorTest {
     private void initFiles(){
         ResourcePathResolver resourcePathResolver=new ResourcePathResolver();
         AWSFileMalFormedRelation=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE_MALFORMED_RELATION);
+                .getPathFile(ResourcePathResolver.AWS_LOCATION_SAMPLE_MALFORMED_RELATION);
         AWSFile=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE);
+                .getPathFile(ResourcePathResolver.AWS_LOCATION_SAMPLE);
         AWSFileArtifactTemplate=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_ARTIFACT_TEMPLATE_DEFINITION);
+                .getPathFile(ResourcePathResolver.AWS_ARTIFACT_TEMPLATE_DEFINITION);
         AWSDeploymentWithoutTemplate=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_DEPLOYMENT_ARTIFACT_WITHOUT_ARTIFACT_TEMPLATE);
+                .getPathFile(ResourcePathResolver.AWS_DEPLOYMENT_ARTIFACT_WITHOUT_ARTIFACT_TEMPLATE);
         AWSSeveralDeploymentArtifacts=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_SEVERAL_CORRECT_DEPLOYMENT_ARTIFACT_DEFINITION);
+                .getPathFile(ResourcePathResolver.AWS_SEVERAL_CORRECT_DEPLOYMENT_ARTIFACT_DEFINITION);
         AWSNotDeploymentArtifactListDefined=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_NOT_DEPLOYMENT_ARTIFACT_LIST_DEFINED);
+                .getPathFile(ResourcePathResolver.AWS_NOT_DEPLOYMENT_ARTIFACT_LIST_DEFINED);
         AWSNotDeploymentArtifactDefined=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_NOT_DEPLOYMENT_ARTIFACT_DEFINED);
+                .getPathFile(ResourcePathResolver.AWS_NOT_DEPLOYMENT_ARTIFACT_DEFINED);
         AWSNotNodeTypeImplementationDefined=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_NOT_NODE_TYPE_IMPLEMENTATION_DEFINED);
+                .getPathFile(ResourcePathResolver.AWS_NOT_NODE_TYPE_IMPLEMENTATION_DEFINED);
     }
 
     @Test(expected = TopologyTemplateFormatException.class)

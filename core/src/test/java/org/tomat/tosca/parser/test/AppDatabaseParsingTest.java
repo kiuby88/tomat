@@ -47,7 +47,7 @@ public class AppDatabaseParsingTest {
             throws AgnosticPropertyException, TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException {
         ResourcePathResolver resourcePathResolver=new ResourcePathResolver();
-        AWSApplicationDatabaseFile=resourcePathResolver.getPathOfFile(file);
+        AWSApplicationDatabaseFile=resourcePathResolver.getPathFile(file);
         this.webServerType=webServerType;
         this.webServerAgnosticComponentType=webServerAgnosticComponentType;
         this.webServerId=webserverId;

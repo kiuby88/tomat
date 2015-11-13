@@ -84,10 +84,7 @@
                 <SourceElement ref="MainWebApp_container" />
                 <TargetElement ref="JBossMainWebServer_webapps" />
             </RelationshipTemplate>
-
-
         </TopologyTemplate>
-
 
     </ServiceTemplate>
 </Definitions>

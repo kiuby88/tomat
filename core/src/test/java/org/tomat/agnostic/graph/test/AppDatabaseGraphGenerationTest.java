@@ -37,7 +37,7 @@ public class AppDatabaseGraphGenerationTest {
     public AppDatabaseGraphGenerationTest(String name, String  file, String webServerId)
             throws AgnosticPropertyException, TopologyTemplateFormatException, NodeTemplateTypeNotSupportedException {
         ResourcePathResolver resourcePathResolver=new ResourcePathResolver();
-        AWSApplicationDatabaseFile=resourcePathResolver.getPathOfFile(file);
+        AWSApplicationDatabaseFile=resourcePathResolver.getPathFile(file);
         this.webServerId=webServerId;
         setUp();
     }

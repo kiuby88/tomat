@@ -45,9 +45,9 @@ public class AgnosticComponentProviderTest {
         ResourcePathResolver resourcePathResolver=new ResourcePathResolver();
 
         AWSFile=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE);
+                .getPathFile(ResourcePathResolver.AWS_LOCATION_SAMPLE);
         AWSUnsupportedType=resourcePathResolver
-                .getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE_UNSUPPORTED_TYPE);
+                .getPathFile(ResourcePathResolver.AWS_LOCATION_SAMPLE_UNSUPPORTED_TYPE);
         nodeTemplateListAWSSample =
                 toscaParser
                 .parsingApplicationTopology(AWSFile)

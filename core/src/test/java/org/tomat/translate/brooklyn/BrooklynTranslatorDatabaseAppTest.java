@@ -51,9 +51,9 @@ public class BrooklynTranslatorDatabaseAppTest {
             NodeTemplateTypeNotSupportedException, NotSupportedTypeByTechnologyException,
             BrooklynVisitorRelationConfigurationNotSupportedType {
         ResourcePathResolver resourcePathResolver= new ResourcePathResolver();
-        AWSApplicationDatabaseFile=resourcePathResolver.getPathOfFile(file);
+        AWSApplicationDatabaseFile=resourcePathResolver.getPathFile(file);
         this.webServerId=webServerId;
-        this.yamlFile=resourcePathResolver.getPathOfFile(yamlFile);
+        this.yamlFile=resourcePathResolver.getPathFile(yamlFile);
         setUp();
     }
 

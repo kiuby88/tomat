@@ -26,8 +26,8 @@ Brooklyn is split into the following subprojects:
 
 
 
-Building and Usage
--------------------
+Building
+------------
 To build the project first clone the repository.
 
 ```
@@ -40,6 +40,8 @@ Then, you could compile the project using maven:
 mvn clean install
 ```
 
+Usage
+---------
 Next, you can launch using the cli with
 
 ```

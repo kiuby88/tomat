@@ -39,7 +39,7 @@ public class AppDatabaseAgnosticApplicationTest {
             throws AgnosticPropertyException, TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException {
         ResourcePathResolver resourcePathResolver=new ResourcePathResolver();
-        this.AWSApplicationDatabaseFile = resourcePathResolver.getPathOfFile(file);
+        this.AWSApplicationDatabaseFile = resourcePathResolver.getPathFile(file);
         this.webServerId = webServerId;
         setUp();
     }

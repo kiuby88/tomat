@@ -48,8 +48,8 @@ public class BrooklynTranslatorSimpleAppTest {
     public void setUp() throws TopologyTemplateFormatException,
             NodeTemplateTypeNotSupportedException, AgnosticPropertyException {
         ResourcePathResolver resourcePathResolver= new ResourcePathResolver();
-        file=resourcePathResolver.getPathOfFile(ResourcePathResolver.AWS_LOCATION_SAMPLE);
-        yamlFile=resourcePathResolver.getPathOfFile(ResourcePathResolver.SIMPLE_DB_APP_YAML);
+        file=resourcePathResolver.getPathFile(ResourcePathResolver.AWS_LOCATION_SAMPLE);
+        yamlFile=resourcePathResolver.getPathFile(ResourcePathResolver.SIMPLE_DB_APP_YAML);
         toscaProcessor = new ToscaProcessor();
         toscaProcessor
                 .parsingApplicationTopology(file).buildAgnostics();
