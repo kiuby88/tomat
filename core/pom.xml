@@ -33,6 +33,8 @@
                             <exclude>org/tomat/translate/brooklyn/exceptions/*.class</exclude>
                             <exclude>org/tomat/TomatVersion.class</exclude>
                             <exclude>org/tomat/agnostic/graphs/printer/*.class</exclude>
+                            <exclude>org/opentosca/model/staticresources/*.class</exclude>
+                            <exclude>org/opentosca/model/tosca/*.class</exclude>
                         </excludes>
                     </instrumentation>
                     <check/>
@@ -45,8 +47,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- Construir jar con dependencias -->
 
         </plugins>
     </build>

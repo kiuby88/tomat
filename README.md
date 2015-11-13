@@ -93,6 +93,15 @@ Please, check [Brooklyn documentation][9] to download, configure and start Brook
 * CAMP plans are focused on Brooklyn 0.9.0 version or newer.
 
 
+Test
+---------
+You can check current project coverage using:
+```
+cd core
+mvn cobertura:cobertura
+```
+Then, coverage report will be available in:
+> core/target/site/cobertura/index.html
 
 Limitations
 -------------------
