@@ -1,123 +1,121 @@
 
 
-TOMAT 
+![TOMAT](https://gitlab.scenic.uma.es/josec/tomat/raw/master/dist/src/main/dist/resources/icon/tomat.png?raw=true "TOMAT") TOMAT
 ==================
 
 This project has been developed as a proof of concept to translate between the standards  [TOSCA][1] and [CAMP][2].
 
-To deploy the generated CAMP plans we use [Brooklyn][3] as a standard implementation.
-
+To deploy the generated CAMP plans we use [Brooklyn][3] as an implementation of the standard.
 
 The Project
 -------------------
-TOSCA allows to describe an application (or any system) and its deployment management through the [topology and plans][4].   In this sense, TOMAT is a tool to generate a Brooklyn plan **from only a TOSCA topology** (understanding Brooklyn as a CAMP implementation).
+TOSCA supports the description of an application (or system) and its deployment management by providing a [topology and plans][4] for it.   
+In this sense, TOMAT is a tool to generate a Brooklyn plan **from a TOSCA topology** (understanding Brooklyn as a CAMP implementation).
 
-Then, the generated plan is able to deployed using Brooklyn, check the [usage instructions][6].
+Then, the generated plan may be used to deploy our application using Brooklyn (check the [usage instructions][6]).
 
 Project structure
 -------------------
-Brooklyn is split into the following subprojects:
+TOMAT has the following subprojects:
 
-- **core**: contains the necessary logic to process and translate the TOSCA topology.
-- **cli**: backing implementatio for TOMAT's command line interface.
+- **core** contains the necessary logic to process and translate the TOSCA topology.
+- **cli** implementats TOMAT's command line interface.
 - **dist**: builds TOMAT jars executable.
-
-
-
-
 
 Building
 ------------
-To build the project first clone the repository.
+To build the project, first clone the repository.
 
 ```
 git clone http://gitlab.scenic.uma.es/josec/tomat.git
 cd tomat
 ```
 
-Then, you could compile the project using maven:
+Then, you can compile the project using maven:
 ```
 mvn clean install
 ```
 
 Usage
 ---------
-Next, you can launch using the cli with
+To launch the tool, you mayuse cli.
 
 ```
 cd dist/taget/tomat-dist/bin
 tomat %arguments
 ```
 
-Of course you can also use the generated jar with dependencies:
+Of course, you can also use the generated jar with dependencies:
 ```
 cd dist/target/tomat-dist/
 java -jar tomat-jar-with-dependencies.jar %arguments
 ``` 
 
-Arguments, ```%arguments``` describe the input of the command. You can check the expected commands:
+Above, ```%arguments``` describe the input of the command. You can check the expected arguments to the command with
 ```
 tomat help 
 ```
 
-You can check the command arguments using ```tomat help %command```, for example:
+Information on the command arguments may be obteained with ```tomat help %command```, for example:
 
 ```
 tomat help translate
 ```
 
-###Translation
+Translation
+---------------
 
-You can find a TOSCA topology [example in][7]:
+You can find a sample TOSCA topology [here][7]:
 
 > tomat/dist/target/tomat-dist/resources/Chat-Application-JBoss.xml
 
-This topology could be translated with:
+This topology can be translated with the following command:
 ```
 tomat translate Chat-Application-JBoss.xml -o Chat-Application-JBoss.yaml
 ```
-**Agnostic Graph** is available on verbose mode:
+You can have access to the intermediate **Agnostic Graph** if executed in verbose mode:
 ```
 tomat --verbose translate Chat-Application-JBoss.xml -o Chat-Application-JBoss.yaml
 ```
 
-You can find the returned generation [plan in][8]:
+After the previous command, the file with the [generated plan] is available in [8]:
 > tomat/dist/target/tomat-dist/resources/Chat-Application-JBoss.yaml
 
 
 Launch Brooklyn BluePrints
 ---------------------------
-Generated CAMP plan, can be launched using Brooklyn project.
-Please, check [Brooklyn documentation][9] to download, configure and start Brooklyn.
+The generated CAMP plan can then be launched using Brooklyn.
+Please, check [Brooklyn's documentation][9] to download, configure and start Brooklyn.
 
-* CAMP plans are focused on Brooklyn 0.9.0 version or newer.
-
+* CAMP plans are handled by Brooklyn 0.9.0 or later versions.
 
 Test
 ---------
-You can check current project coverage using:
+You can check coverage of the current project by using:
 ```
 cd core
 mvn cobertura:cobertura
 ```
-Then, coverage report will be available in:
+The generated coverage report can be found at:
 > core/target/site/cobertura/index.html
 
 Limitations
 -------------------
-Currently, TOMAt is an alpha version and supports only:
+Currently, TOMAt is an alpha version and only supports:
 
 - Java Applications: using JBoss, Jetty and TOMCAT.
 - MySQL: a connected database.
 - XML TOSCA topology.
 - YAML Brooklyn Blue Prints generation.
 
-TODO
+TO-DO list
 -------------------
-- Adding more supported technology translations. e.g. PHP or node.
-- Increasing the supported database connection.
-- Adding more target translation technologies.
+Although the prototype is completely operative, further support is in our list:
+- For additional technology translations, e.g., PHP or node.
+- For additional database connections.
+- For additional target translation technologies.
 
+TOMAT Icon was developed by <div>Icon made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
 
 [1]: https://www.oasis-open.org/committees/tosca/
 [2]: https://www.oasis-open.org/committees/camp/
