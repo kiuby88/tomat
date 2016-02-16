@@ -1,6 +1,6 @@
 
 
-![TOMAT](https://gitlab.scenic.uma.es/josec/tomat/raw/master/dist/src/main/dist/resources/icon/tomat.png?raw=true "TOMAT") TOMAT
+![TOMAT](https://raw.githubusercontent.com/kiuby88/tomat/master/dist/src/main/dist/resources/icon/tomat.png "TOMAT") TOMAT
 ==================
 
 This project has been developed as a proof of concept to translate between the standards  [TOSCA][1] and [CAMP][2].
